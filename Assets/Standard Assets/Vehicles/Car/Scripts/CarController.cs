@@ -163,7 +163,7 @@ namespace UnityStandardAssets.Vehicles.Car
             }
             //Debug.Log("Speed = " + m_Rigidbody.velocity.magnitude);
             Debug.Log("jump = " +jump);
-            m_MaximumSteerAngle = Remap(m_Rigidbody.velocity.magnitude, 50, 0, 5, 25);
+            m_MaximumSteerAngle = Remap(m_Rigidbody.velocity.magnitude, 70, 0, 5, 25);
             //clamp input values
             steering = Mathf.Clamp(steering, -1, 1);
             AccelInput = accel = Mathf.Clamp(accel, 0, 1);
