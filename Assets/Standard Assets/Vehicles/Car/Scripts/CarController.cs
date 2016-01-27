@@ -276,6 +276,7 @@ namespace UnityStandardAssets.Vehicles.Car
             }
             else
             {
+                Debug.Log("cnt = " + cnt);
                 addedRotations = new Vector3(00, 0, 0);
             }
         }
