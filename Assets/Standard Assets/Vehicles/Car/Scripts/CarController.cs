@@ -149,9 +149,9 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
-        public void Move(float steering, float accel, float footbrake, float handbrake,float jump,float axisToggle,float boost)
+        public void Move(float steering,float torque, float accel, float footbrake, float handbrake,float jump,float axisToggle,float boost)
         {
-            float hAxis = accel;
+            float hAxis = torque;
             float vAxis = steering;
             for (int i = 0; i < 4; i++)
             {
@@ -162,7 +162,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 m_WheelMeshes[i].transform.rotation = quat;
             }
             //Debug.Log("Speed = " + m_Rigidbody.velocity.magnitude);
-            Debug.Log("jump = " +jump);
+            //Debug.Log("jump = " +jump);
             m_MaximumSteerAngle = Remap(m_Rigidbody.velocity.magnitude, 70, 0, 5, 25);
             //clamp input values
             steering = Mathf.Clamp(steering, -1, 1);
