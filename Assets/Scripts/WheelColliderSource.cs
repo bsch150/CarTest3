@@ -20,7 +20,7 @@ public class WheelColliderSource : MonoBehaviour
 {
     private Transform m_dummyWheel;
     private Rigidbody m_rigidbody;
-    private SphereCollider m_collider;
+    //private SphereCollider m_collider;
 
     private WheelFrictionCurveSource m_forwardFriction; //Properties of tire friction in the direction the wheel is pointing in.
     private WheelFrictionCurveSource m_sidewaysFriction; //Properties of tire friction in the sideways direction.
@@ -67,7 +67,9 @@ public class WheelColliderSource : MonoBehaviour
         set
         {
             m_wheelRadius = value;
-            m_collider.center = new Vector3(0, m_wheelRadius, 0);
+            //Debug.Log("Value = " + value);
+           // Debug.Log("m_collider = " + m_collider);
+            //m_collider.center = new Vector3(0, m_wheelRadius, 0);
         }
         get
         {
@@ -180,12 +182,10 @@ public class WheelColliderSource : MonoBehaviour
     // Use this for initialization
     public void Awake()
     {
+        //Debug.Log("Awake Called");
         m_dummyWheel = new GameObject("DummyWheel").transform;
         m_dummyWheel.transform.parent = this.transform.parent;
         Center =  Vector3.zero;
-
-        m_wheelRadius = 1.5f;
-        m_suspensionDistance = 1.5f;
         m_suspensionCompression = 0.0f;
         Mass = 1.0f;
 
@@ -194,8 +194,9 @@ public class WheelColliderSource : MonoBehaviour
 
         m_suspensionSpring = new JointSpringSource();
         m_suspensionSpring.Spring = 1.0f;
-        m_suspensionSpring.Damper = 0.5f;
+        m_suspensionSpring.Damper = 1.0f;
         m_suspensionSpring.TargetPosition = 0.0f;
+        //m_collider = gameObject.AddComponent<SphereCollider>();
     }
 
     public void Start()
@@ -220,9 +221,9 @@ public class WheelColliderSource : MonoBehaviour
         //Add a SphereCollider as a work around to the Collider implementation issue.
         //See wiki for more details.
         //http://www.unifycommunity.com/wiki/index.php?title=WheelColliderSource
-        m_collider = gameObject.AddComponent<SphereCollider>();
-        m_collider.center = new Vector3(0, m_wheelRadius, 0);
-        m_collider.radius = 0.0f;
+       // m_collider.center = new Vector3(0, m_wheelRadius, 0);
+       // m_collider.radius = 1.0f;
+       // Debug.Log("m_collider init = " + m_collider);
     }
 
     // Called once per physics update
@@ -237,20 +238,32 @@ public class WheelColliderSource : MonoBehaviour
             CalculateSlips();
 
             CalculateForcesFromSlips();
-            Debug.Log("force = " + m_totalForce);
+
             m_rigidbody.AddForceAtPosition(m_totalForce, transform.position);
         }
     }
 
     public void OnDrawGizmosSelected()
     {
-        Gizmos.color = GizmoColor;
-
-        //Draw the suspension
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(
-            transform.position - m_dummyWheel.up * m_wheelRadius, 
+            transform.position, 
             transform.position + (m_dummyWheel.up * (m_suspensionDistance - m_suspensionCompression))
         );
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(
+            transform.position,
+            transform.position + (m_dummyWheel.forward * (m_suspensionDistance - m_suspensionCompression))
+        );
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(
+            transform.position,
+            transform.position + (m_dummyWheel.right * (m_suspensionDistance - m_suspensionCompression))
+        );
+
+
 
         //Draw the wheel
         Vector3 point1;
@@ -288,6 +301,7 @@ public class WheelColliderSource : MonoBehaviour
         //Raycast down along the suspension to find out how far the ground is to the wheel
         bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius + m_suspensionDistance);
 
+
         if (result) //The wheel is in contact with the ground
         {
             if(!m_isGrounded) //If not previously grounded, set the prevPosition value to the wheel's current position.
@@ -302,6 +316,7 @@ public class WheelColliderSource : MonoBehaviour
 
             //Update the suspension compression
             m_suspensionCompression = m_suspensionDistance + m_wheelRadius - (m_raycastHit.point - m_dummyWheel.position).magnitude;
+            //Debug.Log("SusComp = " + m_suspensionCompression);
 
             if (m_suspensionCompression > m_suspensionDistance)
             {
@@ -329,7 +344,8 @@ public class WheelColliderSource : MonoBehaviour
         this.transform.localEulerAngles = new Vector3(m_wheelRotationAngle, m_wheelSteerAngle, 0);
 
         //Set the wheel's position given the current suspension compression
-        transform.localPosition = m_dummyWheel.localPosition - Vector3.up * (m_suspensionDistance - m_suspensionCompression);
+        float temp1 = m_suspensionDistance - m_suspensionCompression;
+        transform.localPosition = m_dummyWheel.localPosition - Vector3.up * temp1;
 
         //Apply rolling force to tires if they are grounded and don't have motor torque applied to them.
         if (m_isGrounded && m_wheelMotorTorque == 0)
@@ -370,21 +386,19 @@ public class WheelColliderSource : MonoBehaviour
     {
         //Forward slip force
         m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip);
-        Debug.Log("\n\n force after 1 = " + m_totalForce);
 
         //Lateral slip force
         m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip);
-         Debug.Log("force after 2 = " + m_totalForce);
+
 
         //Spring force
         //Debug.Log("Things in 3:\n" + m_dummyWheel.up + "\n" + m_suspensionCompression + "\n" + m_suspensionDistance + "\n" + m_suspensionSpring.TargetPosition + "\n" + m_suspensionSpring.Spring);
         float temp1 = (m_suspensionCompression - m_suspensionDistance * (m_suspensionSpring.TargetPosition));
         //Debug.Log("temp1 = " + temp1);
         m_totalForce += m_dummyWheel.up * temp1 * m_suspensionSpring.Spring;
-        Debug.Log("force after 3 = " + m_totalForce);
 
         //Spring damping force
         m_totalForce += m_dummyWheel.up * (m_suspensionCompression - m_suspensionCompressionPrev) / Time.deltaTime * m_suspensionSpring.Damper;
-        Debug.Log("force after 4 = " + m_totalForce+"\n\n");
+
     }
 }

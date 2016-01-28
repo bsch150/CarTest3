@@ -22,6 +22,14 @@ public class CarController : MonoBehaviour
     public Transform FrontLeft;
     public Transform BackRight;
     public Transform BackLeft;
+    [SerializeField]
+    private float WheelRadius;
+    [SerializeField]
+    private float SuspensionDistance;
+    [SerializeField]
+    private float TorquePerTire;
+    [SerializeField]
+    private bool FourWheelDrive = false;
 
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
@@ -34,13 +42,28 @@ public class CarController : MonoBehaviour
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
         BackRightWheel = BackRight.gameObject.AddComponent<WheelColliderSource>();
         BackLeftWheel = BackLeft.gameObject.AddComponent<WheelColliderSource>();
+        Debug.Log("Wheel Radius = " + WheelRadius);
+        FrontRightWheel.WheelRadius = WheelRadius;
+        FrontLeftWheel.WheelRadius = WheelRadius;
+        BackRightWheel.WheelRadius = WheelRadius;
+        BackLeftWheel.WheelRadius = WheelRadius;
+
+        FrontRightWheel.SuspensionDistance = SuspensionDistance;
+        FrontLeftWheel.SuspensionDistance = SuspensionDistance;
+        BackRightWheel.SuspensionDistance = SuspensionDistance;
+        BackLeftWheel.SuspensionDistance = SuspensionDistance;
     }
 
     public void FixedUpdate()
     {
         //Apply the accelerator pedal
-        FrontRightWheel.MotorTorque = Input.GetAxis("Vertical") * 300.0f;
-        FrontLeftWheel.MotorTorque = Input.GetAxis("Vertical") * 300.0f;
+        FrontRightWheel.MotorTorque = Input.GetAxis("Vertical") * TorquePerTire;
+        FrontLeftWheel.MotorTorque = Input.GetAxis("Vertical") * TorquePerTire;
+        if (FourWheelDrive)
+        {
+            BackRightWheel.MotorTorque = Input.GetAxis("Vertical") * TorquePerTire;
+            BackLeftWheel.MotorTorque = Input.GetAxis("Vertical") * TorquePerTire;
+        }
 
         //Turn the steering wheel
         FrontRightWheel.SteerAngle = Input.GetAxis("Horizontal") * 45;
