@@ -184,8 +184,8 @@ public class WheelColliderSource : MonoBehaviour
         m_dummyWheel.transform.parent = this.transform.parent;
         Center =  Vector3.zero;
 
-        m_wheelRadius = 0.5f;
-        m_suspensionDistance = 0.5f;
+        m_wheelRadius = 1.5f;
+        m_suspensionDistance = 1.5f;
         m_suspensionCompression = 0.0f;
         Mass = 1.0f;
 
@@ -193,8 +193,8 @@ public class WheelColliderSource : MonoBehaviour
         m_sidewaysFriction = new WheelFrictionCurveSource();
 
         m_suspensionSpring = new JointSpringSource();
-        m_suspensionSpring.Spring = 15000.0f;
-        m_suspensionSpring.Damper = 1000.0f;
+        m_suspensionSpring.Spring = 1.0f;
+        m_suspensionSpring.Damper = 0.5f;
         m_suspensionSpring.TargetPosition = 0.0f;
     }
 
@@ -237,7 +237,7 @@ public class WheelColliderSource : MonoBehaviour
             CalculateSlips();
 
             CalculateForcesFromSlips();
-
+            Debug.Log("force = " + m_totalForce);
             m_rigidbody.AddForceAtPosition(m_totalForce, transform.position);
         }
     }
@@ -310,6 +310,7 @@ public class WheelColliderSource : MonoBehaviour
         }
         else //The wheel is in the air
         {
+    
             m_suspensionCompression = 0;
             GizmoColor = Color.blue;
             m_isGrounded = false;
@@ -369,14 +370,21 @@ public class WheelColliderSource : MonoBehaviour
     {
         //Forward slip force
         m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip);
+        Debug.Log("\n\n force after 1 = " + m_totalForce);
 
         //Lateral slip force
         m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip);
+         Debug.Log("force after 2 = " + m_totalForce);
 
         //Spring force
-        m_totalForce += m_dummyWheel.up * (m_suspensionCompression - m_suspensionDistance * (m_suspensionSpring.TargetPosition)) * m_suspensionSpring.Spring;
+        //Debug.Log("Things in 3:\n" + m_dummyWheel.up + "\n" + m_suspensionCompression + "\n" + m_suspensionDistance + "\n" + m_suspensionSpring.TargetPosition + "\n" + m_suspensionSpring.Spring);
+        float temp1 = (m_suspensionCompression - m_suspensionDistance * (m_suspensionSpring.TargetPosition));
+        //Debug.Log("temp1 = " + temp1);
+        m_totalForce += m_dummyWheel.up * temp1 * m_suspensionSpring.Spring;
+        Debug.Log("force after 3 = " + m_totalForce);
 
         //Spring damping force
         m_totalForce += m_dummyWheel.up * (m_suspensionCompression - m_suspensionCompressionPrev) / Time.deltaTime * m_suspensionSpring.Damper;
+        Debug.Log("force after 4 = " + m_totalForce+"\n\n");
     }
 }
