@@ -44,6 +44,7 @@ public class WheelColliderSource : MonoBehaviour
     private float m_suspensionCompression;
     private float m_suspensionCompressionPrev;
     private JointSpringSource m_suspensionSpring; //The parameters of wheel's suspension. The suspension attempts to reach a target position
+    private Vector3 initEuler;
 
     //Debugging color data
     private Color GizmoColor;
@@ -186,16 +187,17 @@ public class WheelColliderSource : MonoBehaviour
         m_dummyWheel = new GameObject("DummyWheel").transform;
         m_dummyWheel.transform.parent = this.transform.parent;
         Center =  Vector3.zero;
-        m_suspensionCompression = 0.0f;
+        m_suspensionCompression = 0f;
         Mass = 1.0f;
 
         m_forwardFriction = new WheelFrictionCurveSource();
         m_sidewaysFriction = new WheelFrictionCurveSource();
 
         m_suspensionSpring = new JointSpringSource();
-        m_suspensionSpring.Spring = 1.0f;
-        m_suspensionSpring.Damper = 1.0f;
+        m_suspensionSpring.Spring = 100000.0f;
+        m_suspensionSpring.Damper = 0f;
         m_suspensionSpring.TargetPosition = 0.0f;
+        initEuler = this.transform.localEulerAngles;
         //m_collider = gameObject.AddComponent<SphereCollider>();
     }
 
@@ -295,8 +297,25 @@ public class WheelColliderSource : MonoBehaviour
 
         return m_isGrounded;
     }
-
     private void UpdateSuspension()
+    {
+        //Raycast down along the suspension to find out how far the ground is to the wheel
+        bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius);
+
+
+        if (result) //The wheel is in contact with the ground
+        {
+            GizmoColor = Color.green;
+            m_isGrounded = true;
+        }
+        else //The wheel is in the air
+        {
+            GizmoColor = Color.blue;
+            m_isGrounded = false;
+        }
+    }
+    /*ORIGINAL CODE
+     private void UpdateSuspension()
     {
         //Raycast down along the suspension to find out how far the ground is to the wheel
         bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius + m_suspensionDistance);
@@ -316,6 +335,10 @@ public class WheelColliderSource : MonoBehaviour
 
             //Update the suspension compression
             m_suspensionCompression = m_suspensionDistance + m_wheelRadius - (m_raycastHit.point - m_dummyWheel.position).magnitude;
+            if(m_suspensionCompression < 0)
+            {
+                Debug.Log("Suspension Compression Negative");
+            }
             //Debug.Log("SusComp = " + m_suspensionCompression);
 
             if (m_suspensionCompression > m_suspensionDistance)
@@ -330,8 +353,7 @@ public class WheelColliderSource : MonoBehaviour
             GizmoColor = Color.blue;
             m_isGrounded = false;
         }
-    }
-
+    }*/
     private void UpdateWheel()
     {
         //Set steering angle of the wheel dummy
@@ -341,7 +363,7 @@ public class WheelColliderSource : MonoBehaviour
         m_wheelRotationAngle += m_wheelAngularVelocity * Time.deltaTime;
 
         //Set the rotation and steer angle of the wheel model
-        this.transform.localEulerAngles = new Vector3(m_wheelRotationAngle, m_wheelSteerAngle, 0);
+        this.transform.localEulerAngles = new Vector3(m_wheelRotationAngle, m_wheelSteerAngle, 0) + initEuler;
 
         //Set the wheel's position given the current suspension compression
         float temp1 = m_suspensionDistance - m_suspensionCompression;
