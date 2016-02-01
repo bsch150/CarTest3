@@ -29,6 +29,7 @@ ModelImporter:
     4300002: Sphere.000
     4300004: Cube
     4300006: Sphere.002
+    4300008: Sphere.004
     6400000: //RootNode
   materials:
     importMaterials: 1

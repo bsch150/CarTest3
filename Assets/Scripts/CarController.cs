@@ -54,7 +54,7 @@ public class CarController : MonoBehaviour
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
         BackRightWheel = BackRight.gameObject.AddComponent<WheelColliderSource>();
         BackLeftWheel = BackLeft.gameObject.AddComponent<WheelColliderSource>();
-        Debug.Log("Wheel Radius = " + WheelRadius);
+        //Debug.Log("Wheel Radius = " + WheelRadius);
         FrontRightWheel.WheelRadius = WheelRadius;
         FrontLeftWheel.WheelRadius = WheelRadius;
         BackRightWheel.WheelRadius = WheelRadius;
@@ -66,14 +66,16 @@ public class CarController : MonoBehaviour
         BackLeftWheel.SuspensionDistance = SuspensionDistance;
 
         rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
     }
 
     public void FixedUpdate()
     {
         //Apply the accelerator pedal
-        float acc = (Input.GetAxis("Accelerate") + 1)/ 2;
+        float acc = (Input.GetAxis("Accelerate"));
         float hAxis = Input.GetAxis("Horizontal");
         float vAxis = Input.GetAxis("Vertical");
+        //Debug.Log(Input.GetAxis("Vertical"));
         FrontRightWheel.MotorTorque = acc * TorquePerTire;
         FrontLeftWheel.MotorTorque = acc * TorquePerTire;
         if (FourWheelDrive)
@@ -116,24 +118,25 @@ public class CarController : MonoBehaviour
     private void Jump(float jump, float hAxis, float vAxis, float axisToggle)
     {
         int cnt = 0;
-
         if (BackLeftWheel.IsGrounded) cnt += 1;
         if (BackRightWheel.IsGrounded) cnt += 1;
         if (FrontLeftWheel.IsGrounded) cnt += 1;
         if (FrontRightWheel.IsGrounded) cnt += 1;
-        rb.AddForce(Vector3.up * (cnt * jump));
-        if (cnt == 0)
+        rb.AddForce(Vector3.up * (cnt * jump*JumpStrength));
+        if (cnt <= 3)
         {
-            Vector3 toAdd = new Vector3(Remap(hAxis, -1, 1, -m_XRotationSpeed, m_XRotationSpeed), 0, 0);
+            Vector3 toAdd = new Vector3(Remap(vAxis, 1, -1, -m_XRotationSpeed, m_XRotationSpeed), 0, 0);
             if (axisToggle == 1)
             {
-                toAdd[2] = Remap(vAxis, -1, 1, m_ZRotationSpeed, -m_ZRotationSpeed);
+                float value  = Remap(hAxis, -1, 1, m_ZRotationSpeed, -m_ZRotationSpeed);
+                //Debug.Log(vAxis);
+                toAdd[2] = value;
             }
             else
             {
-                toAdd[1] = Remap(vAxis, -1, 1, -m_YRotationSpeed, m_YRotationSpeed);
+                //Debug.Log(toAdd);
+                toAdd[1] = Remap(hAxis, -1, 1, -m_YRotationSpeed, m_YRotationSpeed);
             }
-
             rb.AddRelativeTorque(toAdd);
         }
     }
