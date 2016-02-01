@@ -189,6 +189,8 @@ public class WheelColliderSource : MonoBehaviour
         Center =  Vector3.zero;
         m_suspensionCompression = 0f;
         Mass = 1.0f;
+        m_wheelAngularVelocity = 0;
+        m_wheelRotationAngle = 0;
 
         m_forwardFriction = new WheelFrictionCurveSource();
         m_sidewaysFriction = new WheelFrictionCurveSource();
@@ -203,6 +205,7 @@ public class WheelColliderSource : MonoBehaviour
 
     public void Start()
     {
+
         //Find the rigidbody associated with the wheel
         Transform parent = transform.parent;
         while(parent != null)
@@ -363,10 +366,11 @@ public class WheelColliderSource : MonoBehaviour
         m_wheelRotationAngle += m_wheelAngularVelocity * Time.deltaTime;
 
         //Set the rotation and steer angle of the wheel model
-        Vector3 temp = new Vector3(m_wheelRotationAngle, m_wheelSteerAngle, 0) + initEuler;
+        float tempVeloc = float.IsNaN(m_wheelAngularVelocity) ? 0 : m_wheelRotationAngle;
+        Vector3 temp = new Vector3(tempVeloc, m_wheelSteerAngle, 0) + initEuler;
 		if (float.IsNaN( temp [0])) {
-			Debug.Log ("temp = " + temp);
-			Debug.Log ("m_wheelRotationAngle = " +m_wheelRotationAngle);
+			//Debug.Log ("temp = " + temp);
+			//Debug.Log ("m_wheelRotationAngle = " +m_wheelRotationAngle);
 		}
         this.transform.localEulerAngles = temp;
 
@@ -379,13 +383,16 @@ public class WheelColliderSource : MonoBehaviour
         {
             //Apply angular force to wheel from slip
             m_wheelAngularVelocity -= Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) / (Mathf.PI  * 2.0f * m_wheelRadius) / m_wheelMass * Time.deltaTime;
+            //Debug.Log("m_wheelAngularVelocity1 = " + m_wheelAngularVelocity);
         }
 
         //Apply motor torque
         m_wheelAngularVelocity += m_wheelMotorTorque / m_wheelRadius / m_wheelMass * Time.deltaTime;
-        
+        //Debug.Log("m_wheelAngularVelocity2 = " + m_wheelAngularVelocity);
+
         //Apply brake torque
         m_wheelAngularVelocity -= Mathf.Sign(m_wheelAngularVelocity) * Mathf.Min(Mathf.Abs(m_wheelAngularVelocity), m_wheelBrakeTorque * m_wheelRadius / m_wheelMass * Time.deltaTime);
+       // Debug.Log("m_wheelAngularVelocity3 = " + m_wheelAngularVelocity);
     }
 
     private void CalculateSlips()

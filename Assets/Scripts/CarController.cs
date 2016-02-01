@@ -42,6 +42,8 @@ public class CarController : MonoBehaviour
     private float m_YRotationSpeed = 5000;
     [SerializeField]
     private float m_ZRotationSpeed = 5000;
+    [SerializeField]
+    private bool canDrive = false;
 
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
@@ -72,13 +74,9 @@ public class CarController : MonoBehaviour
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
     }
 
-    public void FixedUpdate()
+
+    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
     {
-        //Apply the accelerator pedal
-        float acc = (Input.GetAxis("Accelerate"));
-        float hAxis = Input.GetAxis("Horizontal");
-        float vAxis = Input.GetAxis("Vertical");
-        //Debug.Log(Input.GetAxis("Vertical"));
         FrontRightWheel.MotorTorque = acc * TorquePerTire;
         FrontLeftWheel.MotorTorque = acc * TorquePerTire;
         if (FourWheelDrive)
@@ -92,7 +90,7 @@ public class CarController : MonoBehaviour
         FrontLeftWheel.SteerAngle = hAxis * 45;
 
         //Apply the hand brake
-        if (Input.GetAxis("EBrake") > 0)
+        if (EBrake > 0)
         {
             BackRightWheel.BrakeTorque = 200000.0f;
             BackLeftWheel.BrakeTorque = 200000.0f;
@@ -102,7 +100,7 @@ public class CarController : MonoBehaviour
             BackRightWheel.BrakeTorque = 0;
             BackLeftWheel.BrakeTorque = 0;
         }
-        if(Input.GetAxis("Boost") > 0)
+        if (boost > 0)
         {
             rb.AddForce(transform.TransformDirection(Vector3.forward * BoostStrength));
         }
@@ -112,7 +110,25 @@ public class CarController : MonoBehaviour
             transform.position = transform.position + Vector3.up;
             transform.rotation = Quaternion.identity;
         }
-        Jump(Input.GetAxis("Jump"), hAxis, vAxis, Input.GetAxis("AxisToggle"));
+        Jump(jump, hAxis, vAxis, AxisToggle);
+    }
+    public void FixedUpdate()
+    {   
+        //Apply the accelerator pedal
+        float acc = (Input.GetAxis("Accelerate"));
+        float hAxis = Input.GetAxis("Horizontal");
+        float vAxis = Input.GetAxis("Vertical");
+        if (canDrive)
+        {
+            ApplyControls(acc, hAxis, vAxis, Input.GetAxis("Boost"), Input.GetAxis("EBrake"), Input.GetAxis("Jump"), Input.GetAxis("AxisToggle"));
+        }
+        else
+        {
+            BackLeftWheel.BrakeTorque = 200000.0f;
+            BackRightWheel.BrakeTorque = 200000.0f;
+        }
+        //Debug.Log(Input.GetAxis("Vertical"));
+        
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
     {
