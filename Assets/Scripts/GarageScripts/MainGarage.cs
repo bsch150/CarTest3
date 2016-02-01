@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class MainGarage : MonoBehaviour {
-    GameObject car = (GameObject)Instantiate(Resources.Load("LittleRed"));
-	// Use this for initialization
-	void Start () {
+    public GameObject LittleRed;
+    public GameObject LittleBlue;
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
