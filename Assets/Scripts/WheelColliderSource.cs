@@ -363,7 +363,12 @@ public class WheelColliderSource : MonoBehaviour
         m_wheelRotationAngle += m_wheelAngularVelocity * Time.deltaTime;
 
         //Set the rotation and steer angle of the wheel model
-        this.transform.localEulerAngles = new Vector3(m_wheelRotationAngle, m_wheelSteerAngle, 0) + initEuler;
+        Vector3 temp = new Vector3(m_wheelRotationAngle, m_wheelSteerAngle, 0) + initEuler;
+		if (float.IsNaN( temp [0])) {
+			Debug.Log ("temp = " + temp);
+			Debug.Log ("m_wheelRotationAngle = " +m_wheelRotationAngle);
+		}
+        this.transform.localEulerAngles = temp;
 
         //Set the wheel's position given the current suspension compression
         float temp1 = m_suspensionDistance - m_suspensionCompression;

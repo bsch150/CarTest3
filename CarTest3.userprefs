@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WheelColliderSource.cs">
+    <Files>
+      <File FileName="Assets\Scripts\CarController.cs" Line="64" Column="41" />
+      <File FileName="Assets\Scripts\WheelColliderSource.cs" Line="366" Column="92" />
+      <File FileName="Assets\Scripts\GarageScripts\MainGarage.cs" Line="10" Column="36" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

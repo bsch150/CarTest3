@@ -21,9 +21,11 @@ public class CarController : MonoBehaviour
     public Transform FrontRight;
     public Transform FrontLeft;
     public Transform BackRight;
-    public Transform BackLeft;
+	public Transform BackLeft;
+	[SerializeField]
+	private float FrontWheelRadius;
     [SerializeField]
-    private float WheelRadius;
+    private float BackWheelRadius;
     [SerializeField]
     private float SuspensionDistance;
     [SerializeField]
@@ -46,7 +48,6 @@ public class CarController : MonoBehaviour
     private WheelColliderSource BackRightWheel;
     private WheelColliderSource BackLeftWheel;
 
-    WheelColliderSource[] transforms = new WheelColliderSource[4];
 
     private Rigidbody rb;
 
@@ -57,10 +58,10 @@ public class CarController : MonoBehaviour
         BackRightWheel = BackRight.gameObject.AddComponent<WheelColliderSource>();
         BackLeftWheel = BackLeft.gameObject.AddComponent<WheelColliderSource>();
         //Debug.Log("Wheel Radius = " + WheelRadius);
-        FrontRightWheel.WheelRadius = WheelRadius;
-        FrontLeftWheel.WheelRadius = WheelRadius;
-        BackRightWheel.WheelRadius = WheelRadius;
-        BackLeftWheel.WheelRadius = WheelRadius;
+        FrontRightWheel.WheelRadius = FrontWheelRadius;
+        FrontLeftWheel.WheelRadius = FrontWheelRadius;
+        BackRightWheel.WheelRadius = BackWheelRadius;
+        BackLeftWheel.WheelRadius = BackWheelRadius;
 
         FrontRightWheel.SuspensionDistance = SuspensionDistance;
         FrontLeftWheel.SuspensionDistance = SuspensionDistance;
