@@ -303,16 +303,17 @@ public class WheelColliderSource : MonoBehaviour
     private void UpdateSuspension()
     {
         //Raycast down along the suspension to find out how far the ground is to the wheel
-        bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius);
+        bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius*10);
 
-
-        if (result) //The wheel is in contact with the ground
+        //Debug.Log(m_raycastHit.point);
+        if (result && (m_raycastHit.point - transform.position).magnitude <= m_wheelRadius) //The wheel is in contact with the ground
         {
             GizmoColor = Color.green;
             m_isGrounded = true;
         }
         else //The wheel is in the air
         {
+            //Debug.Log("In air");
             GizmoColor = Color.blue;
             m_isGrounded = false;
         }

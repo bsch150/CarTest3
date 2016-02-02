@@ -558,7 +558,7 @@ MonoBehaviour:
   FrontWheelRadius: 0.8
   BackWheelRadius: 0.8
   SuspensionDistance: 0
-  TorquePerTire: 10000
+  TorquePerTire: 300
   FourWheelDrive: 0
   BoostStrength: 40000
   JumpStrength: 60000
@@ -678,6 +678,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: TorquePerTire
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
