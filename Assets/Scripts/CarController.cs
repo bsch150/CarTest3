@@ -21,9 +21,9 @@ public class CarController : MonoBehaviour
     public Transform FrontRight;
     public Transform FrontLeft;
     public Transform BackRight;
-	public Transform BackLeft;
-	[SerializeField]
-	private float FrontWheelRadius;
+    public Transform BackLeft;
+    [SerializeField]
+    private float FrontWheelRadius;
     [SerializeField]
     private float BackWheelRadius;
     [SerializeField]
@@ -59,6 +59,8 @@ public class CarController : MonoBehaviour
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
         BackRightWheel = BackRight.gameObject.AddComponent<WheelColliderSource>();
         BackLeftWheel = BackLeft.gameObject.AddComponent<WheelColliderSource>();
+        //GameObject
+        //FrontRight.gameObject.
         //Debug.Log("Wheel Radius = " + WheelRadius);
         FrontRightWheel.WheelRadius = FrontWheelRadius;
         FrontLeftWheel.WheelRadius = FrontWheelRadius;
@@ -73,7 +75,6 @@ public class CarController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
     }
-
 
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
     {
@@ -94,11 +95,15 @@ public class CarController : MonoBehaviour
         {
             BackRightWheel.BrakeTorque = 200000.0f;
             BackLeftWheel.BrakeTorque = 200000.0f;
+            FrontRightWheel.BrakeTorque = 200000.0f;
+            FrontLeftWheel.BrakeTorque = 200000.0f;
         }
         else //Remove handbrake
         {
             BackRightWheel.BrakeTorque = 0;
             BackLeftWheel.BrakeTorque = 0;
+            FrontRightWheel.BrakeTorque = 0;
+            FrontLeftWheel.BrakeTorque = 0;
         }
         if (boost > 0)
         {
@@ -113,7 +118,7 @@ public class CarController : MonoBehaviour
         Jump(jump, hAxis, vAxis, AxisToggle);
     }
     public void FixedUpdate()
-    {   
+    {
         //Apply the accelerator pedal
         float acc = (Input.GetAxis("Accelerate"));
         float hAxis = Input.GetAxis("Horizontal");
@@ -128,11 +133,15 @@ public class CarController : MonoBehaviour
             BackRightWheel.BrakeTorque = 200000.0f;
         }
         //Debug.Log(Input.GetAxis("Vertical"));
-        
+
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+    }
+    void enableDrive()
+    {
+        canDrive = true;
     }
     private void Jump(float jump, float hAxis, float vAxis, float axisToggle)
     {

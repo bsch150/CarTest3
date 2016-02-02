@@ -9,7 +9,7 @@ public class TriggerScript : MonoBehaviour {
 	}
 	void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered");
+        Application.LoadLevel("Garage");
     }
 	// Update is called once per frame
 	void Update () {
