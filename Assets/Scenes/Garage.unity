@@ -251,7 +251,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LittleRed: {fileID: 175860, guid: 4e0dd3af05c737b42882f2dbb11f9613, type: 2}
   LittleBlue: {fileID: 119152, guid: a52d985a8887a754bb06d6ae04b4dd8b, type: 2}
-  Hubcap0: {fileID: 0}
 --- !u!4 &289653516
 Transform:
   m_ObjectHideFlags: 0

@@ -123,6 +123,7 @@ public class CarController : MonoBehaviour
         float acc = (Input.GetAxis("Accelerate"));
         float hAxis = Input.GetAxis("Horizontal");
         float vAxis = Input.GetAxis("Vertical");
+        vAxis = -vAxis;
         if (canDrive)
         {
             ApplyControls(acc, hAxis, vAxis, Input.GetAxis("Boost"), Input.GetAxis("EBrake"), Input.GetAxis("Jump"), Input.GetAxis("AxisToggle"));
