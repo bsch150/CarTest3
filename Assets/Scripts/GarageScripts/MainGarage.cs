@@ -49,16 +49,16 @@ public class MainGarage : MonoBehaviour {
     // Update is called once per frame
     void doSwitches(float hAxis, float vAxis)
     {
-        if (Math.Abs(hAxis) > 0.05f)
+        if (Math.Abs(hAxis) > 0.5f)
         {
             Debug.Log("vAxis = " + vAxis);
             if (counter < 0)
             {
-                if (hAxis > 0.05f)
+                if (hAxis > 0.5f)
                 {
                     incrementSelection(1);
                 }
-                else if (hAxis < -.05f)
+                else if (hAxis < -.5f)
                 {
                     incrementSelection(-1);
                 }
@@ -69,17 +69,17 @@ public class MainGarage : MonoBehaviour {
         {
 
         }
-        if (Math.Abs(vAxis) > 0.05f)
+        if (Math.Abs(vAxis) > 0.5f)
         {
             if (counter < 0)
             {
                 counter = 20;
-                if (vAxis > 0.05f)
+                if (vAxis > 0.5f)
                 {
                     Debug.Log("test");
                     car.BroadcastMessage("switchUp");
                 }
-                else if (vAxis < -.05f)
+                else if (vAxis < -.5f)
                 {
                     car.BroadcastMessage("switchDown");
                 }
@@ -93,8 +93,8 @@ public class MainGarage : MonoBehaviour {
         {
             Application.LoadLevel("Car");
         }
-        float hAxis = Input.GetAxis("DPadX");
-        float vAxis = Input.GetAxis("DPadY");
+        float hAxis = Input.GetAxis("Horizontal");
+        float vAxis = Input.GetAxis("Vertical");
         doSwitches(hAxis, vAxis);
 	}
 }
