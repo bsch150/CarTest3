@@ -8,22 +8,34 @@ ModelImporter:
     100000: //RootNode
     100002: LittleBlue
     100004: Sphere.001
+    100006: Cylinder
+    100008: Cylinder.002
     400000: //RootNode
     400002: LittleBlue
     400004: Sphere.001
+    400006: Cylinder
+    400008: Cylinder.002
     2300000: //RootNode
     2300002: LittleBlue
     2300004: Sphere.001
+    2300006: Cylinder
+    2300008: Cylinder.002
     3300000: //RootNode
     3300002: LittleBlue
     3300004: Sphere.001
+    3300006: Cylinder
+    3300008: Cylinder.002
     4300000: Cube
     4300002: Sphere.002
     4300004: Sphere.001
     4300006: LittleBlue
+    4300008: Cylinder
+    4300010: Cylinder.002
     6400000: //RootNode
     6400002: LittleBlue
     6400004: Sphere.001
+    6400006: Cylinder
+    6400008: Cylinder.002
   materials:
     importMaterials: 1
     materialName: 0

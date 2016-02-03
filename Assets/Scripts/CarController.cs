@@ -14,6 +14,7 @@
  * I only ask that you make mention of their use in your project credits.
 */
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CarController : MonoBehaviour
@@ -22,6 +23,7 @@ public class CarController : MonoBehaviour
     public Transform FrontLeft;
     public Transform BackRight;
     public Transform BackLeft;
+
     [SerializeField]
     private float FrontWheelRadius;
     [SerializeField]
@@ -49,6 +51,9 @@ public class CarController : MonoBehaviour
     private WheelColliderSource FrontLeftWheel;
     private WheelColliderSource BackRightWheel;
     private WheelColliderSource BackLeftWheel;
+    private Transform track;
+    private int currentCheckpoint = 0;
+    private GameObject UI;
 
 
     private Rigidbody rb;
@@ -75,7 +80,32 @@ public class CarController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
     }
+    void setTrack(Transform t)
+    {
+        track = t;
+    }
+    void setUI(GameObject t)
+    {
+        UI = t;
+    }
+    void checkCheckpoint(int num)
+    {
+        Debug.Log("Got cehckCheck");
+        if(currentCheckpoint == num -1)
+        {
+            Debug.Log("doing check");
+            currentCheckpoint++;
+            Text[] temp = UI.GetComponentsInChildren<Text>();
+            for(int i = 0; i < temp.Length; i++)
+            {
+                temp[i].text = currentCheckpoint.ToString();
+            }
+        }
+        else
+        {
 
+        }
+    }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
     {
         FrontRightWheel.MotorTorque = acc * TorquePerTire;

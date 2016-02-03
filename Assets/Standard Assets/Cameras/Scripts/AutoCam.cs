@@ -22,6 +22,7 @@ namespace UnityStandardAssets.Cameras
         private float m_CurrentTurnAmount; // How much to turn the camera
         private float m_TurnSpeedVelocityChange; // The change in the turn speed velocity
         private Vector3 m_RollUp = Vector3.up;// The roll of the camera around the z axis ( generally this will always just be up )
+        private int counter = 0;
 
         void setTarget(Transform newT)
         {
@@ -29,6 +30,12 @@ namespace UnityStandardAssets.Cameras
         }
         protected override void FollowTarget(float deltaTime)
         {
+            counter--;
+            if(Input.GetAxis("CameraToggle") > 0 && counter < 0)
+            {
+                counter = 10;
+                m_FollowTilt = !m_FollowTilt;
+            }
             // if no target, or no time passed then we quit early, as there is nothing to do
             if (!(deltaTime > 0) || m_Target == null)
             {

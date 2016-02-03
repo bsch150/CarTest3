@@ -7,9 +7,16 @@ public class TrackScript : MonoBehaviour
     public GameObject LittleBlue;
     public GameObject carCam;
     public Transform spawnPoint;
+    public int NumberOfCheckPoints;
+    public GameObject chk0;
     private GameObject car;
+    public GameObject UI;
 
     // Use this for initialization
+    void checkCheckpoint(Collider num)
+    {
+        car.BroadcastMessage("checkCheckpoint", 1);
+    }
     void initCar()
     {
         int whichCar = PlayerPrefs.GetInt("whichCar", 0);
@@ -23,10 +30,15 @@ public class TrackScript : MonoBehaviour
                 break;
 
         }
+
         car.BroadcastMessage("enableDrive");
         car.transform.position = spawnPoint.position;
         car.transform.rotation = spawnPoint.rotation;
+        car.BroadcastMessage("setTrack", this.transform);
+        car.BroadcastMessage("setUI", Instantiate(UI));
         carCam.BroadcastMessage("setTarget", car.transform);
+        
+
     }
     void Start () {
         initCar();
