@@ -35,6 +35,16 @@ namespace UnityStandardAssets.Cameras
             {
                 counter = 10;
                 m_FollowTilt = !m_FollowTilt;
+                if (!m_FollowTilt)
+                {
+                    m_MoveSpeed = 5;
+                    m_TurnSpeed = 6;
+                }
+                else
+                {
+                    m_MoveSpeed = 20;
+                    m_TurnSpeed = 20;
+                }
             }
             // if no target, or no time passed then we quit early, as there is nothing to do
             if (!(deltaTime > 0) || m_Target == null)

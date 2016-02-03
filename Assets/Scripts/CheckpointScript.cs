@@ -11,7 +11,7 @@ public class CheckpointScript : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
     {
         //other.gameObject.BroadcastMessage("checkCheckpoint", number);
-        trackTransform.gameObject.BroadcastMessage("checkCheckpoint", other);
+        trackTransform.gameObject.BroadcastMessage("checkCheckpoint", new Vector2(0,number));
     }
 	// Update is called once per frame
 	void Update () {

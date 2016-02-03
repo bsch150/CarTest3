@@ -16,6 +16,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using  System;
 
 public class CarController : MonoBehaviour
 {
@@ -51,9 +52,13 @@ public class CarController : MonoBehaviour
     private WheelColliderSource FrontLeftWheel;
     private WheelColliderSource BackRightWheel;
     private WheelColliderSource BackLeftWheel;
+    private int numChks;
     private Transform track;
-    private int currentCheckpoint = 0;
+    private int currentCheckpoint = -1;
+    private int currentLap = -1;
     private GameObject UI;
+    private Text positionText;
+    private Text timeText;
 
 
     private Rigidbody rb;
@@ -79,6 +84,19 @@ public class CarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
+
+        Text[] temp = UI.GetComponentsInChildren<Text>();
+        for (int i = 0; i < temp.Length; i++)
+        {
+            if (temp[i].name == "Position")
+                positionText = temp[i];
+            else if (temp[i].name == "Time")
+                timeText = temp[i];
+        }
+    }
+    void setNumChks(int num)
+    {
+        numChks = num;
     }
     void setTrack(Transform t)
     {
@@ -89,22 +107,32 @@ public class CarController : MonoBehaviour
         UI = t;
     }
     void checkCheckpoint(int num)
-    {
-        Debug.Log("Got cehckCheck");
-        if(currentCheckpoint == num -1)
+    { 
+        //Debug.Log("Got cehckCheck");
+        if (currentCheckpoint == num - 1 || (currentCheckpoint == numChks - 1 && num == 0))
         {
+            if(num == 0)
+            {
+                currentLap++;
+            }
             Debug.Log("doing check");
             currentCheckpoint++;
-            Text[] temp = UI.GetComponentsInChildren<Text>();
-            for(int i = 0; i < temp.Length; i++)
+            if(currentCheckpoint == numChks)
             {
-                temp[i].text = currentCheckpoint.ToString();
+                currentCheckpoint = 0;
             }
+            positionText.text = currentLap.ToString() + ", " + currentCheckpoint.ToString();
         }
         else
         {
 
         }
+    }
+    void setTimeText(double time)
+    {
+        string toDisplay = (((double)(Math.Truncate(time * 100)))/100).ToString();
+        
+        timeText.text = toDisplay;
     }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
     {
@@ -125,8 +153,6 @@ public class CarController : MonoBehaviour
         {
             BackRightWheel.BrakeTorque = 200000.0f;
             BackLeftWheel.BrakeTorque = 200000.0f;
-            FrontRightWheel.BrakeTorque = 200000.0f;
-            FrontLeftWheel.BrakeTorque = 200000.0f;
         }
         else //Remove handbrake
         {
