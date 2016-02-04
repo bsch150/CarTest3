@@ -23,6 +23,7 @@ public class TrackScript : MonoBehaviour
     private GameObject tui;
     private double trackTime;
     private double startTime = -1;
+    private int resetCounter = 0;
 
     GameObject getChkFromInt(int num)
     {
@@ -65,6 +66,7 @@ public class TrackScript : MonoBehaviour
         {
             startTime = Time.time;
         }
+        car.BroadcastMessage("setLastCheckpoint",getChkFromInt((int)num[1]));
         car.BroadcastMessage("checkCheckpoint", num[1]);
     }
     void initCar()
@@ -108,6 +110,19 @@ public class TrackScript : MonoBehaviour
             updateTime();
 
             car.BroadcastMessage("setTimeText",trackTime);
+            float resetPushed = Input.GetAxis("Reset");
+            if(resetPushed > 0)
+            {
+                resetCounter++;
+                if(resetCounter == 60)
+                {
+                    car.BroadcastMessage("reset");
+                }
+            }
+            else
+            {
+                resetCounter = 0;
+            }
         }
 	}
 }

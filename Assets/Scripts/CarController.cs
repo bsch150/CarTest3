@@ -65,6 +65,8 @@ public class CarController : MonoBehaviour
     private float boostUseRate = 10f;
     private float boostGainPerWheel = .8f;
     private float maxBoost = 1000;
+    private int resetCounter = 0;
+    private GameObject toReset;
 
 
     private Rigidbody rb;
@@ -115,6 +117,20 @@ public class CarController : MonoBehaviour
     {
         UI = t;
     }
+    void setLastCheckpoint(GameObject chk)
+    {
+        toReset = chk;
+    }
+    void reset()
+    {
+        RaycastHit m_raycastHit;
+        bool result = Physics.Raycast(new Ray(toReset.transform.position - (toReset.transform.forward * 100f), -Vector3.up), out m_raycastHit);
+        if (result) {
+            this.transform.position = m_raycastHit.point;
+            this.transform.rotation = toReset.transform.rotation;
+            rb.velocity = new Vector3(0, 0, 0);
+        }
+    }
     void checkCheckpoint(int num)
     { 
         //Debug.Log("Got cehckCheck");
@@ -124,7 +140,6 @@ public class CarController : MonoBehaviour
             {
                 currentLap++;
             }
-            Debug.Log("doing check");
             currentCheckpoint++;
             if(currentCheckpoint == numChks)
             {
@@ -188,12 +203,7 @@ public class CarController : MonoBehaviour
         {
 
         }
-
-        if (Input.GetKey(KeyCode.R))
-        {
-            transform.position = transform.position + Vector3.up;
-            transform.rotation = Quaternion.identity;
-        }
+        
         Jump(jump, hAxis, vAxis, AxisToggle);
     }
     public void FixedUpdate()

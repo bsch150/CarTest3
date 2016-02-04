@@ -88,7 +88,8 @@ public class MainGarage : MonoBehaviour {
     }
     void Update() {
         counter--;
-        float exit = Input.GetAxis("EBrake");
+        float exit = Input.GetAxis("SelectMenu");
+        Debug.Log("exit = " + exit);
         if(exit > 0)
         {
             Application.LoadLevel("Car");
