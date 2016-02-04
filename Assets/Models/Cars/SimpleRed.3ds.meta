@@ -10,27 +10,57 @@ ModelImporter:
     100004: //RootNode
     100006: Sphere.000
     100008: Sphere.002
+    100010: Cylinder
+    100012: LittleRed
+    100014: Mirrors
+    100016: Sphere.001
+    100018: Torus
     400000: Cube
     400002: Cube.001
     400004: //RootNode
     400006: Sphere.000
     400008: Sphere.002
+    400010: Cylinder
+    400012: LittleRed
+    400014: Mirrors
+    400016: Sphere.001
+    400018: Torus
     2300000: Cube
     2300002: Cube.001
     2300004: Sphere.000
     2300006: //RootNode
     2300008: Sphere.002
+    2300010: Cylinder
+    2300012: LittleRed
+    2300014: Mirrors
+    2300016: Sphere.001
+    2300018: Torus
     3300000: Cube
     3300002: Cube.001
     3300004: Sphere.000
     3300006: //RootNode
     3300008: Sphere.002
+    3300010: Cylinder
+    3300012: LittleRed
+    3300014: Mirrors
+    3300016: Sphere.001
+    3300018: Torus
     4300000: Cube.001
     4300002: Sphere.000
     4300004: Cube
     4300006: Sphere.002
     4300008: Sphere.004
+    4300010: Mirrors
+    4300012: Torus
+    4300014: Cylinder
+    4300016: Sphere.001
+    4300018: LittleRed
     6400000: //RootNode
+    6400002: Cylinder
+    6400004: LittleRed
+    6400006: Mirrors
+    6400008: Sphere.001
+    6400010: Torus
   materials:
     importMaterials: 1
     materialName: 0

@@ -47,6 +47,7 @@ public class CarController : MonoBehaviour
     private float m_ZRotationSpeed = 5000;
     [SerializeField]
     private bool canDrive = false;
+    public ParticleSystem Boost;
 
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
@@ -59,12 +60,18 @@ public class CarController : MonoBehaviour
     private GameObject UI;
     private Text positionText;
     private Text timeText;
+    private Text boostText;
+    private float boostAmount;
+    private float boostUseRate = 10f;
+    private float boostGainPerWheel = .8f;
+    private float maxBoost = 1000;
 
 
     private Rigidbody rb;
 
     public void Start()
     {
+        boostAmount = maxBoost;
         FrontRightWheel = FrontRight.gameObject.AddComponent<WheelColliderSource>();
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
         BackRightWheel = BackRight.gameObject.AddComponent<WheelColliderSource>();
@@ -92,6 +99,8 @@ public class CarController : MonoBehaviour
                 positionText = temp[i];
             else if (temp[i].name == "Time")
                 timeText = temp[i];
+            else if (temp[i].name == "BoostText")
+                boostText = temp[i];
         }
     }
     void setNumChks(int num)
@@ -161,9 +170,23 @@ public class CarController : MonoBehaviour
             FrontRightWheel.BrakeTorque = 0;
             FrontLeftWheel.BrakeTorque = 0;
         }
+        var em = Boost.emission;
+        em.enabled = false;
         if (boost > 0)
         {
-            rb.AddForce(transform.TransformDirection(Vector3.forward * BoostStrength));
+            if (boostAmount > 0)
+            {
+                em.enabled = true;
+                rb.AddForce(transform.TransformDirection(Vector3.forward * BoostStrength));
+                boostAmount -= boostUseRate;
+            }
+            else
+            {
+            }
+        }
+        else
+        {
+
         }
 
         if (Input.GetKey(KeyCode.R))
@@ -190,6 +213,7 @@ public class CarController : MonoBehaviour
             BackRightWheel.BrakeTorque = 200000.0f;
         }
         //Debug.Log(Input.GetAxis("Vertical"));
+        boostText.text = (Math.Truncate(boostAmount)).ToString();
 
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
@@ -208,6 +232,8 @@ public class CarController : MonoBehaviour
         if (FrontLeftWheel.IsGrounded) cnt += 1;
         if (FrontRightWheel.IsGrounded) cnt += 1;
         rb.AddForce(Vector3.up * (cnt * jump*JumpStrength));
+        boostAmount += (cnt * boostGainPerWheel)+1;
+        if (boostAmount > maxBoost) boostAmount = maxBoost;
         if (cnt <= 3)
         {
             Vector3 toAdd = new Vector3(Remap(vAxis, 1, -1, -m_XRotationSpeed, m_XRotationSpeed), 0, 0);

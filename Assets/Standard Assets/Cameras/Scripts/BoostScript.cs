@@ -9,13 +9,15 @@ public class BoostScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         m_ParticleSystem = GetComponent<ParticleSystem>();
+        var em = m_ParticleSystem.emission;
+            em.enabled = false;
         m_ParticleSystem.Play();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        float boost = CrossPlatformInputManager.GetAxis("Boost");
+        /*float boost = CrossPlatformInputManager.GetAxis("Boost");
         if(boost > 0)
         {
             var em = m_ParticleSystem.emission;
@@ -25,6 +27,6 @@ public class BoostScript : MonoBehaviour {
         {
             var em = m_ParticleSystem.emission;
             em.enabled = false;
-        }
+        }*/
     }
 }

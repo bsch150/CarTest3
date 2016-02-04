@@ -39,11 +39,13 @@ namespace UnityStandardAssets.Cameras
                 {
                     m_MoveSpeed = 5;
                     m_TurnSpeed = 6;
+                    
                 }
                 else
                 {
                     m_MoveSpeed = 20;
                     m_TurnSpeed = 20;
+                    m_SpinTurnLimit = 500;
                 }
             }
             // if no target, or no time passed then we quit early, as there is nothing to do
@@ -105,7 +107,7 @@ namespace UnityStandardAssets.Cameras
             }
 
             // camera position moves towards target position:
-            transform.position = Vector3.Lerp(transform.position, m_Target.position, deltaTime*m_MoveSpeed);
+            transform.position = Vector3.Lerp(transform.position, m_Target.position + (Vector3.down * 0.6f), deltaTime*m_MoveSpeed);
 
             // camera's rotation is split into two parts, which can have independend speed settings:
             // rotating towards the target's forward direction (which encompasses its 'yaw' and 'pitch')
