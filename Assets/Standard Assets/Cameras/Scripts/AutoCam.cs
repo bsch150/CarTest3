@@ -23,15 +23,20 @@ namespace UnityStandardAssets.Cameras
         private float m_TurnSpeedVelocityChange; // The change in the turn speed velocity
         private Vector3 m_RollUp = Vector3.up;// The roll of the camera around the z axis ( generally this will always just be up )
         private int counter = 0;
+		private int playerNum =1;
 
         void setTarget(Transform newT)
         {
             m_Target = newT;
         }
+		void assignPlayerNum(int num){
+			playerNum = num;
+			Debug.Log ("playerNum = " + playerNum);
+		}
         protected override void FollowTarget(float deltaTime)
         {
             counter--;
-            if(Input.GetAxis("CameraToggle") > 0 && counter < 0)
+            if(Input.GetAxis("CameraToggle"+playerNum) > 0 && counter < 0)//We're going to have to change this
             {
                 counter = 10;
                 m_FollowTilt = !m_FollowTilt;

@@ -11,25 +11,25 @@ public class TrackScript : MonoBehaviour
 
     private double trackTime;
     private double startTime = -1;
-    private GameObject car;
+    private GameObject[] activeCars;
     
 
-    void assignCar(GameObject t)
+    void assignActiveCars(GameObject[] t)
     {
-        car = t;
+        activeCars = t;
     }
     //This sends a message to the car that passed through a checkpoint. 
     //The vector is just so I can get two parameters into a braodcastMessage. [0] is the collider (car) and [1] is which checkPoint
     void checkCheckpoint(Vector2 num)
     {
-        car.BroadcastMessage("assignNumLaps", numLaps);
-        car.BroadcastMessage("assignNumChks", chks.Length);
+        //car.BroadcastMessage("assignNumLaps", numLaps);
+        //car.BroadcastMessage("assignNumChks", chks.Length);
         if (num[1] == 0)
         {
             startTime = Time.time;
         }
-        car.BroadcastMessage("setLastCheckpoint",chks[(int)num[1]]);
-        car.BroadcastMessage("checkCheckpoint", num[1]);
+        //car.BroadcastMessage("setLastCheckpoint",chks[(int)num[1]]);
+        //car.BroadcastMessage("checkCheckpoint", num[1]);
     }
 
     void initCheckpoints()
@@ -59,7 +59,7 @@ public class TrackScript : MonoBehaviour
         {
             updateTime();
 
-            car.BroadcastMessage("setTimeText",trackTime);
+            //car.BroadcastMessage("setTimeText",trackTime);
         }
     }
 }

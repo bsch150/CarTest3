@@ -714,6 +714,7 @@ MonoBehaviour:
   canDrive: 0
   Boost: {fileID: 19867788}
   boostLevel: {fileID: 19811600}
+  cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
 --- !u!114 &11459794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5368,7 +5369,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+    - target: {fileID: 0}
+      propertyPath: cameraPrefab
+      value: 
+      objectReference: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 162760}

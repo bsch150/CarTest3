@@ -49,6 +49,7 @@ public class CarController : MonoBehaviour
     private bool canDrive = false;
     public ParticleSystem Boost;
     public ParticleSystem boostLevel;
+	public GameObject cameraPrefab;
 
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
@@ -74,12 +75,13 @@ public class CarController : MonoBehaviour
     private int numLaps;
     private float[] lapTimes;
     private int timeKillCounter = -1; //This is the time I use to grow your race time 
+	private int playerNumber;
+	private GameObject cam;
 
 
     private Rigidbody rb;
     
-    public void Start()
-    {
+    public void Start(){
         boostAmount = maxBoost;
         FrontRightWheel = FrontRight.gameObject.AddComponent<WheelColliderSource>();
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
@@ -118,6 +120,12 @@ public class CarController : MonoBehaviour
             }
         }
     }
+	void assignPlayerNumber(int num){
+		playerNumber = num;
+	}
+	string getAxisString(string str){
+		return str + playerNumber.ToString ();
+	}
     void assignNumLaps(int num)
     {
         if (currentLap == -1 && currentCheckpoint == -1 && timeKillCounter < 0)
@@ -131,6 +139,11 @@ public class CarController : MonoBehaviour
             }
         }
     }
+	void initCam(){
+		cam = Instantiate (cameraPrefab);
+		cam.BroadcastMessage("setTarget", this.transform);
+		cam.BroadcastMessage ("assignPlayerNum", playerNumber);
+	}
     void assignNumChks(int num)
     {
         numChks = num;
@@ -200,7 +213,7 @@ public class CarController : MonoBehaviour
             float temp = 0;
             for (int i = 0; i < numLaps; i++)
             {
-                temp += lapTimes[i];
+				temp += lapTimes[i];
             }
             Debug.Log("setting toDisplay to " + temp);
             toDisplay = temp;
@@ -220,8 +233,8 @@ public class CarController : MonoBehaviour
         }
 
         //Turn the steering wheel
-        FrontRightWheel.SteerAngle = hAxis * 45;
-        FrontLeftWheel.SteerAngle = hAxis * 45;
+        FrontRightWheel.SteerAngle = hAxis * 65;
+        FrontLeftWheel.SteerAngle = hAxis * 65;
 
         //Apply the hand brake
         if (EBrake > 0)
@@ -269,32 +282,27 @@ public class CarController : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        //Apply the accelerator pedal
-        float acc = (Input.GetAxis("Accelerate"));
-        float hAxis = Input.GetAxis("Horizontal");
-        float vAxis = Input.GetAxis("Vertical");
-        vAxis = -vAxis;
-        if (canDrive)
-        {
-            ApplyControls(acc, hAxis, vAxis, Input.GetAxis("Boost"), Input.GetAxis("EBrake"), Input.GetAxis("Jump"), Input.GetAxis("AxisToggle"));
-        }
-        else
-        {
-            BackLeftWheel.BrakeTorque = 200000.0f;
-            BackRightWheel.BrakeTorque = 200000.0f;
-        }
-        //Debug.Log(Input.GetAxis("Vertical"));
-        setUIText();
-        if (boostAmount > 500)
-        {
-            boostLevel.startColor = Color.Lerp(Color.blue, Color.yellow, ((float)boostAmount - (maxBoost / 2)) / ((float)maxBoost / 2));
-        }
-        else
-        {
-            boostLevel.startColor = Color.Lerp(Color.red, Color.blue, ((float)boostAmount) / ((float)maxBoost / 2));
-        }
-        boostLevel.startLifetime = Remap(boostAmount, 0, maxBoost, 0f, .45f);
-
+		if (canDrive) {
+			//Apply the accelerator pedal
+			float acc = (Input.GetAxis (getAxisString ("Accelerate")));
+			float hAxis = Input.GetAxis (getAxisString ("Horizontal"));
+			float vAxis = Input.GetAxis (getAxisString ("Vertical"));
+			vAxis = -vAxis;
+			if (canDrive) {
+				ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
+			}
+			//Debug.Log(Input.GetAxis(getAxisString("Vertical")));
+			setUIText ();
+			if (boostAmount > 500) {
+				boostLevel.startColor = Color.Lerp (Color.blue, Color.yellow, ((float)boostAmount - (maxBoost / 2)) / ((float)maxBoost / 2));
+			} else {
+				boostLevel.startColor = Color.Lerp (Color.red, Color.blue, ((float)boostAmount) / ((float)maxBoost / 2));
+			}
+			boostLevel.startLifetime = Remap (boostAmount, 0, maxBoost, 0f, .45f);
+		}else{
+			BackLeftWheel.BrakeTorque = 200000.0f;
+			BackRightWheel.BrakeTorque = 200000.0f;
+		}
     }
     void setUIText()
     {
@@ -315,12 +323,12 @@ public class CarController : MonoBehaviour
             timesText.text = t;
             if (currentLap != -1 && currentCheckpoint != -1)
             {
-                Debug.Log("Trying to Set it");
+                //Debug.Log("Trying to Set it");
                 positionText.text = currentLap.ToString() + ", " + currentCheckpoint.ToString();
             }
             else
             {
-                Debug.Log(currentLap + ", " + currentCheckpoint);
+                //Debug.Log(currentLap + ", " + currentCheckpoint);
                 positionText.text = "";
             }
         }
@@ -332,8 +340,20 @@ public class CarController : MonoBehaviour
     }
     void enableDrive()
     {
+		initCam ();
         canDrive = true;
+		
     }
+	void splitCam(int numCams){
+		Camera c = cam.GetComponentInChildren<Camera> ();
+		if (playerNumber == 1) {
+			c.rect = new Rect (0f, .5f, 1f, .5f);
+			Debug.Log ("1called splitCam, numCams = " + numCams);
+		} else if(playerNumber == 2) {
+			c.rect = new Rect (0f, 0f, 1f, .5f);
+			Debug.Log ("2called splitCam, numCams = " + numCams);
+		}
+	}
     private void Jump(float jump, float hAxis, float vAxis, float axisToggle)
     {
         int cnt = 0;

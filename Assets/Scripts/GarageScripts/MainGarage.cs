@@ -3,14 +3,10 @@ using System.Collections;
 using System;
 
 public class MainGarage : MonoBehaviour {
-    public GameObject LittleRed;
-    public GameObject LittleBlue;
-    public GameObject Comanche;
-    public GameObject Ettore;
+	public GameObject[] cars;
     private int whichCar;
     private int whichHubcap;
     private int numCars = 4;
-    private GameObject[] cars;
     private GameObject car;
     private int counter = 0;
     // Use this for initialization
@@ -23,15 +19,11 @@ public class MainGarage : MonoBehaviour {
     }
     void Start ()
     {
-        cars = new GameObject[numCars];
-        cars[0] = LittleRed;
-        cars[1] = LittleBlue;
-        cars[2] = Comanche;
-        cars[3] = Ettore;
         setPlayerPrefs();
         whichCar = PlayerPrefs.GetInt("whichCar");
         whichHubcap = PlayerPrefs.GetInt("whichHubcap");
         car = Instantiate(cars[whichCar]);
+		car.BroadcastMessage ("assignPlayerNumber", 1);
 	}
 
     void incrementSelection(int howMuch)
@@ -92,14 +84,14 @@ public class MainGarage : MonoBehaviour {
     }
     void Update() {
         counter--;
-        float exit = Input.GetAxis("SelectMenu");
+        float exit = Input.GetAxis("SelectMenu1");
         //Debug.Log("exit = " + exit);
         if(exit > 0)
         {
             Application.LoadLevel("Car");
         }
-        float hAxis = Input.GetAxis("Horizontal");
-        float vAxis = Input.GetAxis("Vertical");
+        float hAxis = Input.GetAxis("Horizontal1");
+        float vAxis = Input.GetAxis("Vertical1");
         doSwitches(hAxis, vAxis);
 	}
 }

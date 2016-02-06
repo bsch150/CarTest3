@@ -174,10 +174,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af795338ec859a244a34b41d545d4ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LittleRed: {fileID: 175860, guid: 4e0dd3af05c737b42882f2dbb11f9613, type: 2}
-  LittleBlue: {fileID: 119152, guid: a52d985a8887a754bb06d6ae04b4dd8b, type: 2}
-  Comanche: {fileID: 162760, guid: 5fb55c70a7bc35446bf8100b47b3448a, type: 2}
-  Ettore: {fileID: 127572, guid: 8216b6a64fd767c4bb27a301dc576072, type: 2}
+  cars:
+  - {fileID: 162760, guid: 5fb55c70a7bc35446bf8100b47b3448a, type: 2}
+  - {fileID: 127572, guid: 8216b6a64fd767c4bb27a301dc576072, type: 2}
+  - {fileID: 119152, guid: a52d985a8887a754bb06d6ae04b4dd8b, type: 2}
+  - {fileID: 175860, guid: 4e0dd3af05c737b42882f2dbb11f9613, type: 2}
 --- !u!4 &289653516
 Transform:
   m_ObjectHideFlags: 0

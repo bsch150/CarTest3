@@ -1076,6 +1076,7 @@ MonoBehaviour:
   canDrive: 0
   Boost: {fileID: 19806492}
   boostLevel: {fileID: 19892582}
+  cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
 --- !u!136 &13614588
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -5728,6 +5729,14 @@ Prefab:
       propertyPath: m_Convex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+    - target: {fileID: 0}
+      propertyPath: cameraPrefab
+      value: 
+      objectReference: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 175860}

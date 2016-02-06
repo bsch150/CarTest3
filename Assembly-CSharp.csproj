@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\WheelColliderSource.cs" />
      <Compile Include="Assets\Scripts\WheelFrictionCurveSource.cs" />
      <Compile Include="Assets\Scripts\WheelHitSource.cs" />
+     <Compile Include="Assets\Scripts\WorldScript.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
