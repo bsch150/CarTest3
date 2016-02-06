@@ -26,8 +26,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 139478}
-  m_LocalRotation: {x: 0, y: 0.4076483, z: 0, w: 0.91313905}
-  m_LocalPosition: {x: 106.8, y: 152.37, z: 22.4}
+  m_LocalRotation: {x: 0.28825104, y: 0.288251, z: 0.6456868, w: 0.64568675}
+  m_LocalPosition: {x: -4.5733776, y: 179.62442, z: 134.89388}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -64,7 +64,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 139478}
-  m_Mesh: {fileID: 4300000, guid: 72c5a15a4d44d2c44bcb9925c9576401, type: 3}
+  m_Mesh: {fileID: 4300000, guid: eaade47c94ef4c14fba9f3779da29416, type: 3}
 --- !u!64 &6434884
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -76,7 +76,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: 72c5a15a4d44d2c44bcb9925c9576401, type: 3}
+  m_Mesh: {fileID: 4300000, guid: eaade47c94ef4c14fba9f3779da29416, type: 3}
 --- !u!65 &6570876
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -87,8 +87,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 54.71764, y: 48.18, z: 7.628079}
-  m_Center: {x: 0, y: -23.3, z: 0}
+  m_Size: {x: 40.635517, y: 58.266064, z: 7.628079}
+  m_Center: {x: -20.128084, y: 1.238369, z: 0.00043416023}
 --- !u!114 &11441498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -108,7 +108,31 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: eaade47c94ef4c14fba9f3779da29416, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Size.x
+      value: 53.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.x
+      value: 0.11202116
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.y
+      value: 0.39195478
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.z
+      value: 0.25092918
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.w
+      value: 0.8779848
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 139478}

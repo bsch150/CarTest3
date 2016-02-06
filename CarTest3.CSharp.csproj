@@ -58,6 +58,12 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CarTest3.CSharp.Plugins.csproj">
@@ -77,6 +83,7 @@
     <Compile Include="Assets\Scripts\WheelColliderSource.cs" />
     <Compile Include="Assets\Scripts\WheelFrictionCurveSource.cs" />
     <Compile Include="Assets\Scripts\WheelHitSource.cs" />
+    <Compile Include="Assets\WorldScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />

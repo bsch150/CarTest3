@@ -48,6 +48,7 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private bool canDrive = false;
     public ParticleSystem Boost;
+    public ParticleSystem boostLevel;
 
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
@@ -61,16 +62,22 @@ public class CarController : MonoBehaviour
     private Text positionText;
     private Text timeText;
     private Text boostText;
+    private Text timesText;
     private float boostAmount;
     private float boostUseRate = 10f;
-    private float boostGainPerWheel = .8f;
-    private float maxBoost = 1000;
+    private float boostGainPerWheel = 1.2f;
+    private float maxBoost = 1500;
     private int resetCounter = 0;
     private GameObject toReset;
+    private float toDisplay;
+    private float inAirBoostGain = 2;
+    private int numLaps;
+    private float[] lapTimes;
+    private int timeKillCounter = -1; //This is the time I use to grow your race time 
 
 
     private Rigidbody rb;
-
+    
     public void Start()
     {
         boostAmount = maxBoost;
@@ -93,19 +100,38 @@ public class CarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
-
-        Text[] temp = UI.GetComponentsInChildren<Text>();
-        for (int i = 0; i < temp.Length; i++)
+        if (UI != null)
         {
-            if (temp[i].name == "Position")
-                positionText = temp[i];
-            else if (temp[i].name == "Time")
-                timeText = temp[i];
-            else if (temp[i].name == "BoostText")
-                boostText = temp[i];
+            Text[] temp = UI.GetComponentsInChildren<Text>();
+            for (int i = 0; i < temp.Length; i++)
+            {
+                if (temp[i].name == "Position")
+                    positionText = temp[i];
+                else if (temp[i].name == "Time")
+                    timeText = temp[i];
+                else if (temp[i].name == "BoostText")
+                    boostText = temp[i];
+                else if(temp[i].name == "Times")
+                {
+                    timesText = temp[i];
+                }
+            }
         }
     }
-    void setNumChks(int num)
+    void assignNumLaps(int num)
+    {
+        if (currentLap == -1 && currentCheckpoint == -1 && timeKillCounter < 0)
+        {
+            numLaps = num;
+            lapTimes = new float[numLaps];
+            //Debug.Log("Resetting lapTimes");
+            for (int i = 0; i < numLaps; i++)
+            {
+                lapTimes[i] =-1;
+            }
+        }
+    }
+    void assignNumChks(int num)
     {
         numChks = num;
     }
@@ -119,44 +145,69 @@ public class CarController : MonoBehaviour
     }
     void setLastCheckpoint(GameObject chk)
     {
+        //Debug.Log("Tset");
         toReset = chk;
     }
     void reset()
     {
         RaycastHit m_raycastHit;
-        bool result = Physics.Raycast(new Ray(toReset.transform.position - (toReset.transform.forward * 100f), -Vector3.up), out m_raycastHit);
+        bool result = Physics.Raycast(new Ray(toReset.transform.position, -Vector3.up), out m_raycastHit);
         if (result) {
             this.transform.position = m_raycastHit.point;
+           // Debug.Log("teset");
             this.transform.rotation = toReset.transform.rotation;
             rb.velocity = new Vector3(0, 0, 0);
         }
     }
     void checkCheckpoint(int num)
     { 
-        //Debug.Log("Got cehckCheck");
-        if (currentCheckpoint == num - 1 || (currentCheckpoint == numChks - 1 && num == 0))
+        if(num == 0) //Either beginning a new track or lap
         {
-            if(num == 0)
+            if(currentLap == -1 && timeKillCounter < 0)//beginning a new track
             {
                 currentLap++;
+                currentCheckpoint++;
             }
-            currentCheckpoint++;
-            if(currentCheckpoint == numChks)
+            else if(currentCheckpoint == numChks-1)//Beginning a new lap
             {
+                
                 currentCheckpoint = 0;
+                lapTimes[currentLap] = toDisplay;
+                if (currentLap == numLaps - 1)//-1 because currentLap is 0 indexed
+                {
+                    finishTrack();
+                }
+                else
+                {
+                    currentLap++;
+                }
             }
-            positionText.text = currentLap.ToString() + ", " + currentCheckpoint.ToString();
-        }
-        else
-        {
 
+        }
+        else //Checkpoint other than the first
+        {
+            if (num == currentCheckpoint + 1)
+            {
+                currentCheckpoint++;
+            }
         }
     }
     void setTimeText(double time)
     {
-        string toDisplay = (((double)(Math.Truncate(time * 100)))/100).ToString();
-        
-        timeText.text = toDisplay;
+        if (timeKillCounter > 0)
+        {
+            timeKillCounter--;
+            float temp = 0;
+            for (int i = 0; i < numLaps; i++)
+            {
+                temp += lapTimes[i];
+            }
+            Debug.Log("setting toDisplay to " + temp);
+            toDisplay = temp;
+        }
+        else if(currentLap >= 0) {
+            toDisplay = (((float)(Math.Truncate(time * 100))) / 100);
+        }
     }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
     {
@@ -186,6 +237,7 @@ public class CarController : MonoBehaviour
             FrontLeftWheel.BrakeTorque = 0;
         }
         var em = Boost.emission;
+        Boost.startColor = boostLevel.startColor;
         em.enabled = false;
         if (boost > 0)
         {
@@ -203,8 +255,17 @@ public class CarController : MonoBehaviour
         {
 
         }
-        
+
+
+
         Jump(jump, hAxis, vAxis, AxisToggle);
+    }
+    void finishTrack()
+    {
+        currentLap = -1;
+        currentCheckpoint = -1;
+        timeKillCounter = 1000;
+        track.BroadcastMessage("finishTrack");
     }
     public void FixedUpdate()
     {
@@ -223,7 +284,46 @@ public class CarController : MonoBehaviour
             BackRightWheel.BrakeTorque = 200000.0f;
         }
         //Debug.Log(Input.GetAxis("Vertical"));
-        boostText.text = (Math.Truncate(boostAmount)).ToString();
+        setUIText();
+        if (boostAmount > 500)
+        {
+            boostLevel.startColor = Color.Lerp(Color.blue, Color.yellow, ((float)boostAmount - (maxBoost / 2)) / ((float)maxBoost / 2));
+        }
+        else
+        {
+            boostLevel.startColor = Color.Lerp(Color.red, Color.blue, ((float)boostAmount) / ((float)maxBoost / 2));
+        }
+        boostLevel.startLifetime = Remap(boostAmount, 0, maxBoost, 0f, .45f);
+
+    }
+    void setUIText()
+    {
+        if (UI != null)
+        {
+            timeText.text = toDisplay.ToString();
+            string t = "";
+            for (int i = 0; i < numLaps;i++)
+            {
+                var temp= lapTimes[i];
+                //Debug.Log("lapTime sub = " + i + " = " + temp);
+                if(temp != -1)
+                {
+                    t += temp + "\n";
+                    //Debug.Log("t = " + t);
+                }
+            }
+            timesText.text = t;
+            if (currentLap != -1 && currentCheckpoint != -1)
+            {
+                Debug.Log("Trying to Set it");
+                positionText.text = currentLap.ToString() + ", " + currentCheckpoint.ToString();
+            }
+            else
+            {
+                Debug.Log(currentLap + ", " + currentCheckpoint);
+                positionText.text = "";
+            }
+        }
 
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
@@ -242,7 +342,7 @@ public class CarController : MonoBehaviour
         if (FrontLeftWheel.IsGrounded) cnt += 1;
         if (FrontRightWheel.IsGrounded) cnt += 1;
         rb.AddForce(Vector3.up * (cnt * jump*JumpStrength));
-        boostAmount += (cnt * boostGainPerWheel)+1;
+        boostAmount += (cnt * boostGainPerWheel)+inAirBoostGain;
         if (boostAmount > maxBoost) boostAmount = maxBoost;
         if (cnt <= 3)
         {

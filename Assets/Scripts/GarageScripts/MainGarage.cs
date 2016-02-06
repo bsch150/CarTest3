@@ -5,9 +5,11 @@ using System;
 public class MainGarage : MonoBehaviour {
     public GameObject LittleRed;
     public GameObject LittleBlue;
-	private int whichCar;
+    public GameObject Comanche;
+    public GameObject Ettore;
+    private int whichCar;
     private int whichHubcap;
-    private int numCars = 2;
+    private int numCars = 4;
     private GameObject[] cars;
     private GameObject car;
     private int counter = 0;
@@ -24,6 +26,8 @@ public class MainGarage : MonoBehaviour {
         cars = new GameObject[numCars];
         cars[0] = LittleRed;
         cars[1] = LittleBlue;
+        cars[2] = Comanche;
+        cars[3] = Ettore;
         setPlayerPrefs();
         whichCar = PlayerPrefs.GetInt("whichCar");
         whichHubcap = PlayerPrefs.GetInt("whichHubcap");
@@ -89,7 +93,7 @@ public class MainGarage : MonoBehaviour {
     void Update() {
         counter--;
         float exit = Input.GetAxis("SelectMenu");
-        Debug.Log("exit = " + exit);
+        //Debug.Log("exit = " + exit);
         if(exit > 0)
         {
             Application.LoadLevel("Car");

@@ -4,99 +4,45 @@ using System.Collections;
 
 public class TrackScript : MonoBehaviour
 {
-    public GameObject LittleRed;
-    public GameObject LittleBlue;
-    public GameObject carCam;
-    public Transform spawnPoint;
     public int NumberOfCheckPoints;
-    public GameObject chk0;
-    public GameObject chk1;
-    public GameObject chk2;
-    public GameObject chk3;
-    public GameObject chk4;
-    public GameObject chk5;
-    public GameObject chk6;
-    public GameObject chk7;
-    private GameObject[] chks;
-    private GameObject car;
-    public GameObject UI;
-    private GameObject tui;
+    public int numLaps;
+    public GameObject[] chks;
+
+
     private double trackTime;
     private double startTime = -1;
-    private int resetCounter = 0;
+    private GameObject car;
+    
 
-    GameObject getChkFromInt(int num)
+    void assignCar(GameObject t)
     {
-        switch (num)
-        {
-            case 0:
-                return chk0;
-            case 1:
-                return chk1;
-            case 2:
-                return chk2;
-            case 3:
-                return chk3;
-            case 4:
-                return chk4;
-            case 5:
-                return chk5;
-            case 6:
-                return chk6;
-            case 7:
-                return chk7;
-            default:
-                return null;
-        }
-    }
-
-    void fillArray()
-    {
-        chks = new GameObject[NumberOfCheckPoints];
-        for(int i = 0; i < NumberOfCheckPoints; i++)
-        {
-            chks[i] = getChkFromInt(i);
-        }
+        car = t;
     }
     //This sends a message to the car that passed through a checkpoint. 
     //The vector is just so I can get two parameters into a braodcastMessage. [0] is the collider (car) and [1] is which checkPoint
     void checkCheckpoint(Vector2 num)
     {
-        if(num[1] == 0)
+        car.BroadcastMessage("assignNumLaps", numLaps);
+        car.BroadcastMessage("assignNumChks", chks.Length);
+        if (num[1] == 0)
         {
             startTime = Time.time;
         }
-        car.BroadcastMessage("setLastCheckpoint",getChkFromInt((int)num[1]));
+        car.BroadcastMessage("setLastCheckpoint",chks[(int)num[1]]);
         car.BroadcastMessage("checkCheckpoint", num[1]);
     }
-    void initCar()
+
+    void initCheckpoints()
     {
-        int whichCar = PlayerPrefs.GetInt("whichCar", 0);
-        switch (whichCar)
+        for(int i = 0; i < chks.Length; i++)
         {
-            case 0:
-                car = Instantiate(LittleRed);
-                break;
-            case 1:
-                car = Instantiate(LittleBlue);
-                break;
-
+            chks[i].BroadcastMessage("assignTrack", this.gameObject);
+            chks[i].BroadcastMessage("assignNumber", i);
         }
-
-        car.BroadcastMessage("enableDrive");
-        car.transform.position = spawnPoint.position;
-        car.transform.rotation = spawnPoint.rotation;
-        car.BroadcastMessage("setTrack", this.transform);
-        tui = Instantiate(UI);
-        car.BroadcastMessage("setUI", tui);
-        car.BroadcastMessage("setNumChks", NumberOfCheckPoints);
-        carCam.BroadcastMessage("setTarget", car.transform);
-        
-
     }
+
     void Start () {
-        fillArray();
-        initCar();
+        initCheckpoints();
         trackTime = 0;
     }
 	void updateTime()
@@ -104,25 +50,16 @@ public class TrackScript : MonoBehaviour
         trackTime = Time.time - startTime;
     }
 	// Update is called once per frame
+    void finishTrack()
+    {
+        startTime = -1;
+    }
 	void Update () {
         if (startTime != -1)//starTime == -1 means you aren't in a race.
         {
             updateTime();
 
             car.BroadcastMessage("setTimeText",trackTime);
-            float resetPushed = Input.GetAxis("Reset");
-            if(resetPushed > 0)
-            {
-                resetCounter++;
-                if(resetCounter == 60)
-                {
-                    car.BroadcastMessage("reset");
-                }
-            }
-            else
-            {
-                resetCounter = 0;
-            }
         }
-	}
+    }
 }

@@ -20,6 +20,8 @@ ModelImporter:
     100024: Cylinder_002
     100026: Torus
     100028: Mirrors
+    100030: Comanche
+    100032: Ettore
     400000: Cube
     400002: //RootNode
     400004: Sphere_000
@@ -35,6 +37,8 @@ ModelImporter:
     400024: Cylinder_002
     400026: Torus
     400028: Mirrors
+    400030: Comanche
+    400032: Ettore
     2300000: Cube
     2300002: Sphere_000
     2300004: Sphere_002
@@ -49,6 +53,8 @@ ModelImporter:
     2300022: Cylinder_002
     2300024: Torus
     2300026: Mirrors
+    2300028: Comanche
+    2300030: Ettore
     3300000: Cube
     3300002: Sphere_000
     3300004: Sphere_002
@@ -63,6 +69,8 @@ ModelImporter:
     3300022: Cylinder_002
     3300024: Torus
     3300026: Mirrors
+    3300028: Comanche
+    3300030: Ettore
     4300000: Sphere_000
     4300002: Cube
     4300004: Sphere_002
@@ -77,6 +85,8 @@ ModelImporter:
     4300022: Cylinder_002
     4300024: Torus
     4300026: Mirrors
+    4300028: Ettore
+    4300030: Comanche
     7400000: Default Take
     9500000: //RootNode
   materials:
