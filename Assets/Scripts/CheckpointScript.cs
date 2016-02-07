@@ -18,8 +18,16 @@ public class CheckpointScript : MonoBehaviour {
     }
 	void OnTriggerEnter(Collider other)
     {
-        //other.gameObject.BroadcastMessage("checkCheckpoint", number);
-        track.BroadcastMessage("checkCheckpoint", new Vector2(0,number));
+
+		if (other.gameObject.tag == "car") {
+
+			Debug.Log ("chekc collided");
+			if(number == 0){
+				other.GetComponentInParent<Rigidbody>().gameObject.BroadcastMessage ("checkNewLap", track);
+			}else{
+				other.GetComponentInParent<Rigidbody>().gameObject.BroadcastMessage("checkCheckpoint",number);
+			}
+		}
     }
 	// Update is called once per frame
 	void Update () {

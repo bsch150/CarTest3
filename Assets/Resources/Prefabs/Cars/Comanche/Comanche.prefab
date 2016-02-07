@@ -63,7 +63,7 @@ GameObject:
   - 64: {fileID: 6485364}
   m_Layer: 0
   m_Name: Comanche
-  m_TagString: Untagged
+  m_TagString: car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ GameObject:
   - 114: {fileID: 11457540}
   m_Layer: 0
   m_Name: Comanche
-  m_TagString: Untagged
+  m_TagString: car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5378,6 +5378,10 @@ Prefab:
       propertyPath: cameraPrefab
       value: 
       objectReference: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: car
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 162760}

@@ -56,7 +56,7 @@ public class CarController : MonoBehaviour
     private WheelColliderSource BackRightWheel;
     private WheelColliderSource BackLeftWheel;
     private int numChks;
-    private Transform track;
+    private GameObject track;
     private int currentCheckpoint = -1;
     private int currentLap = -1;
     private GameObject UI;
@@ -70,13 +70,13 @@ public class CarController : MonoBehaviour
     private float maxBoost = 1500;
     private int resetCounter = 0;
     private GameObject toReset;
-    private float toDisplay;
+    private float carTime;
     private float inAirBoostGain = 2;
     private int numLaps;
     private float[] lapTimes;
     private int timeKillCounter = -1; //This is the time I use to grow your race time 
 	private int playerNumber;
-	private GameObject cam;
+	private float startTime;
 
 
     private Rigidbody rb;
@@ -126,29 +126,17 @@ public class CarController : MonoBehaviour
 	string getAxisString(string str){
 		return str + playerNumber.ToString ();
 	}
-    void assignNumLaps(int num)
+    void assignNumLapsAndChks(Vector2 num)
     {
-        if (currentLap == -1 && currentCheckpoint == -1 && timeKillCounter < 0)
-        {
-            numLaps = num;
+		numLaps = (int)num[0];
             lapTimes = new float[numLaps];
-            //Debug.Log("Resetting lapTimes");
-            for (int i = 0; i < numLaps; i++)
-            {
-                lapTimes[i] =-1;
-            }
-        }
+		numChks = (int)num [1];
     }
-	void initCam(){
-		cam = Instantiate (cameraPrefab);
-		cam.BroadcastMessage("setTarget", this.transform);
-		cam.BroadcastMessage ("assignPlayerNum", playerNumber);
-	}
     void assignNumChks(int num)
     {
         numChks = num;
     }
-    void setTrack(Transform t)
+    void setTrack(GameObject t)
     {
         track = t;
     }
@@ -156,6 +144,25 @@ public class CarController : MonoBehaviour
     {
         UI = t;
     }
+	void checkNewLap(GameObject t){
+		if (currentLap == -1) {
+			currentLap = 0;
+			currentCheckpoint = 0;
+			track = t;
+			startTime = Time.time;
+			track.BroadcastMessage("respondWithNumLaps",playerNumber);
+		} else {
+			track.BroadcastMessage("checkNewLap",new Vector3(playerNumber,currentLap,currentCheckpoint));
+		}
+	}
+	void confirmNewLap(){
+		//lapTimes[currentLap] = carTime;
+		Debug.Log ("confirmed new Lap");
+		lapTimes [currentLap] = Time.time - startTime;
+		currentLap++;
+		currentCheckpoint = 0;
+
+	}
     void setLastCheckpoint(GameObject chk)
     {
         //Debug.Log("Tset");
@@ -174,36 +181,15 @@ public class CarController : MonoBehaviour
     }
     void checkCheckpoint(int num)
     { 
-        if(num == 0) //Either beginning a new track or lap
-        {
-            if(currentLap == -1 && timeKillCounter < 0)//beginning a new track
-            {
-                currentLap++;
-                currentCheckpoint++;
-            }
-            else if(currentCheckpoint == numChks-1)//Beginning a new lap
-            {
-                
-                currentCheckpoint = 0;
-                lapTimes[currentLap] = toDisplay;
-                if (currentLap == numLaps - 1)//-1 because currentLap is 0 indexed
-                {
-                    finishTrack();
-                }
-                else
-                {
-                    currentLap++;
-                }
-            }
-
-        }
-        else //Checkpoint other than the first
-        {
             if (num == currentCheckpoint + 1)
             {
                 currentCheckpoint++;
-            }
-        }
+			Debug.Log ("currentCheck =  " + currentCheckpoint);
+		
+            }else{
+			Debug.Log("num == " + num);
+			}
+       // }
     }
     void setTimeText(double time)
     {
@@ -215,11 +201,11 @@ public class CarController : MonoBehaviour
             {
 				temp += lapTimes[i];
             }
-            Debug.Log("setting toDisplay to " + temp);
-            toDisplay = temp;
+            //Debug.Log("setting carTime to " + temp);
+            carTime = temp;
         }
         else if(currentLap >= 0) {
-            toDisplay = (((float)(Math.Truncate(time * 100))) / 100);
+            carTime = (((float)(Math.Truncate(time * 100))) / 100);
         }
     }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
@@ -278,7 +264,11 @@ public class CarController : MonoBehaviour
         currentLap = -1;
         currentCheckpoint = -1;
         timeKillCounter = 1000;
-        track.BroadcastMessage("finishTrack");
+		float sum = 0f;
+		for (int i = 0; i < lapTimes.Length; i++) {
+			sum += lapTimes[i];
+		}
+		Debug.Log ("Player " + playerNumber + " finished, time = " + sum + ", lapTime len = " + lapTimes.Length);
     }
     public void FixedUpdate()
     {
@@ -308,7 +298,7 @@ public class CarController : MonoBehaviour
     {
         if (UI != null)
         {
-            timeText.text = toDisplay.ToString();
+            timeText.text = carTime.ToString();
             string t = "";
             for (int i = 0; i < numLaps;i++)
             {
@@ -328,7 +318,7 @@ public class CarController : MonoBehaviour
             }
             else
             {
-                //Debug.Log(currentLap + ", " + currentCheckpoint);
+                //Debug.Log("pn: " + playerNumber+"- " + currentLap + ", " + currentCheckpoint);
                 positionText.text = "";
             }
         }
@@ -340,20 +330,9 @@ public class CarController : MonoBehaviour
     }
     void enableDrive()
     {
-		initCam ();
         canDrive = true;
 		
     }
-	void splitCam(int numCams){
-		Camera c = cam.GetComponentInChildren<Camera> ();
-		if (playerNumber == 1) {
-			c.rect = new Rect (0f, .5f, 1f, .5f);
-			Debug.Log ("1called splitCam, numCams = " + numCams);
-		} else if(playerNumber == 2) {
-			c.rect = new Rect (0f, 0f, 1f, .5f);
-			Debug.Log ("2called splitCam, numCams = " + numCams);
-		}
-	}
     private void Jump(float jump, float hAxis, float vAxis, float axisToggle)
     {
         int cnt = 0;

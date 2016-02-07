@@ -27,11 +27,12 @@ namespace UnityStandardAssets.Cameras
 
         void setTarget(Transform newT)
         {
+			//Debug.Log ("setting target to " + newT + ", pNum = " + playerNum);
             m_Target = newT;
         }
 		void assignPlayerNum(int num){
 			playerNum = num;
-			Debug.Log ("playerNum = " + playerNum);
+			//Debug.Log ("playerNum = " + playerNum);
 		}
         protected override void FollowTarget(float deltaTime)
         {
@@ -132,6 +133,7 @@ namespace UnityStandardAssets.Cameras
             m_RollUp = m_RollSpeed > 0 ? Vector3.Slerp(m_RollUp, targetUp, m_RollSpeed * deltaTime) : Vector3.up;
             //m_RollUp =  Vector3.up;
             transform.rotation = Quaternion.Lerp(transform.rotation, rollRotation, m_TurnSpeed*m_CurrentTurnAmount*deltaTime);
+			//Debug.Log (playerNum + " focused on " + m_Target);
         }
     }
 }

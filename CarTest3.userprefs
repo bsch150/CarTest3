@@ -1,15 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CarController.cs">
     <Files>
-      <File FileName="Assets\Scripts\CarController.cs" Line="354" Column="57" />
+      <File FileName="Assets\Scripts\GarageScripts\MainGarage.cs" Line="11" Column="21" />
+      <File FileName="Assets\Scripts\CarController.cs" Line="144" Column="6" />
       <File FileName="Assets\Scripts\WheelColliderSource.cs" Line="366" Column="69" />
-      <File FileName="Assets\Scripts\GarageScripts\MainGarage.cs" Line="43" Column="27" />
-      <File FileName="Assets\Scripts\WorldScript.cs" Line="27" Column="72" />
-      <File FileName="Assets\Standard Assets\Cameras\Scripts\AutoCam.cs" Line="26" Column="26" />
-      <File FileName="Assets\Standard Assets\Cameras\Scripts\ProtectCameraFromWallClip.cs" Line="9" Column="139" />
-      <File FileName="Assets\Scripts\TrackScript.cs" Line="40" Column="57" />
-      <File FileName="Assets\Scripts\CheckpointScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\WorldScript.cs" Line="57" Column="5" />
+      <File FileName="Assets\Standard Assets\Cameras\Scripts\AutoCam.cs" Line="136" Column="6" />
+      <File FileName="Assets\Scripts\TrackScript.cs" Line="24" Column="69" />
+      <File FileName="Assets\Scripts\CheckpointScript.cs" Line="28" Column="55" />
+      <File FileName="Assets\Standard Assets\Cameras\Scripts\AbstractTargetFollower.cs" Line="95" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -12,19 +12,25 @@ public class TrackScript : MonoBehaviour
     private double trackTime;
     private double startTime = -1;
     private GameObject[] activeCars;
+	Vector2[] carProgress;
     
 
     void assignActiveCars(GameObject[] t)
     {
-        activeCars = t;
+		activeCars = t;
+		carProgress = new Vector2[activeCars.Length];
     }
+	void respondWithNumLaps(int playerNum){
+		activeCars [playerNum - 1].BroadcastMessage ("assignNumLapsAndChks", new Vector2(numLaps,NumberOfCheckPoints));
+	}
     //This sends a message to the car that passed through a checkpoint. 
-    //The vector is just so I can get two parameters into a braodcastMessage. [0] is the collider (car) and [1] is which checkPoint
-    void checkCheckpoint(Vector2 num)
+    //The vector is just so I can get three parameters into a braodcastMessage. [0] is the car's playernumber, [1] is the cars lap and [2] is which checkPoint
+    void checkCheckpoint(Vector3 num)
     {
+		carProgress [(int)(num [0] - 1)] = new Vector2 (num [1],num [2]);
         //car.BroadcastMessage("assignNumLaps", numLaps);
         //car.BroadcastMessage("assignNumChks", chks.Length);
-        if (num[1] == 0)
+        if (num[2] == 0)
         {
             startTime = Time.time;
         }
@@ -40,7 +46,14 @@ public class TrackScript : MonoBehaviour
             chks[i].BroadcastMessage("assignNumber", i);
         }
     }
-
+	void checkNewLap(Vector3 info){
+		if (info [2] == NumberOfCheckPoints - 1) {
+			activeCars[(int)(info[0] - 1)].BroadcastMessage("confirmNewLap");
+			if (info [1] == numLaps - 1) {
+				activeCars[(int)(info[0] - 1)].BroadcastMessage("finishTrack");
+			}
+		}
+	}
     void Start () {
         initCheckpoints();
         trackTime = 0;
@@ -58,8 +71,9 @@ public class TrackScript : MonoBehaviour
         if (startTime != -1)//starTime == -1 means you aren't in a race.
         {
             updateTime();
-
-            //car.BroadcastMessage("setTimeText",trackTime);
+			for(int i = 0 ; i < activeCars.Length; i++){
+            	activeCars[i].BroadcastMessage("setTimeText",trackTime);
+			}
         }
     }
 }

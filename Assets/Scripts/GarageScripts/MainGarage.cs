@@ -4,59 +4,79 @@ using System;
 
 public class MainGarage : MonoBehaviour {
 	public GameObject[] cars;
-    private int whichCar;
-    private int whichHubcap;
-    private int numCars = 4;
-    private GameObject car;
-    private int counter = 0;
+    private int[] whichCar;
+    private int[] whichHubcap;
+    private GameObject[] activeCars;
+    private int[] counter;
+	private int numControllers;
     // Use this for initialization
-    void setPlayerPrefs()
+    void setPlayerPrefs(int num)
     {
-        int temp = PlayerPrefs.GetInt("whichCar",-1);
-        if (temp == -1) PlayerPrefs.SetInt("whichCar", 0);
-         temp = PlayerPrefs.GetInt("whichHubcap", -1);
-        if (temp == -1) PlayerPrefs.SetInt("whichHubcap", 0);
+        int temp = PlayerPrefs.GetInt("whichCar"+num,-1);
+		if (temp == -1) PlayerPrefs.SetInt("whichCar"+num, 0);
+		temp = PlayerPrefs.GetInt("whichHubcap"+num, -1);
+		if (temp == -1) PlayerPrefs.SetInt("whichHubcap"+num, 0);
     }
     void Start ()
     {
-        setPlayerPrefs();
-        whichCar = PlayerPrefs.GetInt("whichCar");
-        whichHubcap = PlayerPrefs.GetInt("whichHubcap");
-        car = Instantiate(cars[whichCar]);
-		car.BroadcastMessage ("assignPlayerNumber", 1);
+		numControllers = PlayerPrefs.GetInt ("numControllers", -1);
+		var temp = Input.GetJoystickNames ();
+		if (numControllers == -1 || temp.Length != numControllers) {
+			numControllers = temp.Length;
+			PlayerPrefs.SetInt ("numControllers",numControllers);
+		}
+		int num = PlayerPrefs.GetInt("actualActive",1);
+		//PlayerPrefs.SetInt ("actualActive", 1);
+		counter = new int[numControllers];
+		whichCar = new int[numControllers];
+		whichHubcap = new int[numControllers];
+		activeCars = new GameObject[num];
+		for (int j = 0; j < num; j++) {
+			int i = j+1;
+			setPlayerPrefs (i);
+			whichCar[j] = PlayerPrefs.GetInt ("whichCar"+i);
+			whichHubcap[j] = PlayerPrefs.GetInt ("whichHubcap"+i);
+			activeCars[j] = instantiateCarAndPos (cars [whichCar[j]],j);
+			activeCars[j].BroadcastMessage ("assignPlayerNumber", i+1);
+		}
 	}
+	GameObject instantiateCarAndPos(GameObject c, int num){
+		GameObject temp = Instantiate (c);
+		temp.transform.position = temp.transform.position + new Vector3 (-6 + (num * 4), 0, 0);
+		return temp;
 
-    void incrementSelection(int howMuch)
+	}
+    void incrementSelection(int carNum, int howMuch)
     {
-        counter = 20;
+        counter[carNum] = 20;
         int temp = howMuch;
-        whichCar += howMuch;
-        if(whichCar >= numCars)
+		whichCar[carNum] += howMuch;
+		if(whichCar[carNum] >= cars.Length)
         {
-            whichCar = 0;
-        }else if(whichCar < 0)
+			whichCar[carNum] = 0;
+        }else if(whichCar[carNum] < 0)
         {
-            whichCar = numCars - 1;
+			whichCar[carNum] = cars.Length - 1;
         }
-        Destroy(car);
-        car = Instantiate(cars[whichCar]);
-        PlayerPrefs.SetInt("whichCar", whichCar);
+        Destroy(activeCars[carNum]);
+		activeCars[carNum] = instantiateCarAndPos(cars[whichCar[carNum]],carNum);
+        PlayerPrefs.SetInt("whichCar"+(carNum+1).ToString (), whichCar[carNum]);
     }
     // Update is called once per frame
-    void doSwitches(float hAxis, float vAxis)
+    void doSwitches(int carNum, float hAxis, float vAxis)
     {
         if (Math.Abs(hAxis) > 0.5f)
         {
             Debug.Log("vAxis = " + vAxis);
-            if (counter < 0)
+			if (counter[carNum] < 0)
             {
                 if (hAxis > 0.5f)
                 {
-                    incrementSelection(1);
+                    incrementSelection(carNum,1);
                 }
                 else if (hAxis < -.5f)
                 {
-                    incrementSelection(-1);
+					incrementSelection(carNum,-1);
                 }
             }
 
@@ -67,31 +87,53 @@ public class MainGarage : MonoBehaviour {
         }
         if (Math.Abs(vAxis) > 0.5f)
         {
-            if (counter < 0)
+            if (counter[carNum] < 0)
             {
-                counter = 20;
+				counter[carNum] = 20;
                 if (vAxis > 0.5f)
                 {
                     Debug.Log("test");
-                    car.BroadcastMessage("switchUp");
+					activeCars[carNum].BroadcastMessage("switchUp");
                 }
                 else if (vAxis < -.5f)
                 {
-                    car.BroadcastMessage("switchDown");
+					activeCars[carNum].BroadcastMessage("switchDown");
                 }
             }
         }
     }
+	
+
     void Update() {
-        counter--;
-        float exit = Input.GetAxis("SelectMenu1");
-        //Debug.Log("exit = " + exit);
-        if(exit > 0)
-        {
-            Application.LoadLevel("Car");
-        }
-        float hAxis = Input.GetAxis("Horizontal1");
-        float vAxis = Input.GetAxis("Vertical1");
-        doSwitches(hAxis, vAxis);
+		for(int i = 0; i < activeCars.Length;i++){
+			int j = i +1; //because Input is 1 indexed
+      	  counter[i]--;
+	        float exit = Input.GetAxis("SelectMenu"+j);
+        	//Debug.Log("exit = " + exit);
+      	  	if(exit > 0)
+	        	{
+            	Application.LoadLevel("Car");
+        	}
+        	float hAxis = Input.GetAxis("Horizontal"+j);
+        	float vAxis = Input.GetAxis("Vertical"+j);
+        	doSwitches(i,hAxis, vAxis);
+		}
+		for (int i = 0; i < numControllers; i++) {
+			if(i >= activeCars.Length){
+				var temp = Input.GetAxis ("Start" + (i + 1).ToString ());
+				//Debug.Log ("Start input = " + temp);
+				if (temp > 0) {
+					int wc = PlayerPrefs.GetInt ("whichCar" + (i + 1).ToString (), 0);
+					GameObject[] tempForCopy = new GameObject[i + 1];
+					for (int j = 0; j < activeCars.Length; j++) {
+						tempForCopy [j] = activeCars [j];
+					}
+					tempForCopy [activeCars.Length] = instantiateCarAndPos (cars [wc],activeCars.Length);
+					activeCars = tempForCopy;
+					PlayerPrefs.SetInt ("actualActive",activeCars.Length);
+				}
+			}
+		}
+
 	}
 }
