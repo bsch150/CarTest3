@@ -754,6 +754,7 @@ namespace InputPlusControl
             }
 
 			string [] readArray = input.Split('\r');
+            Debug.Log("ra.L = " + readArray.Length);
 
 			for(int i = 0; i < readArray.Length; i++)
 			{

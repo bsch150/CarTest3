@@ -107,16 +107,17 @@ public class MainGarage : MonoBehaviour {
 
     void Update() {
 		for(int i = 0; i < activeCars.Length;i++){
+            int ctrnum = PlayerPrefs.GetInt("p" + (i), -1);
 			int j = i +1; //because Input is 1 indexed
       	  counter[i]--;
-            float exit = InputPlus.GetData(i+1, ControllerVarEnum.FP_bottom);//Input.GetAxis("SelectMenu"+j);
+            float exit = InputPlus.GetData(ctrnum, ControllerVarEnum.FP_bottom);//Input.GetAxis("SelectMenu"+j);
             //Debug.Log("exit = " + exit);
             if (exit > 0)
 	        	{
             	Application.LoadLevel("Car");
         	}
-            float hAxis = InputPlus.GetData(i+1, ControllerVarEnum.ThumbLeft_x);// Input.GetAxis("Horizontal"+j);
-        	float vAxis = InputPlus.GetData(i + 1, ControllerVarEnum.ThumbLeft_y); // Input.GetAxis("Vertical"+j);
+            float hAxis = InputPlus.GetData(ctrnum, ControllerVarEnum.ThumbLeft_x);// Input.GetAxis("Horizontal"+j);
+        	float vAxis = InputPlus.GetData(ctrnum, ControllerVarEnum.ThumbLeft_y); // Input.GetAxis("Vertical"+j);
         	doSwitches(i,hAxis, vAxis);
 		}
 		for (int i = 0; i < numControllers; i++) {

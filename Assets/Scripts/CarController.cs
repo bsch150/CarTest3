@@ -77,13 +77,20 @@ public class CarController : MonoBehaviour
     private float[] lapTimes;
     private int timeKillCounter = -1; //This is the time I use to grow your race time 
 	private int playerNumber;
+    private int ctrNum;
 	private float startTime;
     private bool invertY = false;
+    private bool frozen = true;
+    private Vector3 freezePos;
+    private Quaternion freezeRot;
 
 
     private Rigidbody rb;
     
     public void Start(){
+        freezePos = this.transform.position;
+        freezeRot = this.transform.rotation;
+        freeze();
         boostAmount = maxBoost;
         FrontRightWheel = FrontRight.gameObject.AddComponent<WheelColliderSource>();
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
@@ -122,7 +129,30 @@ public class CarController : MonoBehaviour
             }
         }
     }
-	void assignPlayerNumber(int num){
+    void assignControllerNumber(int num)
+    {
+        Debug.Log("Assigning " + playerNumber + "'s ctrNum to " + num);
+        ctrNum = num;
+    }
+
+    void freeze()
+    {
+        freeze(this.transform);
+    }
+
+    void freeze(Transform t)
+    {
+        freezePos= t.position;
+        freezeRot = t.rotation;
+        frozen = true;
+    }
+    void unfreeze()
+    {
+        frozen = false;
+        Debug.Log("unfrozen?");
+    }
+
+    void assignPlayerNumber(int num){
 		playerNumber = num;
 	}
 	string getAxisString(string str){
@@ -274,31 +304,46 @@ public class CarController : MonoBehaviour
     }
     public void FixedUpdate()
     {
-		if (canDrive) {
-            //Apply the accelerator pedal
-            float acc = (InputPlus.GetData(playerNumber, ControllerVarEnum.ShoulderBottom_right));//Input.GetAxis (getAxisString ("Accelerate")));
-			float hAxis = (InputPlus.GetData(playerNumber, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
-            float vAxis = (InputPlus.GetData(playerNumber, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
-            if (invertY)
+        if (!frozen)
+        {
+            if (canDrive)
             {
-                vAxis = -vAxis;
+                //Apply the accelerator pedal
+                float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right));//Input.GetAxis (getAxisString ("Accelerate")));
+                float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
+                float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
+                if (invertY)
+                {
+                    vAxis = -vAxis;
+                }
+                if (canDrive)
+                {
+                    //ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
+                    ApplyControls(acc, hAxis, vAxis, InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_bottom), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderTop_right), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left));
+                }
+                //Debug.Log(Input.GetAxis(getAxisString("Vertical")));
+                setUIText();
+                if (boostAmount > 500)
+                {
+                    boostLevel.startColor = Color.Lerp(Color.blue, Color.yellow, ((float)boostAmount - (maxBoost / 2)) / ((float)maxBoost / 2));
+                }
+                else {
+                    boostLevel.startColor = Color.Lerp(Color.red, Color.blue, ((float)boostAmount) / ((float)maxBoost / 2));
+                }
+                boostLevel.startLifetime = Remap(boostAmount, 0, maxBoost, 0f, .45f);
             }
-			if (canDrive) {
-                //ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
-                ApplyControls(acc, hAxis, vAxis, InputPlus.GetData(playerNumber, ControllerVarEnum.FP_bottom), InputPlus.GetData(playerNumber, ControllerVarEnum.FP_left), InputPlus.GetData(playerNumber, ControllerVarEnum.ShoulderTop_right), InputPlus.GetData(playerNumber, ControllerVarEnum.FP_left));
+            else {
+                Debug.Log("canDrive is false");
+                BackLeftWheel.BrakeTorque = 200000.0f;
+                BackRightWheel.BrakeTorque = 200000.0f;
             }
-			//Debug.Log(Input.GetAxis(getAxisString("Vertical")));
-			setUIText ();
-			if (boostAmount > 500) {
-				boostLevel.startColor = Color.Lerp (Color.blue, Color.yellow, ((float)boostAmount - (maxBoost / 2)) / ((float)maxBoost / 2));
-			} else {
-				boostLevel.startColor = Color.Lerp (Color.red, Color.blue, ((float)boostAmount) / ((float)maxBoost / 2));
-			}
-			boostLevel.startLifetime = Remap (boostAmount, 0, maxBoost, 0f, .45f);
-		}else{
-			BackLeftWheel.BrakeTorque = 200000.0f;
-			BackRightWheel.BrakeTorque = 200000.0f;
-		}
+        }
+        else
+        {
+            //Debug.Log("frozen!");
+            this.transform.position = freezePos;
+            this.transform.rotation = freezeRot;
+        }
     }
     void setUIText()
     {

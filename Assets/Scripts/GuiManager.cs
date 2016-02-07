@@ -58,11 +58,15 @@ public class GuiManager : MonoBehaviour {
 		} //If the controller is receiving assignments the user can press 'Escape' to Cancel.
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            Application.LoadLevel("Car");
+            goToGame();
         }
 
 	}//Update
-
+    public void goToGame()
+    {
+        PlayerPrefs.SetInt("actualActive", 1);
+        Application.LoadLevel("Car");
+    }
 	void OnGUI()
 	{
 		//Write out basic usage instructions
