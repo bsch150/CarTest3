@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using InputPlusControl;
 
 public class MainGarage : MonoBehaviour {
 	public GameObject[] cars;
@@ -108,21 +109,21 @@ public class MainGarage : MonoBehaviour {
 		for(int i = 0; i < activeCars.Length;i++){
 			int j = i +1; //because Input is 1 indexed
       	  counter[i]--;
-	        float exit = Input.GetAxis("SelectMenu"+j);
-        	//Debug.Log("exit = " + exit);
-      	  	if(exit > 0)
+            float exit = InputPlus.GetData(i+1, ControllerVarEnum.FP_bottom);//Input.GetAxis("SelectMenu"+j);
+            //Debug.Log("exit = " + exit);
+            if (exit > 0)
 	        	{
             	Application.LoadLevel("Car");
         	}
-        	float hAxis = Input.GetAxis("Horizontal"+j);
-        	float vAxis = Input.GetAxis("Vertical"+j);
+            float hAxis = InputPlus.GetData(i+1, ControllerVarEnum.ThumbLeft_x);// Input.GetAxis("Horizontal"+j);
+        	float vAxis = InputPlus.GetData(i + 1, ControllerVarEnum.ThumbLeft_y); // Input.GetAxis("Vertical"+j);
         	doSwitches(i,hAxis, vAxis);
 		}
 		for (int i = 0; i < numControllers; i++) {
 			if(i >= activeCars.Length){
-				var temp = Input.GetAxis ("Start" + (i + 1).ToString ());
-				//Debug.Log ("Start input = " + temp);
-				if (temp > 0) {
+				var temp = InputPlus.GetData(i + 1, ControllerVarEnum.Interface_right);//Input.GetAxis ("Start" + (i + 1).ToString ());
+                                                                                   //Debug.Log ("Start input = " + temp);
+                if (temp > 0) {
 					int wc = PlayerPrefs.GetInt ("whichCar" + (i + 1).ToString (), 0);
 					GameObject[] tempForCopy = new GameObject[i + 1];
 					for (int j = 0; j < activeCars.Length; j++) {

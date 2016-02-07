@@ -34,10 +34,9 @@ namespace UnityStandardAssets.Cameras
 			playerNum = num;
 			//Debug.Log ("playerNum = " + playerNum);
 		}
-        protected override void FollowTarget(float deltaTime)
+        void toggle()
         {
-            counter--;
-            if(Input.GetAxis("CameraToggle"+playerNum) > 0 && counter < 0)//We're going to have to change this
+            if (counter < 0)
             {
                 counter = 10;
                 m_FollowTilt = !m_FollowTilt;
@@ -46,7 +45,7 @@ namespace UnityStandardAssets.Cameras
                     m_MoveSpeed = 5;
                     m_TurnSpeed = 6;
                     m_RollSpeed = 0;
-                    
+
                 }
                 else
                 {
@@ -56,6 +55,11 @@ namespace UnityStandardAssets.Cameras
                     m_RollSpeed = 15;
                 }
             }
+        }
+        protected override void FollowTarget(float deltaTime)
+        {
+            counter--;
+         
             // if no target, or no time passed then we quit early, as there is nothing to do
             if (!(deltaTime > 0) || m_Target == null)
             {

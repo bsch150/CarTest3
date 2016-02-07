@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &108376
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 493128}
+  - 114: {fileID: 11481060}
+  m_Layer: 0
+  m_Name: InputPlusObj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &493128
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108376}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11481060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f71417960f90d4e9e1c83a288b58b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texThumbLeft_x: {fileID: 2800000, guid: 379bff6014b411b418d7c261c64fd3ac, type: 3}
+  texThumbLeft_y: {fileID: 2800000, guid: 7a82e484ad86a6642aec60f387d96e4b, type: 3}
+  texThumbLeft: {fileID: 2800000, guid: b94fac0131c500a42a3e941ea3e9ca4a, type: 3}
+  texThumbRight_x: {fileID: 2800000, guid: 982f1d30adbf46a4cabd8a2e6ac471e2, type: 3}
+  texThumbRight_y: {fileID: 2800000, guid: a01cb78c01f45984099e24bc36b4ee6c, type: 3}
+  texThumbRight: {fileID: 2800000, guid: 1116116c4aa3f434f8844f3a6f1eae30, type: 3}
+  texdpad_up: {fileID: 2800000, guid: 1dd3d3383f1b9b54cb0d5602ab64426f, type: 3}
+  texdpad_down: {fileID: 2800000, guid: 31acc20692dc8ef4b9f1a76dcfc9c516, type: 3}
+  texdpad_left: {fileID: 2800000, guid: 199c6b2829ca58e4880a454b4579070f, type: 3}
+  texdpad_right: {fileID: 2800000, guid: d12c7305bab72cb4b8e491a1f2e795ab, type: 3}
+  texFP_top: {fileID: 2800000, guid: d09b95ce025cbc2478b41912179ec61e, type: 3}
+  texFP_bottom: {fileID: 2800000, guid: 179532873d4f65e47bf8f4dfe0f283d1, type: 3}
+  texFP_left: {fileID: 2800000, guid: 040a7e7496be93844bc2a7b25a99c5ca, type: 3}
+  texFP_right: {fileID: 2800000, guid: 39aa9501ca261ed4fae4cd5b923a00da, type: 3}
+  texInterface_left: {fileID: 2800000, guid: 243bb33b4f8d4394595bc13a229ca696, type: 3}
+  texInterface_right: {fileID: 2800000, guid: 3cf21d4fdb4fe8e41aa60ca50abaca78, type: 3}
+  texShoulderTop_left: {fileID: 2800000, guid: e1217d13c0e6cec4e922aab9767c54bd, type: 3}
+  texShoulderTop_right: {fileID: 2800000, guid: a5c8714a48e17d84ba0524bd715e7443,
+    type: 3}
+  texShoulderBottom_left: {fileID: 2800000, guid: f63509a3862b45a45b0cf1fec2b795fa,
+    type: 3}
+  texShoulderBottom_right: {fileID: 2800000, guid: 123bbf2d2fd96e049927909f0a307bd5,
+    type: 3}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 108376}
+  m_IsPrefabParent: 1

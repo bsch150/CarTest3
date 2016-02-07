@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using  System;
+using InputPlusControl;
 
 public class CarController : MonoBehaviour
 {
@@ -77,6 +78,7 @@ public class CarController : MonoBehaviour
     private int timeKillCounter = -1; //This is the time I use to grow your race time 
 	private int playerNumber;
 	private float startTime;
+    private bool invertY = false;
 
 
     private Rigidbody rb;
@@ -273,14 +275,18 @@ public class CarController : MonoBehaviour
     public void FixedUpdate()
     {
 		if (canDrive) {
-			//Apply the accelerator pedal
-			float acc = (Input.GetAxis (getAxisString ("Accelerate")));
-			float hAxis = Input.GetAxis (getAxisString ("Horizontal"));
-			float vAxis = Input.GetAxis (getAxisString ("Vertical"));
-			vAxis = -vAxis;
+            //Apply the accelerator pedal
+            float acc = (InputPlus.GetData(playerNumber, ControllerVarEnum.ShoulderBottom_right));//Input.GetAxis (getAxisString ("Accelerate")));
+			float hAxis = (InputPlus.GetData(playerNumber, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
+            float vAxis = (InputPlus.GetData(playerNumber, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
+            if (invertY)
+            {
+                vAxis = -vAxis;
+            }
 			if (canDrive) {
-				ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
-			}
+                //ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
+                ApplyControls(acc, hAxis, vAxis, InputPlus.GetData(playerNumber, ControllerVarEnum.FP_bottom), InputPlus.GetData(playerNumber, ControllerVarEnum.FP_left), InputPlus.GetData(playerNumber, ControllerVarEnum.ShoulderTop_right), InputPlus.GetData(playerNumber, ControllerVarEnum.FP_left));
+            }
 			//Debug.Log(Input.GetAxis(getAxisString("Vertical")));
 			setUIText ();
 			if (boostAmount > 500) {
@@ -332,6 +338,11 @@ public class CarController : MonoBehaviour
     {
         canDrive = true;
 		
+    }
+    void enableDrive(bool flag)
+    {
+        canDrive = flag;
+
     }
     private void Jump(float jump, float hAxis, float vAxis, float axisToggle)
     {

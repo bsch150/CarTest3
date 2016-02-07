@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using InputPlusControl;
 
 public class WorldScript : MonoBehaviour {
 
@@ -77,6 +78,9 @@ public class WorldScript : MonoBehaviour {
 			numControllers = temp.Length;
 			PlayerPrefs.SetInt ("numControllers",numControllers);
 		}
+        //InputPlus.Initialize();
+        //InputPlus.SetDebugText(true);
+        //InputPlus.LearnController(2);
 		var toAdd = PlayerPrefs.GetInt ("actualActive", 1);
 		cams = new GameObject[toAdd];
 		//Debug.Log ("toAdd = " + toAdd);
@@ -113,14 +117,19 @@ public class WorldScript : MonoBehaviour {
 		}
 	}
 	void FixedUpdate () {
-		//Debug.Log ("numnControllers = " + numControllers);
-		
-		for (int i = 0; i < activeCars.Length; i++) {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.LoadLevel("Menu");
+        }
+        for (int i = 0; i < activeCars.Length; i++) {
+            if (InputPlus.GetData(i + 1, ControllerVarEnum.ShoulderTop_left) > 0) { 
+                cams[i].BroadcastMessage("toggle");
+        }
 			cams [i].BroadcastMessage ("setTarget", (activeCars [i].transform));
 		}
 		for (int i = 0; i < numControllers; i++) {
 			if(i < actualActive){
-				float resetPushed = Input.GetAxis ("Reset"+(i+1).ToString ());
+                float resetPushed = InputPlus.GetData(i + 1, ControllerVarEnum.FP_top);//Input.GetAxis ("Reset"+(i+1).ToString ());
 				if (resetPushed > 0) {
 					resetCounter++;
 					if (resetCounter == 60) {
@@ -130,7 +139,7 @@ public class WorldScript : MonoBehaviour {
 					resetCounter = 0;
 				}
 			}else {
-				var temp = Input.GetAxis("Start"+(i+1).ToString ());
+                var temp = InputPlus.GetData(i + 1, ControllerVarEnum.Interface_right);//("Start"+(i+1).ToString ());
 				//Debug.Log ("Start input = " + temp);
 				if(temp > 0){
 					addPlayer ();
