@@ -56,7 +56,7 @@ public class GuiManager : MonoBehaviour {
 				InputPlus.CancelProgramming();
 			}
 		} //If the controller is receiving assignments the user can press 'Escape' to Cancel.
-        if (Input.GetKeyDown(KeyCode.Return))
+        else if (Input.GetKeyDown(KeyCode.Return))
         {
             goToGame();
         }

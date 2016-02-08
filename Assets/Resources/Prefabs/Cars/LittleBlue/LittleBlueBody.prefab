@@ -722,6 +722,7 @@ MonoBehaviour:
   Boost: {fileID: 19823916}
   boostLevel: {fileID: 19863386}
   cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+  PowerBall: {fileID: 183548, guid: 14c0190aa8e518a45b8237afc710ca5f, type: 2}
 --- !u!114 &11458268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5432,6 +5433,10 @@ Prefab:
       propertyPath: m_TagString
       value: car
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PowerBall
+      value: 
+      objectReference: {fileID: 183548, guid: 14c0190aa8e518a45b8237afc710ca5f, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 119152}

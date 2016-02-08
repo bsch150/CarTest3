@@ -8,7 +8,7 @@ public class WorldScript : MonoBehaviour {
 
 	public GameObject[] cars;
     public Transform spawnPoint;
-    public GameObject UI;
+    public GameObject[] UIs;
 	public GameObject cameraFab;
     public GameObject[] tracks; 
 
@@ -22,6 +22,7 @@ public class WorldScript : MonoBehaviour {
     private int[] controllerNumToPlayerNum;
     private int[] playerNumToControllerNum;
     private int playerNumCounter = 0;
+    private GameObject currentUI;
 
 
     void initCar(int carNum)
@@ -34,11 +35,17 @@ public class WorldScript : MonoBehaviour {
 		activeCars[carNum].BroadcastMessage("enableDrive");
 		activeCars[carNum].BroadcastMessage("setLastCheckpoint", spawnPoint.gameObject);
 		activeCars[carNum].BroadcastMessage("setTrack", this.gameObject);
-        tui = Instantiate(UI);
-		activeCars[carNum].BroadcastMessage("setUI", tui);
 		cams [carNum] = Instantiate (cameraFab);
 		cams [carNum].BroadcastMessage("setTarget", (activeCars [carNum].transform));
 		cams[carNum].BroadcastMessage ("assignPlayerNum", carNum+1);
+        if (playerNumToControllerNum[carNum] != -1)
+        {
+
+            //PlayerPrefs.SetInt("p" + carNum, playerNumToControllerNum[carNum]);
+            //TODO assigncontroller to car and handle that in the car's calls.
+            activeCars[carNum].BroadcastMessage("assignControllerNumber", playerNumToControllerNum[carNum]);
+            activeCars[carNum].BroadcastMessage("unfreeze");
+        }
 
     }
 
@@ -68,18 +75,33 @@ public class WorldScript : MonoBehaviour {
 	}
 	GameObject instantiateCarAndPos(GameObject c, int num){
 		GameObject temp = Instantiate (c);
-        temp.BroadcastMessage("freeze");
+        //temp.BroadcastMessage("freeze");
 		temp.transform.position = spawnPoint.transform.position + new Vector3 (-6 + (num * 4), 0, 0);
 		temp.transform.rotation = spawnPoint.transform.rotation;
 		return temp;
 		
 	}
+    void fillControllerPlayerArray()
+    {
+        int i = 0;
+        while (PlayerPrefs.GetInt("p" + i, -1) != -1)
+        {
+            Debug.Log("trying to fillArray at i = " + i);
+            int ctrNum = PlayerPrefs.GetInt("p"+i, -1);
+            PlayerPrefs.SetInt("p" + i, -1);
+            controllerNumToPlayerNum[ctrNum] = i;
+            playerNumToControllerNum[i] = ctrNum;
+            i++;
+            playerNumCounter++;
+        }
+    }
     void Start ()
 	{
         controllerNumToPlayerNum = new int[8];
         playerNumToControllerNum = new int[8];
         for (int i = 0; i < controllerNumToPlayerNum.Length; i++) controllerNumToPlayerNum[i] = -1;
         for (int i = 0; i < playerNumToControllerNum.Length; i++) playerNumToControllerNum[i] = -1;
+        fillControllerPlayerArray();
         numControllers = PlayerPrefs.GetInt ("numControllers", -1);
 		var temp = Input.GetJoystickNames ();
         foreach (string s in temp)
@@ -102,10 +124,13 @@ public class WorldScript : MonoBehaviour {
 		for (int i = 0; i < toAdd; i++) {
 			addPlayer ();
 		}
-		
+        currentUI = Instantiate(UIs[toAdd - 1]);
         initTracks();
     }
-	
+	void setUI()
+    {
+    //    f
+    }
 	// Update is called once per frame
 	void addPlayer(){
 		if (actualActive < numControllers) {
@@ -174,9 +199,6 @@ public class WorldScript : MonoBehaviour {
                     }
             }else if (controllerNumToPlayerNum[i] != -1 &&  controllerNumToPlayerNum[i] < actualActive)
                 {
-                    Debug.Log("case 2 = ctr " + i);
-                    if (playerNumToControllerNum[i] != -1)
-                {
                     float resetPushed = InputPlus.GetData(playerNumToControllerNum[i] + 1, ControllerVarEnum.FP_top);//Input.GetAxis ("Reset"+(i+1).ToString ());
                     if (resetPushed > 0)
                     {
@@ -189,7 +211,7 @@ public class WorldScript : MonoBehaviour {
                     else {
                         resetCounter = 0;
                     }
-                }
+                
 			}else
                 {
 

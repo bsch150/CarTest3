@@ -34,7 +34,7 @@ public class TrackScript : MonoBehaviour
         {
             startTime = Time.time;
         }
-        //car.BroadcastMessage("setLastCheckpoint",chks[(int)num[1]]);
+        activeCars[(int)num[0] - 1].BroadcastMessage("setLastCheckpoint",chks[(int)num[2]]);
         //car.BroadcastMessage("checkCheckpoint", num[1]);
     }
 

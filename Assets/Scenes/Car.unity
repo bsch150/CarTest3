@@ -444,8 +444,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.2276244, y: 1.8652924, z: 3.0874522}
-  m_Center: {x: -0.16991502, y: 1.1452439, z: 1.0437303}
+  m_Size: {x: 3.2276244, y: 1.6982486, z: 3.0874524}
+  m_Center: {x: -0.16991502, y: 1.0617243, z: 1.0437303}
 --- !u!33 &477444055
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1943,7 +1943,9 @@ MonoBehaviour:
   - {fileID: 119152, guid: a52d985a8887a754bb06d6ae04b4dd8b, type: 2}
   - {fileID: 175860, guid: 4e0dd3af05c737b42882f2dbb11f9613, type: 2}
   spawnPoint: {fileID: 1686062773}
-  UI: {fileID: 156728, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+  UIs:
+  - {fileID: 111206, guid: 5523232d75279fb4395eacfd1415a3f0, type: 2}
+  - {fileID: 186876, guid: e8233f753c461b34d82e321e62d5b820, type: 2}
   cameraFab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
   tracks:
   - {fileID: 2028452444}

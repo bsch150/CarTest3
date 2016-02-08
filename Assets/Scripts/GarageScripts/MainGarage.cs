@@ -28,11 +28,12 @@ public class MainGarage : MonoBehaviour {
 		}
 		int num = PlayerPrefs.GetInt("actualActive",1);
 		//PlayerPrefs.SetInt ("actualActive", 1);
-		counter = new int[numControllers];
-		whichCar = new int[numControllers];
-		whichHubcap = new int[numControllers];
+		counter = new int[num];
+		whichCar = new int[num];
+		whichHubcap = new int[num];
 		activeCars = new GameObject[num];
 		for (int j = 0; j < num; j++) {
+            Debug.Log("j = " + j);
 			int i = j+1;
 			setPlayerPrefs (i);
 			whichCar[j] = PlayerPrefs.GetInt ("whichCar"+i);
@@ -107,7 +108,8 @@ public class MainGarage : MonoBehaviour {
 
     void Update() {
 		for(int i = 0; i < activeCars.Length;i++){
-            int ctrnum = PlayerPrefs.GetInt("p" + (i), -1);
+            int ctrnum = PlayerPrefs.GetInt("p" + (i), -1) + 1;
+            Debug.Log("p" + i + " has controller " + ctrnum);
 			int j = i +1; //because Input is 1 indexed
       	  counter[i]--;
             float exit = InputPlus.GetData(ctrnum, ControllerVarEnum.FP_bottom);//Input.GetAxis("SelectMenu"+j);

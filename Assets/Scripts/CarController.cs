@@ -51,6 +51,7 @@ public class CarController : MonoBehaviour
     public ParticleSystem Boost;
     public ParticleSystem boostLevel;
 	public GameObject cameraPrefab;
+    public GameObject PowerBall;
 
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
@@ -60,7 +61,6 @@ public class CarController : MonoBehaviour
     private GameObject track;
     private int currentCheckpoint = -1;
     private int currentLap = -1;
-    private GameObject UI;
     private Text positionText;
     private Text timeText;
     private Text boostText;
@@ -83,6 +83,8 @@ public class CarController : MonoBehaviour
     private bool frozen = true;
     private Vector3 freezePos;
     private Quaternion freezeRot;
+    private int resetCountLimit = 50;
+    private int fireCount = 0;
 
 
     private Rigidbody rb;
@@ -111,7 +113,7 @@ public class CarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
-        if (UI != null)
+        /*if (UI != null)
         {
             Text[] temp = UI.GetComponentsInChildren<Text>();
             for (int i = 0; i < temp.Length; i++)
@@ -127,14 +129,26 @@ public class CarController : MonoBehaviour
                     timesText = temp[i];
                 }
             }
-        }
+        }*/
     }
     void assignControllerNumber(int num)
     {
-        Debug.Log("Assigning " + playerNumber + "'s ctrNum to " + num);
+        Debug.Log("Assigning " + playerNumber + "'s ctrNum to " + (num+1));
         ctrNum = num;
     }
 
+    bool canFire()
+    {
+        if (fireCount > 100)
+        {
+            fireCount = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     void freeze()
     {
         freeze(this.transform);
@@ -149,7 +163,7 @@ public class CarController : MonoBehaviour
     void unfreeze()
     {
         frozen = false;
-        Debug.Log("unfrozen?");
+        Debug.Log("p" + playerNumber + " unfrozen?");
     }
 
     void assignPlayerNumber(int num){
@@ -172,10 +186,10 @@ public class CarController : MonoBehaviour
     {
         track = t;
     }
-    void setUI(GameObject t)
-    {
-        UI = t;
-    }
+    //void setUI(GameObject t)
+    //{
+     //   UI = t;
+   // }
 	void checkNewLap(GameObject t){
 		if (currentLap == -1) {
 			currentLap = 0;
@@ -183,9 +197,10 @@ public class CarController : MonoBehaviour
 			track = t;
 			startTime = Time.time;
 			track.BroadcastMessage("respondWithNumLaps",playerNumber);
-		} else {
+            track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
+        } else {
 			track.BroadcastMessage("checkNewLap",new Vector3(playerNumber,currentLap,currentCheckpoint));
-		}
+        }
 	}
 	void confirmNewLap(){
 		//lapTimes[currentLap] = carTime;
@@ -193,8 +208,9 @@ public class CarController : MonoBehaviour
 		lapTimes [currentLap] = Time.time - startTime;
 		currentLap++;
 		currentCheckpoint = 0;
+        track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
 
-	}
+    }
     void setLastCheckpoint(GameObject chk)
     {
         //Debug.Log("Tset");
@@ -217,6 +233,8 @@ public class CarController : MonoBehaviour
             {
                 currentCheckpoint++;
 			Debug.Log ("currentCheck =  " + currentCheckpoint);
+            // [0] is the car's playernumber, [1] is the cars lap and [2] is which checkPoint
+            track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
 		
             }else{
 			Debug.Log("num == " + num);
@@ -240,8 +258,24 @@ public class CarController : MonoBehaviour
             carTime = (((float)(Math.Truncate(time * 100))) / 100);
         }
     }
-    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle)
+    void checkReset(float resetButton)
     {
+        if (resetButton > 0)//Reset button pushed down
+        {
+            resetCounter++;
+            if(resetCounter >= resetCountLimit)//player has been holding the reset button for 'long enough'
+            {
+                reset();
+            }
+        }
+        else//reset the resetCounter
+        {
+            resetCounter = 0;
+        }
+    }
+    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton)
+    {
+        checkReset(resetButton);
         FrontRightWheel.MotorTorque = acc * TorquePerTire;
         FrontLeftWheel.MotorTorque = acc * TorquePerTire;
         if (FourWheelDrive)
@@ -290,6 +324,12 @@ public class CarController : MonoBehaviour
 
 
         Jump(jump, hAxis, vAxis, AxisToggle);
+        if (fireButton > 0 && canFire())
+        {
+            var pb = Instantiate(PowerBall);
+            pb.transform.position = this.transform.position + new Vector3(0, 3, 0);
+            pb.GetComponent<Rigidbody>().velocity = transform.forward * (20) + rb.velocity;
+        }
     }
     void finishTrack()
     {
@@ -319,10 +359,16 @@ public class CarController : MonoBehaviour
                 if (canDrive)
                 {
                     //ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
-                    ApplyControls(acc, hAxis, vAxis, InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_bottom), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderTop_right), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left));
+                    ApplyControls(acc, hAxis, vAxis, 
+                        InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_bottom),
+                        InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left),
+                        InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderTop_right),
+                        InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left),
+                        InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_top),
+                        InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_right));
                 }
                 //Debug.Log(Input.GetAxis(getAxisString("Vertical")));
-                setUIText();
+                //setUIText();
                 if (boostAmount > 500)
                 {
                     boostLevel.startColor = Color.Lerp(Color.blue, Color.yellow, ((float)boostAmount - (maxBoost / 2)) / ((float)maxBoost / 2));
@@ -340,12 +386,17 @@ public class CarController : MonoBehaviour
         }
         else
         {
-            //Debug.Log("frozen!");
+            Debug.Log("p "+playerNumber+", ctr "+ctrNum+" frozen!");
+            if(ctrNum > -1)
+            {
+                unfreeze();
+            }
             this.transform.position = freezePos;
             this.transform.rotation = freezeRot;
         }
+        fireCount++;
     }
-    void setUIText()
+    /*void setUIText()
     {
         if (UI != null)
         {
@@ -374,7 +425,7 @@ public class CarController : MonoBehaviour
             }
         }
 
-    }
+    }*/
     float Remap(float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;

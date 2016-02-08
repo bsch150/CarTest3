@@ -877,8 +877,8 @@ namespace InputPlusControl
 					//ignore A3 on xbox wireless and wired... Axis 3 is the spawn of evil in the land of xbox controllers
 					//normally a specific controller shouldn't get an exception, but given the popularity of the 360
 					//controller, there is this exception. Hopefully there won't be too many of these.
-					result = ("J" + (cntrlr + 1).ToString() + "_A" + 3.ToString());
-					IPInstance.LockedInput.Add(result);
+					//result = ("J" + (cntrlr + 1).ToString() + "_A" + 3.ToString());
+					//IPInstance.LockedInput.Add(result);
 				}
 			}	
 		}//ScanForLocked
