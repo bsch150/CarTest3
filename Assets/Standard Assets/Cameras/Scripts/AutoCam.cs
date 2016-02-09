@@ -39,21 +39,23 @@ namespace UnityStandardAssets.Cameras
         {
             if (counter < 0)
             {
+                Debug.Log("toggling");
                 counter = 10;
                 m_FollowTilt = !m_FollowTilt;
                 if (!m_FollowTilt)
                 {
-                    m_MoveSpeed = 5;
-                    m_TurnSpeed = 6;
+                   // m_FollowTilt = true;
+                    m_MoveSpeed = 10;
+                    m_TurnSpeed = 10;
                     m_RollSpeed = 0;
 
                 }
                 else
                 {
-                    m_MoveSpeed = 20;
-                    m_TurnSpeed = 20;
+                    m_MoveSpeed = 50;
+                    m_TurnSpeed = 50;
                     m_SpinTurnLimit = 500;
-                    m_RollSpeed = 15;
+                    m_RollSpeed = 55;
                 }
             }
         }
@@ -125,7 +127,7 @@ namespace UnityStandardAssets.Cameras
             }
 
             // camera position moves towards target position:
-            var temp = Vector3.Lerp(transform.position, m_Target.position + (Vector3.down * 0.6f), deltaTime * m_MoveSpeed);
+            var temp = Vector3.Lerp(transform.position, m_Target.position , deltaTime * m_MoveSpeed);
             //temp = rotateAroundAxis(transform.right, (float)(Math.PI/6.0), temp);
             transform.position = temp;
 
@@ -136,7 +138,7 @@ namespace UnityStandardAssets.Cameras
                 targetForward.y = 0;
                 if (targetForward.sqrMagnitude < float.Epsilon)
                 {
-                    targetForward = transform.forward;
+                    targetForward = transform.forward ;
                 }
             }
             var rollRotation = Quaternion.LookRotation(targetForward, m_RollUp);

@@ -165,6 +165,7 @@ public class WorldScript : MonoBehaviour {
             {
                 if (InputPlus.GetData(playerNumToControllerNum[i] + 1, ControllerVarEnum.ShoulderTop_left) > 0)
                 {
+                    Debug.Log("Should be toggling cam #" + i);
                     cams[i].BroadcastMessage("toggle");
                 }
             }

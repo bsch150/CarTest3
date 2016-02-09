@@ -107,6 +107,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Shininess
+        second: 0.078125
+      data:
+        first:
           name: _Outline
         second: 0.005
       data:
@@ -149,11 +153,15 @@ Material:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: 67.59182, g: 177.82721, b: 61.509106, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.08627451, g: 0.4745098, b: 0.5529412, a: 1}
+        second: {r: 0.84816235, g: 0.71631086, b: 0.3182129, a: 1}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: 175.43066, g: 203.3074, b: 69.67168, a: 1}
       data:
         first:
           name: _OutlineColor

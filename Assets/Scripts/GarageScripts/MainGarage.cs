@@ -62,6 +62,7 @@ public class MainGarage : MonoBehaviour {
         }
         Destroy(activeCars[carNum]);
 		activeCars[carNum] = instantiateCarAndPos(cars[whichCar[carNum]],carNum);
+        activeCars[carNum].BroadcastMessage("randomizeColors");
         PlayerPrefs.SetInt("whichCar"+(carNum+1).ToString (), whichCar[carNum]);
     }
     // Update is called once per frame

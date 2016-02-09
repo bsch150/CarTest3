@@ -7,10 +7,10 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Paint
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _COLOR_ON _VCOLOR_ON
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -114,6 +114,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Shininess
+        second: 0.078125
+      data:
+        first:
           name: _Outline
         second: 14.86
       data:
@@ -176,11 +180,11 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.6544118, g: 0.120296285, b: 0.13513277, a: 0.509}
+        second: {r: 0.04932812, g: 0.80594015, b: 0.052019086, a: 1}
       data:
         first:
           name: _SpecColor
-        second: {r: 0.875, g: 0.09007351, b: 0.09007351, a: 1}
+        second: {r: 28.828197, g: 95.88836, b: 47.935707, a: 1}
       data:
         first:
           name: _OutlineColor

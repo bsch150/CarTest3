@@ -10,7 +10,7 @@ Material:
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _COLOR_ON _VCOLOR_ON
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -100,6 +100,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Shininess
+        second: 0.078125
+      data:
+        first:
           name: _Outline
         second: 3.66
       data:
@@ -158,11 +162,15 @@ Material:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: 79.14668, g: 0.009556844, b: 94.669785, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.5, g: 0.12370244, b: 0.07352942, a: 1}
+        second: {r: 39.35337, g: 0.46836305, b: 0.6484444, a: 1}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: 172.7778, g: 20.094118, b: 56.041195, a: 1}
       data:
         first:
           name: _OutlineColor

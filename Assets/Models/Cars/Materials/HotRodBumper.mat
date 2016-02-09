@@ -10,7 +10,7 @@ Material:
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -93,6 +93,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Shininess
+        second: 0.078125
+      data:
+        first:
           name: _Parallax
         second: 0.02
       data:
@@ -131,8 +135,12 @@ Material:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: 64.83377, g: 173.76675, b: 235.62067, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.023529412, g: 0.14509805, b: 0.8, a: 1}
+        second: {r: 205.0743, g: 0.6664267, b: 0.42927414, a: 1}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: 252.97888, g: 252.1456, b: 224.95926, a: 1}

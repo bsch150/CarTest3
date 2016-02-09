@@ -21,6 +21,7 @@ using InputPlusControl;
 
 public class CarController : MonoBehaviour
 {
+    //public variables to be set in GUI
     public Transform FrontRight;
     public Transform FrontLeft;
     public Transform BackRight;
@@ -33,9 +34,9 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private float SuspensionDistance;
     [SerializeField]
-    private bool FourWheelDrive = false;
+    private bool FourWheelDrive = true; //I'm not certain this doesa anything
     [SerializeField]
-    private float JumpStrength;
+    private float JumpStrength; //I would want to put this private to maintain balance but some cars seem to need more. (The Comanche right now)
     [SerializeField]
     private float m_XRotationSpeed = 5000;
     [SerializeField]
@@ -43,63 +44,75 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private float m_ZRotationSpeed = 5000;
     [SerializeField]
-    private bool canDrive = false;
+    private bool canDrive = false;//Hmmmmmm I don't know about this one (Maybe it doesn't do anythign either
     public ParticleSystem Boost;
     public ParticleSystem boostLevel;
 	public GameObject cameraPrefab;
     public GameObject PowerBall;
+    public Material primaryMaterial;
+    public Material secondaryMaterial;
 
+    //private variables for wheels
     private WheelColliderSource FrontRightWheel;
     private WheelColliderSource FrontLeftWheel;
     private WheelColliderSource BackRightWheel;
     private WheelColliderSource BackLeftWheel;
+
+    //private variables for the track system
     private int numChks;
     private GameObject track;
     private int currentCheckpoint = -1;
     private int currentLap = -1;
+    private float carTime;
+    private int numLaps;
+	private float startTime;
+    private float[] lapTimes;
+
+    //private variables for the UI system TODO: take this out, I'm going about it a different way. [UI contained in worldScript]
     private Text positionText;
     private Text timeText;
     private Text boostText;
     private Text timesText;
+    private int timeKillCounter = -1;  
+
+    //private variables for the boost system and driving mechanics
     private float boostAmount;
-    private float boostUseRate = 10f;
-    private float boostGainPerWheel = 1.2f;
+    private float boostUseRate = 30f;
+    private float boostGainPerWheel = 4f;
     private float maxBoost = 1500;
+    private float inAirBoostGain = 2;
+    private float BoostStrength = 60000;
+    private float TorquePerTire = 3000;
+
+    //for reset
     private int resetCounter = 0;
     private GameObject toReset;
-    private float carTime;
-    private float inAirBoostGain = 2;
-    private int numLaps;
-    private float[] lapTimes;
-    private int timeKillCounter = -1; //This is the time I use to grow your race time 
-	private int playerNumber;
+    private int resetCountLimit = 50;
+
+    //for identity and code safety (and weapons for now because there's only one variable for that right now)
+    private int playerNumber;
     private int ctrNum;
-	private float startTime;
     private bool invertY = false;
     private bool frozen = true;
     private Vector3 freezePos;
     private Quaternion freezeRot;
-    private int resetCountLimit = 50;
     private int fireCount = 0;
     private GameObject cam;
-    private float BoostStrength = 80000;
-    private float TorquePerTire = 3000;
 
 
     private Rigidbody rb;
     
     public void Start(){
+        //initialize freeze (freeze is a quick fix for handling controller variability
         freezePos = this.transform.position;
         freezeRot = this.transform.rotation;
         freeze();
+        //boost and wheels init
         boostAmount = maxBoost;
         FrontRightWheel = FrontRight.gameObject.AddComponent<WheelColliderSource>();
         FrontLeftWheel = FrontLeft.gameObject.AddComponent<WheelColliderSource>();
         BackRightWheel = BackRight.gameObject.AddComponent<WheelColliderSource>();
         BackLeftWheel = BackLeft.gameObject.AddComponent<WheelColliderSource>();
-        //GameObject
-        //FrontRight.gameObject.
-        //Debug.Log("Wheel Radius = " + WheelRadius);
         FrontRightWheel.WheelRadius = FrontWheelRadius;
         FrontLeftWheel.WheelRadius = FrontWheelRadius;
         BackRightWheel.WheelRadius = BackWheelRadius;
@@ -110,72 +123,34 @@ public class CarController : MonoBehaviour
         BackRightWheel.SuspensionDistance = SuspensionDistance;
         BackLeftWheel.SuspensionDistance = SuspensionDistance;
 
+        //set rb (Rigibody associated weith the car)
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
-    }
-    void assignCam(GameObject c)
-    {
-        cam = c;
-    }
-    void assignControllerNumber(int num)
-    {
-        Debug.Log("Assigning " + playerNumber + "'s ctrNum to " + (num+1));
-        ctrNum = num;
-    }
 
-    bool canFire()
-    {
-        if (fireCount > 100)
-        {
-            fireCount = 0;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        //set Boost colors;
+        setBoostGrad();
     }
-    void freeze()
+    void setBoostGrad()
     {
-        freeze(this.transform);
-    }
+        var col = Boost.colorOverLifetime;
+        col.enabled = true;
+        Gradient grad = new Gradient();
+        var gck = new GradientColorKey[3];
+        gck[0].color = boostLevel.startColor;
+        gck[0].time = 0.0f;
+        gck[1].color = primaryMaterial.color;
+        gck[1].time = 0.1f;
+        gck[2].color = secondaryMaterial.color;
+        gck[2].time = 1.0f;
+        var gak = new GradientAlphaKey[2];
+        gak[0].alpha = 1.0f;
+        gak[0].time = 0.0f;
+        gak[1].alpha = 1.0f;
+        gak[1].time = 1.0f;
+        grad.SetKeys(gck, gak);
 
-    void freeze(Transform t)
-    {
-        freezePos= t.position;
-        freezeRot = t.rotation;
-        frozen = true;
+        col.color = new ParticleSystem.MinMaxGradient(grad);
     }
-    void unfreeze()
-    {
-        frozen = false;
-        Debug.Log("p" + playerNumber + " unfrozen?");
-    }
-
-    void assignPlayerNumber(int num){
-		playerNumber = num;
-	}
-	string getAxisString(string str){
-		return str + playerNumber.ToString ();
-	}
-    void assignNumLapsAndChks(Vector2 num)
-    {
-		numLaps = (int)num[0];
-            lapTimes = new float[numLaps];
-		numChks = (int)num [1];
-    }
-    void assignNumChks(int num)
-    {
-        numChks = num;
-    }
-    void setTrack(GameObject t)
-    {
-        track = t;
-    }
-    //void setUI(GameObject t)
-    //{
-     //   UI = t;
-   // }
 	void checkNewLap(GameObject t){
 		if (currentLap == -1) {
 			currentLap = 0;
@@ -259,13 +234,17 @@ public class CarController : MonoBehaviour
             resetCounter = 0;
         }
     }
-    void cameraControl(Vector2 rightThumb)
+    void cameraControl(float camToggle, Vector2 rightThumb)
     {
+        if(camToggle > 0)
+        {
+            cam.BroadcastMessage("toggle");
+        }
         cam.BroadcastMessage("setRotateOn",rightThumb);
     }
-    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton,Vector2 rightThumb)
+    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton,Vector2 rightThumb,float cameraToggle)
     {
-        cameraControl(rightThumb);
+        cameraControl(cameraToggle,rightThumb);
         checkReset(resetButton);
         
         FrontRightWheel.MotorTorque = acc * TorquePerTire;
@@ -294,7 +273,6 @@ public class CarController : MonoBehaviour
             FrontLeftWheel.BrakeTorque = 0;
         }
         var em = Boost.emission;
-        Boost.startColor = boostLevel.startColor;
         em.enabled = false;
         if (boost > 0)
         {
@@ -342,7 +320,7 @@ public class CarController : MonoBehaviour
             {
                 //Apply the accelerator pedal
                 float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right) - InputPlus.GetData(ctrNum + 1 , ControllerVarEnum.ShoulderBottom_left));//Input.GetAxis (getAxisString ("Accelerate")));
-                Debug.Log("acc = " + acc);
+                //Debug.Log("acc = " + acc);
                 float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
                 float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
                 if (invertY)
@@ -359,7 +337,8 @@ public class CarController : MonoBehaviour
                         InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_top),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_right),
-                        new Vector2(InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ThumbRight_x), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbRight_x)));
+                        new Vector2(InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ThumbRight_x), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbRight_x)),
+                        InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ShoulderTop_left));
                 }
                 //Debug.Log(Input.GetAxis(getAxisString("Vertical")));
                 //setUIText();
@@ -389,6 +368,7 @@ public class CarController : MonoBehaviour
             this.transform.rotation = freezeRot;
         }
         fireCount++;
+        setBoostGrad();
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
     {
@@ -430,5 +410,80 @@ public class CarController : MonoBehaviour
             }
             rb.AddRelativeTorque(toAdd);
         }
+    }
+
+    void assignCam(GameObject c)
+    {
+        cam = c;
+    }
+    void assignControllerNumber(int num)
+    {
+        Debug.Log("Assigning " + playerNumber + "'s ctrNum to " + (num + 1));
+        ctrNum = num;
+    }
+
+    bool canFire()
+    {
+        if (fireCount > 100)
+        {
+            fireCount = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    void freeze()
+    {
+        freeze(this.transform);
+    }
+
+    void freeze(Transform t)
+    {
+        freezePos = t.position;
+        freezeRot = t.rotation;
+        frozen = true;
+    }
+    void unfreeze()
+    {
+        frozen = false;
+        Debug.Log("p" + playerNumber + " unfrozen?");
+    }
+
+    void assignPlayerNumber(int num)
+    {
+        playerNumber = num;
+    }
+    string getAxisString(string str)
+    {
+        return str + playerNumber.ToString();
+    }
+    void assignNumLapsAndChks(Vector2 num)
+    {
+        numLaps = (int)num[0];
+        lapTimes = new float[numLaps];
+        numChks = (int)num[1];
+    }
+    void assignNumChks(int num)
+    {
+        numChks = num;
+    }
+    void setTrack(GameObject t)
+    {
+        track = t;
+    }
+    void randomizeColors() {
+
+
+        System.Random r = new System.Random();
+        Color cP = new Color((float)(r.NextDouble()), (float)(r.NextDouble() ), (float)(r.NextDouble() ));
+        Color cS = new Color((float)(r.NextDouble() * 255), (float)(r.NextDouble() ), (float)(r.NextDouble() ));
+        primaryMaterial.shader = Shader.Find("Standard");
+        secondaryMaterial.shader = Shader.Find("Standard");
+        primaryMaterial.SetColor("_Color", cP);
+        secondaryMaterial.SetColor("_Color", cS);
+        Debug.Log("randomizing colors?");
+
     }
 }
