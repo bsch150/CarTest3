@@ -33,11 +33,7 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private float SuspensionDistance;
     [SerializeField]
-    private float TorquePerTire;
-    [SerializeField]
     private bool FourWheelDrive = false;
-    [SerializeField]
-    private float BoostStrength;
     [SerializeField]
     private float JumpStrength;
     [SerializeField]
@@ -85,6 +81,9 @@ public class CarController : MonoBehaviour
     private Quaternion freezeRot;
     private int resetCountLimit = 50;
     private int fireCount = 0;
+    private GameObject cam;
+    private float BoostStrength = 80000;
+    private float TorquePerTire = 3000;
 
 
     private Rigidbody rb;
@@ -113,23 +112,10 @@ public class CarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = rb.centerOfMass - (Vector3.up * 0.5f);
-        /*if (UI != null)
-        {
-            Text[] temp = UI.GetComponentsInChildren<Text>();
-            for (int i = 0; i < temp.Length; i++)
-            {
-                if (temp[i].name == "Position")
-                    positionText = temp[i];
-                else if (temp[i].name == "Time")
-                    timeText = temp[i];
-                else if (temp[i].name == "BoostText")
-                    boostText = temp[i];
-                else if(temp[i].name == "Times")
-                {
-                    timesText = temp[i];
-                }
-            }
-        }*/
+    }
+    void assignCam(GameObject c)
+    {
+        cam = c;
     }
     void assignControllerNumber(int num)
     {
@@ -273,9 +259,15 @@ public class CarController : MonoBehaviour
             resetCounter = 0;
         }
     }
-    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton)
+    void cameraControl(Vector2 rightThumb)
     {
+        cam.BroadcastMessage("setRotateOn",rightThumb);
+    }
+    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton,Vector2 rightThumb)
+    {
+        cameraControl(rightThumb);
         checkReset(resetButton);
+        
         FrontRightWheel.MotorTorque = acc * TorquePerTire;
         FrontLeftWheel.MotorTorque = acc * TorquePerTire;
         if (FourWheelDrive)
@@ -285,8 +277,8 @@ public class CarController : MonoBehaviour
         }
 
         //Turn the steering wheel
-        FrontRightWheel.SteerAngle = hAxis * 65;
-        FrontLeftWheel.SteerAngle = hAxis * 65;
+        FrontRightWheel.SteerAngle = hAxis * 35;
+        FrontLeftWheel.SteerAngle = hAxis * 35;
 
         //Apply the hand brake
         if (EBrake > 0)
@@ -349,7 +341,8 @@ public class CarController : MonoBehaviour
             if (canDrive)
             {
                 //Apply the accelerator pedal
-                float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right));//Input.GetAxis (getAxisString ("Accelerate")));
+                float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right) - InputPlus.GetData(ctrNum + 1 , ControllerVarEnum.ShoulderBottom_left));//Input.GetAxis (getAxisString ("Accelerate")));
+                Debug.Log("acc = " + acc);
                 float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
                 float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
                 if (invertY)
@@ -365,7 +358,8 @@ public class CarController : MonoBehaviour
                         InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderTop_right),
                         InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_top),
-                        InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_right));
+                        InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_right),
+                        new Vector2(InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ThumbRight_x), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbRight_x)));
                 }
                 //Debug.Log(Input.GetAxis(getAxisString("Vertical")));
                 //setUIText();
@@ -396,36 +390,6 @@ public class CarController : MonoBehaviour
         }
         fireCount++;
     }
-    /*void setUIText()
-    {
-        if (UI != null)
-        {
-            timeText.text = carTime.ToString();
-            string t = "";
-            for (int i = 0; i < numLaps;i++)
-            {
-                var temp= lapTimes[i];
-                //Debug.Log("lapTime sub = " + i + " = " + temp);
-                if(temp != -1)
-                {
-                    t += temp + "\n";
-                    //Debug.Log("t = " + t);
-                }
-            }
-            timesText.text = t;
-            if (currentLap != -1 && currentCheckpoint != -1)
-            {
-                //Debug.Log("Trying to Set it");
-                positionText.text = currentLap.ToString() + ", " + currentCheckpoint.ToString();
-            }
-            else
-            {
-                //Debug.Log("pn: " + playerNumber+"- " + currentLap + ", " + currentCheckpoint);
-                positionText.text = "";
-            }
-        }
-
-    }*/
     float Remap(float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;

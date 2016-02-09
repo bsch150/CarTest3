@@ -36,6 +36,7 @@ public class WorldScript : MonoBehaviour {
 		activeCars[carNum].BroadcastMessage("setLastCheckpoint", spawnPoint.gameObject);
 		activeCars[carNum].BroadcastMessage("setTrack", this.gameObject);
 		cams [carNum] = Instantiate (cameraFab);
+        activeCars[carNum].BroadcastMessage("assignCam", cams[carNum]);
 		cams [carNum].BroadcastMessage("setTarget", (activeCars [carNum].transform));
 		cams[carNum].BroadcastMessage ("assignPlayerNum", carNum+1);
         if (playerNumToControllerNum[carNum] != -1)

@@ -42,7 +42,11 @@ public class Explosive : MonoBehaviour {
     }
     void Explode(Collider other)
     {
-        other.attachedRigidbody.AddForceAtPosition((other.transform.position - transform.position) * 500000f,new Vector3(0,0,0));
+        var temp = other.GetComponentInParent<Rigidbody>();
+        if (temp != null)
+        {
+            temp.AddForceAtPosition((other.transform.position - transform.position) * 500000f, new Vector3(0, 0, 0));
+        }
         Explode();
     }
 }

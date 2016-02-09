@@ -14,6 +14,7 @@
  * I only ask that you make mention of their use in your project credits.
 */
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class WheelColliderSource : MonoBehaviour
@@ -45,6 +46,7 @@ public class WheelColliderSource : MonoBehaviour
     private float m_suspensionCompressionPrev;
     private JointSpringSource m_suspensionSpring; //The parameters of wheel's suspension. The suspension attempts to reach a target position
     private Vector3 initEuler;
+    private float maxWheelVelocity = 5000;
 
     //Debugging color data
     private Color GizmoColor;
@@ -389,7 +391,8 @@ public class WheelColliderSource : MonoBehaviour
 
         //Apply motor torque
         m_wheelAngularVelocity += m_wheelMotorTorque / m_wheelRadius / m_wheelMass * Time.deltaTime;
-        //Debug.Log("m_wheelAngularVelocity2 = " + m_wheelAngularVelocity);
+        m_wheelAngularVelocity = Math.Min(m_wheelAngularVelocity, maxWheelVelocity);
+       // Debug.Log("m_wheel vel "+m_wheelAngularVelocity);
 
         //Apply brake torque
         m_wheelAngularVelocity -= Mathf.Sign(m_wheelAngularVelocity) * Mathf.Min(Mathf.Abs(m_wheelAngularVelocity), m_wheelBrakeTorque * m_wheelRadius / m_wheelMass * Time.deltaTime);
@@ -420,10 +423,10 @@ public class WheelColliderSource : MonoBehaviour
     private void CalculateForcesFromSlips()
     {
         //Forward slip force
-        m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip);
+        m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) * 3;
 
         //Lateral slip force
-        m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip);
+        m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip) * 4;
 
 
         //Spring force

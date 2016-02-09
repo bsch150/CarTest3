@@ -24,6 +24,7 @@ namespace UnityStandardAssets.Cameras
         private Vector3 m_RollUp = Vector3.up;// The roll of the camera around the z axis ( generally this will always just be up )
         private int counter = 0;
 		private int playerNum =1;
+        private Vector3 rotateOn = new Vector3(0,0,0);
 
         void setTarget(Transform newT)
         {
@@ -55,6 +56,11 @@ namespace UnityStandardAssets.Cameras
                     m_RollSpeed = 15;
                 }
             }
+        }
+        void setRotateOn(Vector2 vec)
+        {
+
+            rotateOn = new Vector3(vec[0], vec[1], 0);
         }
         protected override void FollowTarget(float deltaTime)
         {
@@ -119,7 +125,9 @@ namespace UnityStandardAssets.Cameras
             }
 
             // camera position moves towards target position:
-            transform.position = Vector3.Lerp(transform.position, m_Target.position + (Vector3.down * 0.6f), deltaTime*m_MoveSpeed);
+            var temp = Vector3.Lerp(transform.position, m_Target.position + (Vector3.down * 0.6f), deltaTime * m_MoveSpeed);
+            //temp = rotateAroundAxis(transform.right, (float)(Math.PI/6.0), temp);
+            transform.position = temp;
 
             // camera's rotation is split into two parts, which can have independend speed settings:
             // rotating towards the target's forward direction (which encompasses its 'yaw' and 'pitch')
@@ -137,7 +145,48 @@ namespace UnityStandardAssets.Cameras
             m_RollUp = m_RollSpeed > 0 ? Vector3.Slerp(m_RollUp, targetUp, m_RollSpeed * deltaTime) : Vector3.up;
             //m_RollUp =  Vector3.up;
             transform.rotation = Quaternion.Lerp(transform.rotation, rollRotation, m_TurnSpeed*m_CurrentTurnAmount*deltaTime);
+            //transform.rotation = Quaternion.LookRotation(rotateOn);
 			//Debug.Log (playerNum + " focused on " + m_Target);
         }
+        Vector3 rotateAroundAxis(Vector3 axis, float theta, Vector3 vec)
+        {
+            Vector3 w = axis;
+            w = Vector3.Normalize(w);
+            Vector3 t = w;
+            if (Math.Abs(w.x) == Math.Min(Math.Abs(w.x),Math.Min(Math.Abs(w.y),Math.Abs(w.z)))) {
+                t.x = 1;
+            }else if (Math.Abs(w.y) == Math.Min(Math.Abs(w.x), Math.Min(Math.Abs(w.y), Math.Abs(w.z)))) {
+                t.y = 1;
+            } else if(Math.Abs(w.x) == Math.Min(Math.Abs(w.x), Math.Min(Math.Abs(w.y), Math.Abs(w.z)))) {
+                t.z = 1;
+            }
+            Vector3 u = Vector3.Cross(w, t);
+            u = Vector3.Normalize(u);
+            Vector3 v = Vector3.Cross(w, u);
+            Vector3 res = vec;
+            res = new Vector3(u.x * res.x + u.y * res.y + u.z * res.z,
+            v.x * res.x + v.y * res.y + v.z * res.z,
+            w.x * res.x + w.y * res.y + w.z * res.z);
+            res = new Vector3((float)(Math.Cos(theta) * res.x + Math.Sin(theta) * res.y),
+            (float)(-Math.Sin(theta) * res.x + Math.Cos(theta) * res.y), res.z);
+            res = new Vector3(u.x * res.x + v.x * res.y + w.x * res.z,
+            u.y * res.x + v.y * res.y + w.y * res.z,
+            u.z * res.x + v.z * res.y + w.z * res.z);
+            return res;
+        }
+        /*
+
+  PVector res = vec.get();
+  res = new PVector(u.x*res.x + u.y*res.y + u.z*res.z, 
+  v.x*res.x + v.y*res.y + v.z*res.z, 
+  w.x*res.x + w.y*res.y + w.z*res.z);
+  res = new PVector(cos(theta)*res.x + sin(theta)*res.y, 
+  -sin(theta)*res.x + cos(theta)*res.y, res.z);
+  res = new PVector(u.x*res.x + v.x*res.y + w.x*res.z, 
+  u.y*res.x + v.y*res.y + w.y*res.z, 
+  u.z*res.x + v.z*res.y + w.z*res.z);
+  return res;
+}
+    */
     }
 }
