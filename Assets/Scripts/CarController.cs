@@ -34,8 +34,6 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private float SuspensionDistance;
     [SerializeField]
-    private bool FourWheelDrive = true; //I'm not certain this doesa anything
-    [SerializeField]
     private float JumpStrength; //I would want to put this private to maintain balance but some cars seem to need more. (The Comanche right now)
     [SerializeField]
     private float m_XRotationSpeed = 5000;
@@ -77,12 +75,13 @@ public class CarController : MonoBehaviour
 
     //private variables for the boost system and driving mechanics
     private float boostAmount;
-    private float boostUseRate = 30f;
-    private float boostGainPerWheel = 4f;
+    private float boostUseRate = 10f;
+    private float boostGainPerWheel = 2f;
     private float maxBoost = 1500;
     private float inAirBoostGain = 2;
-    private float BoostStrength = 60000;
+    private float BoostStrength = 70000;
     private float TorquePerTire = 3000;
+    private bool FourWheelDrive = false; //I'm not certain this doesa anything
 
     //for reset
     private int resetCounter = 0;
@@ -98,6 +97,14 @@ public class CarController : MonoBehaviour
     private Quaternion freezeRot;
     private int fireCount = 0;
     private GameObject cam;
+    private float maxRT = -100;
+    private float minRT = 100;
+    private bool debugMode = false;
+
+    void print(string str)
+    {
+        if (debugMode) Debug.Log(str);
+    }
 
 
     private Rigidbody rb;
@@ -165,7 +172,7 @@ public class CarController : MonoBehaviour
 	}
 	void confirmNewLap(){
 		//lapTimes[currentLap] = carTime;
-		Debug.Log ("confirmed new Lap");
+		print ("confirmed new Lap");
 		lapTimes [currentLap] = Time.time - startTime;
 		currentLap++;
 		currentCheckpoint = 0;
@@ -174,7 +181,7 @@ public class CarController : MonoBehaviour
     }
     void setLastCheckpoint(GameObject chk)
     {
-        //Debug.Log("Tset");
+        //Print("Tset");
         toReset = chk;
     }
     void reset()
@@ -183,7 +190,7 @@ public class CarController : MonoBehaviour
         bool result = Physics.Raycast(new Ray(toReset.transform.position, -Vector3.up), out m_raycastHit);
         if (result) {
             this.transform.position = m_raycastHit.point;
-           // Debug.Log("teset");
+           // Print("teset");
             this.transform.rotation = toReset.transform.rotation;
             rb.velocity = new Vector3(0, 0, 0);
         }
@@ -193,12 +200,12 @@ public class CarController : MonoBehaviour
             if (num == currentCheckpoint + 1)
             {
                 currentCheckpoint++;
-			Debug.Log ("currentCheck =  " + currentCheckpoint);
+			print ("currentCheck =  " + currentCheckpoint);
             // [0] is the car's playernumber, [1] is the cars lap and [2] is which checkPoint
             track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
 		
             }else{
-			Debug.Log("num == " + num);
+			print("num == " + num);
 			}
        // }
     }
@@ -212,7 +219,7 @@ public class CarController : MonoBehaviour
             {
 				temp += lapTimes[i];
             }
-            //Debug.Log("setting carTime to " + temp);
+            //print("setting carTime to " + temp);
             carTime = temp;
         }
         else if(currentLap >= 0) {
@@ -313,7 +320,7 @@ public class CarController : MonoBehaviour
 		for (int i = 0; i < lapTimes.Length; i++) {
 			sum += lapTimes[i];
 		}
-		Debug.Log ("Player " + playerNumber + " finished, time = " + sum + ", lapTime len = " + lapTimes.Length);
+		print ("Player " + playerNumber + " finished, time = " + sum + ", lapTime len = " + lapTimes.Length);
     }
     public void FixedUpdate()
     {
@@ -323,10 +330,15 @@ public class CarController : MonoBehaviour
             {
                 //Apply the accelerator pedal
                 //float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right) - InputPlus.GetData(ctrNum + 1 , ControllerVarEnum.ShoulderBottom_left));//Input.GetAxis (getAxisString ("Accelerate")));
-                float forward = InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right); 
+                float forward = InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right);
+                minRT = Math.Min(forward, minRT);
+                maxRT = Math.Max(forward, maxRT);
+                forward = Remap(forward, minRT, maxRT, 0, 1);
                 float backward = InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_left);
-                Debug.Log("forward = " + forward);
-                Debug.Log("backward = " + backward);
+                print("minRT = " + minRT);
+                print("maxRT = " + maxRT);
+                print("forward = " + forward);
+                print("backward = " + backward);
                 float acc = forward - backward;
                 float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));
                 float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));
@@ -346,7 +358,7 @@ public class CarController : MonoBehaviour
                         new Vector2(InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ThumbRight_x), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbRight_y)),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ShoulderTop_left));
                 }
-                //Debug.Log(Input.GetAxis(getAxisString("Vertical")));
+                //print(Input.GetAxis(getAxisString("Vertical")));
                 //setUIText();
                 if (boostAmount > 500)
                 {
@@ -358,14 +370,14 @@ public class CarController : MonoBehaviour
                 boostLevel.startLifetime = Remap(boostAmount, 0, maxBoost, 0f, .45f);
             }
             else {
-                Debug.Log("canDrive is false");
+                print("canDrive is false");
                 BackLeftWheel.BrakeTorque = 200000.0f;
                 BackRightWheel.BrakeTorque = 200000.0f;
             }
         }
         else
         {
-            Debug.Log("p "+playerNumber+", ctr "+ctrNum+" frozen!");
+            print("p "+playerNumber+", ctr "+ctrNum+" frozen!");
             if(ctrNum > -1)
             {
                 unfreeze();
@@ -406,12 +418,12 @@ public class CarController : MonoBehaviour
             if (axisToggle == 1)
             {
                 float value  = Remap(hAxis, -1, 1, m_ZRotationSpeed, -m_ZRotationSpeed);
-                //Debug.Log(vAxis);
+                //print(vAxis);
                 toAdd[2] = value;
             }
             else
             {
-                //Debug.Log(toAdd);
+                //print(toAdd);
                 toAdd[1] = Remap(hAxis, -1, 1, -m_YRotationSpeed, m_YRotationSpeed);
             }
             rb.AddRelativeTorque(toAdd);
@@ -424,7 +436,7 @@ public class CarController : MonoBehaviour
     }
     void assignControllerNumber(int num)
     {
-        Debug.Log("Assigning " + playerNumber + "'s ctrNum to " + (num + 1));
+        print("Assigning " + playerNumber + "'s ctrNum to " + (num + 1));
         ctrNum = num;
     }
 
@@ -454,7 +466,7 @@ public class CarController : MonoBehaviour
     void unfreeze()
     {
         frozen = false;
-        Debug.Log("p" + playerNumber + " unfrozen?");
+        print("p" + playerNumber + " unfrozen?");
     }
 
     void assignPlayerNumber(int num)
@@ -489,7 +501,7 @@ public class CarController : MonoBehaviour
         secondaryMaterial.shader = Shader.Find("Standard");
         primaryMaterial.SetColor("_Color", cP);
         secondaryMaterial.SetColor("_Color", cS);
-        Debug.Log("randomizing colors?");
+        print("randomizing colors?");
 
     }
 }

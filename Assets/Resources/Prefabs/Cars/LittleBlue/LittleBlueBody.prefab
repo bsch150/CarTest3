@@ -681,7 +681,6 @@ MonoBehaviour:
   FrontWheelRadius: 0.8
   BackWheelRadius: 0.8
   SuspensionDistance: 0
-  FourWheelDrive: 0
   JumpStrength: 60000
   m_XRotationSpeed: 70000
   m_YRotationSpeed: 70000
@@ -3930,6 +3929,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Mass
       value: 2500
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: JumpStrength
+      value: 160000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ZRotationSpeed
+      value: 150000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

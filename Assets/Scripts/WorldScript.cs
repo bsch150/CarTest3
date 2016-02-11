@@ -98,7 +98,8 @@ public class WorldScript : MonoBehaviour {
         }
     }
     void Start ()
-	{
+    {
+        Physics.gravity = new Vector3(0, -25.0F, 0);
         controllerNumToPlayerNum = new int[8];
         playerNumToControllerNum = new int[8];
         for (int i = 0; i < controllerNumToPlayerNum.Length; i++) controllerNumToPlayerNum[i] = -1;

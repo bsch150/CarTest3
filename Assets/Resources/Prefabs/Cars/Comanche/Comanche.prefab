@@ -674,11 +674,10 @@ MonoBehaviour:
   FrontWheelRadius: 0.8
   BackWheelRadius: 0.8
   SuspensionDistance: 0
-  FourWheelDrive: 0
-  JumpStrength: 60000
-  m_XRotationSpeed: 70000
-  m_YRotationSpeed: 70000
-  m_ZRotationSpeed: 70000
+  JumpStrength: 150000
+  m_XRotationSpeed: 90000
+  m_YRotationSpeed: 90000
+  m_ZRotationSpeed: 90000
   canDrive: 0
   Boost: {fileID: 19867788}
   boostLevel: {fileID: 19811600}
@@ -3880,6 +3879,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Mass
       value: 2500
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: JumpStrength
+      value: 150000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_XRotationSpeed
+      value: 90000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_YRotationSpeed
+      value: 90000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ZRotationSpeed
+      value: 90000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
