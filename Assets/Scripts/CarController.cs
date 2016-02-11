@@ -236,11 +236,14 @@ public class CarController : MonoBehaviour
     }
     void cameraControl(float camToggle, Vector2 rightThumb)
     {
-        if(camToggle > 0)
+        if (cam != null)
         {
-            cam.BroadcastMessage("toggle");
+            if (camToggle > 0)
+            {
+                cam.BroadcastMessage("toggle");
+            }
+            cam.BroadcastMessage("setThumbsticks", rightThumb);
         }
-        cam.BroadcastMessage("setRotateOn",rightThumb);
     }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton,Vector2 rightThumb,float cameraToggle)
     {
@@ -319,17 +322,20 @@ public class CarController : MonoBehaviour
             if (canDrive)
             {
                 //Apply the accelerator pedal
-                float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right) - InputPlus.GetData(ctrNum + 1 , ControllerVarEnum.ShoulderBottom_left));//Input.GetAxis (getAxisString ("Accelerate")));
-                //Debug.Log("acc = " + acc);
-                float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
-                float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
+                //float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right) - InputPlus.GetData(ctrNum + 1 , ControllerVarEnum.ShoulderBottom_left));//Input.GetAxis (getAxisString ("Accelerate")));
+                float forward = InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right); 
+                float backward = InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_left);
+                Debug.Log("forward = " + forward);
+                Debug.Log("backward = " + backward);
+                float acc = forward - backward;
+                float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));
+                float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));
                 if (invertY)
                 {
                     vAxis = -vAxis;
                 }
                 if (canDrive)
                 {
-                    //ApplyControls (acc, hAxis, vAxis, Input.GetAxis (getAxisString ("Boost")), Input.GetAxis (getAxisString ("EBrake")), Input.GetAxis (getAxisString ("Jump")), Input.GetAxis (getAxisString ("AxisToggle")));
                     ApplyControls(acc, hAxis, vAxis, 
                         InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_bottom),
                         InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left),
@@ -337,7 +343,7 @@ public class CarController : MonoBehaviour
                         InputPlus.GetData(ctrNum + 1, ControllerVarEnum.FP_left),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_top),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.FP_right),
-                        new Vector2(InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ThumbRight_x), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbRight_x)),
+                        new Vector2(InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ThumbRight_x), InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbRight_y)),
                         InputPlus.GetData(ctrNum + 1,ControllerVarEnum.ShoulderTop_left));
                 }
                 //Debug.Log(Input.GetAxis(getAxisString("Vertical")));

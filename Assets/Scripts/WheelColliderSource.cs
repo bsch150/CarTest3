@@ -32,7 +32,7 @@ public class WheelColliderSource : MonoBehaviour
     private Vector3 m_prevPosition;
     private bool m_isGrounded; //Indicates whether the wheel currently collides with something (Read Only).
 
-    private float m_wheelMotorTorque; //Motor torque on the wheel axle. Positive or negative depending on direction.
+    private float m_wheelMotorTorque = 0; //Motor torque on the wheel axle. Positive or negative depending on direction.
     private float m_wheelBrakeTorque; //Brake torque. Must be positive.
     private float m_wheelSteerAngle; //Steering angle in degrees, always around the local y-axis.
     private float m_wheelAngularVelocity; //Current wheel axle rotation speed, in rotations per minute (Read Only).
@@ -138,8 +138,8 @@ public class WheelColliderSource : MonoBehaviour
     {
         set
         {
-            Debug.Log("setting motorTorque to " + value);
             m_wheelMotorTorque = value;
+            Debug.Log("setting motorTorque to " + m_wheelMotorTorque);
         }
         get
         {
@@ -387,7 +387,7 @@ public class WheelColliderSource : MonoBehaviour
         {
             //Apply angular force to wheel from slip
             m_wheelAngularVelocity -= Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) / (Mathf.PI  * 2.0f * m_wheelRadius) / m_wheelMass * Time.deltaTime;
-            //Debug.Log("m_wheelAngularVelocity1 = " + m_wheelAngularVelocity);
+            Debug.Log("m_wheelMotorTorque appears to be 0, is " + m_wheelMotorTorque);
         }
 
         //Apply motor torque

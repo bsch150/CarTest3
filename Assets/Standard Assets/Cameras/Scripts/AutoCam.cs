@@ -64,6 +64,7 @@ namespace UnityStandardAssets.Cameras
 
             rotateOn = new Vector3(vec[0], vec[1], 0);
         }
+
         protected override void FollowTarget(float deltaTime)
         {
             counter--;
@@ -130,6 +131,7 @@ namespace UnityStandardAssets.Cameras
             var temp = Vector3.Lerp(transform.position, m_Target.position , deltaTime * m_MoveSpeed);
             //temp = rotateAroundAxis(transform.right, (float)(Math.PI/6.0), temp);
             transform.position = temp;
+            //doCamRotation();
 
             // camera's rotation is split into two parts, which can have independend speed settings:
             // rotating towards the target's forward direction (which encompasses its 'yaw' and 'pitch')
@@ -175,6 +177,10 @@ namespace UnityStandardAssets.Cameras
             u.y * res.x + v.y * res.y + w.y * res.z,
             u.z * res.x + v.z * res.y + w.z * res.z);
             return res;
+        }
+        float Remap(float value, float from1, float to1, float from2, float to2)
+        {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
         /*
 

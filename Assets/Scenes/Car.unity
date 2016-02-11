@@ -1947,7 +1947,7 @@ MonoBehaviour:
   UIs:
   - {fileID: 111206, guid: 5523232d75279fb4395eacfd1415a3f0, type: 2}
   - {fileID: 186876, guid: e8233f753c461b34d82e321e62d5b820, type: 2}
-  cameraFab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+  cameraFab: {fileID: 166638, guid: 5ab613c6947189946b688279e202bc87, type: 2}
   tracks:
   - {fileID: 2028452444}
   - {fileID: 1722309523}

@@ -1057,7 +1057,7 @@ MonoBehaviour:
   canDrive: 1
   Boost: {fileID: 19877798}
   boostLevel: {fileID: 19868370}
-  cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
+  cameraPrefab: {fileID: 166638, guid: 5ab613c6947189946b688279e202bc87, type: 2}
   PowerBall: {fileID: 183548, guid: 14c0190aa8e518a45b8237afc710ca5f, type: 2}
   primaryMaterial: {fileID: 2100000, guid: a8295d270751ca74688686d3dc0b4f52, type: 2}
   secondaryMaterial: {fileID: 2100000, guid: 94b4975cec556424681fed224aa6ff1d, type: 2}
@@ -4277,6 +4277,10 @@ Prefab:
       propertyPath: m_Mass
       value: 2500
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: cameraPrefab
+      value: 
+      objectReference: {fileID: 166638, guid: 5ab613c6947189946b688279e202bc87, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 117910}

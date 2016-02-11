@@ -140,12 +140,12 @@ Material:
         second: 0
       data:
         first:
-          name: _TintColor
-        second: 1
-      data:
-        first:
           name: _Outline
         second: 3.66
+      data:
+        first:
+          name: _TintColor
+        second: 1
       data:
         first:
           name: _DetailTex
@@ -166,7 +166,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 49.56147, g: 0.026332302, b: 0.83300054, a: 1}
+        second: {r: 129.39107, g: 0.75122696, b: 0.29098564, a: 1}
       data:
         first:
           name: _SpecColor

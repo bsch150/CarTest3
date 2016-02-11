@@ -44,7 +44,8 @@ public class MainGarage : MonoBehaviour {
 	}
 	GameObject instantiateCarAndPos(GameObject c, int num){
 		GameObject temp = Instantiate (c);
-		temp.transform.position = temp.transform.position + new Vector3 (-6 + (num * 4), 0, 0);
+        temp.BroadcastMessage("enableDrive", false);
+        temp.transform.position = temp.transform.position + new Vector3 (-6 + (num * 4), 0, 0);
 		return temp;
 
 	}
