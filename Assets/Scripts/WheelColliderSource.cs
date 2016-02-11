@@ -46,7 +46,7 @@ public class WheelColliderSource : MonoBehaviour
     private float m_suspensionCompressionPrev;
     private JointSpringSource m_suspensionSpring; //The parameters of wheel's suspension. The suspension attempts to reach a target position
     private Vector3 initEuler;
-    private float maxWheelVelocity = 15000;
+    private float maxWheelVelocity = 5000;
 
     //Debugging color data
     private Color GizmoColor;
@@ -138,6 +138,7 @@ public class WheelColliderSource : MonoBehaviour
     {
         set
         {
+            Debug.Log("setting motorTorque to " + value);
             m_wheelMotorTorque = value;
         }
         get
@@ -416,6 +417,7 @@ public class WheelColliderSource : MonoBehaviour
         //Calculate the slip velocities. 
         //Note that these values are different from the standard slip calculation.
         m_forwardSlip = -Mathf.Sign(Vector3.Dot(forward, forwardVelocity)) * forwardVelocity.magnitude + (m_wheelAngularVelocity * Mathf.PI / 180.0f * m_wheelRadius);
+        //Debug.Log("angle vel = " + m_wheelAngularVelocity);
         m_sidewaysSlip = -Mathf.Sign(Vector3.Dot(sideways, sidewaysVelocity)) * sidewaysVelocity.magnitude;
 
     }
@@ -426,7 +428,7 @@ public class WheelColliderSource : MonoBehaviour
         m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) * 3;
 
         //Lateral slip force
-        m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip) * 4;
+        m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip) * 3;
 
 
         //Spring force

@@ -256,8 +256,8 @@ public class CarController : MonoBehaviour
         }
 
         //Turn the steering wheel
-        FrontRightWheel.SteerAngle = hAxis * 35;
-        FrontLeftWheel.SteerAngle = hAxis * 35;
+        FrontRightWheel.SteerAngle = hAxis * 15;
+        FrontLeftWheel.SteerAngle = hAxis * 15;
 
         //Apply the hand brake
         if (EBrake > 0)

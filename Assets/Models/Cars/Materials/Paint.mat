@@ -38,21 +38,14 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _Ramp
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _ToonShade
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _ParallaxMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _OcclusionMap
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -80,13 +73,6 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _OcclusionMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _MetallicGlossMap
         second:
           m_Texture: {fileID: 0}
@@ -95,6 +81,20 @@ Material:
       data:
         first:
           name: _SpecGlossMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Ramp
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _ToonShade
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -118,28 +118,8 @@ Material:
         second: 0.078125
       data:
         first:
-          name: _Outline
-        second: 14.86
-      data:
-        first:
           name: _Parallax
         second: 0.02
-      data:
-        first:
-          name: _DetailTex
-        second: 0
-      data:
-        first:
-          name: _TintColor
-        second: 1
-      data:
-        first:
-          name: _VertexColor
-        second: 1
-      data:
-        first:
-          name: _Brightness
-        second: 1
       data:
         first:
           name: _ZWrite
@@ -172,6 +152,26 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _TintColor
+        second: 1
+      data:
+        first:
+          name: _Outline
+        second: 14.86
+      data:
+        first:
+          name: _DetailTex
+        second: 0
+      data:
+        first:
+          name: _VertexColor
+        second: 1
+      data:
+        first:
+          name: _Brightness
+        second: 1
     m_Colors:
       data:
         first:
@@ -180,7 +180,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.04932812, g: 0.80594015, b: 0.052019086, a: 1}
+        second: {r: 0.46623814, g: 0.5168321, b: 0.1621001, a: 1}
       data:
         first:
           name: _SpecColor
