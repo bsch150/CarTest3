@@ -249,7 +249,7 @@ public class CarController : MonoBehaviour
             {
                 cam.BroadcastMessage("toggle");
             }
-            cam.BroadcastMessage("setThumbsticks", rightThumb);
+            //cam.BroadcastMessage("setThumbsticks", rightThumb);
         }
     }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle,float resetButton,float fireButton,Vector2 rightThumb,float cameraToggle)

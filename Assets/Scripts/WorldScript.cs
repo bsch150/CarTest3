@@ -23,6 +23,7 @@ public class WorldScript : MonoBehaviour {
     private int[] playerNumToControllerNum;
     private int playerNumCounter = 0;
     private GameObject currentUI;
+    private float gravityStrength = -25f;
 
 
     void initCar(int carNum)
@@ -85,6 +86,10 @@ public class WorldScript : MonoBehaviour {
 	}
     void fillControllerPlayerArray()
     {
+        controllerNumToPlayerNum = new int[8];
+        playerNumToControllerNum = new int[8];
+        for (int j = 0; j < controllerNumToPlayerNum.Length; j++) controllerNumToPlayerNum[j] = -1;
+        for (int j = 0; j < playerNumToControllerNum.Length; j++) playerNumToControllerNum[j] = -1;
         int i = 0;
         while (PlayerPrefs.GetInt("p" + i, -1) != -1)
         {
@@ -97,33 +102,27 @@ public class WorldScript : MonoBehaviour {
             playerNumCounter++;
         }
     }
-    void Start ()
+    void checkControllers()
     {
-        Physics.gravity = new Vector3(0, -25.0F, 0);
-        controllerNumToPlayerNum = new int[8];
-        playerNumToControllerNum = new int[8];
-        for (int i = 0; i < controllerNumToPlayerNum.Length; i++) controllerNumToPlayerNum[i] = -1;
-        for (int i = 0; i < playerNumToControllerNum.Length; i++) playerNumToControllerNum[i] = -1;
-        fillControllerPlayerArray();
-        numControllers = PlayerPrefs.GetInt ("numControllers", -1);
-		var temp = Input.GetJoystickNames ();
+        numControllers = PlayerPrefs.GetInt("numControllers", -1);
+        var temp = Input.GetJoystickNames();
         foreach (string s in temp)
         {
             Debug.Log("s = " + s);
         }
-		if (numControllers == -1 || temp.Length != numControllers) {
-			numControllers = temp.Length;
-			PlayerPrefs.SetInt ("numControllers",numControllers);
-		}
-        //InputPlus.Initialize();
-        //InputPlus.SetDebugText(true);
-        //InputPlus.LearnController(2);
-		var toAdd = PlayerPrefs.GetInt ("actualActive", 1);
+        if (numControllers == -1 || temp.Length != numControllers)
+        {
+            numControllers = temp.Length;
+            PlayerPrefs.SetInt("numControllers", numControllers);
+        }
+    }
+    void Start ()
+    {
+        setGravity(gravityStrength);
+        fillControllerPlayerArray();
+        checkControllers();
+        var toAdd = 1;//PlayerPrefs.GetInt ("actualActive", 1);
 		cams = new GameObject[toAdd];
-		//Debug.Log ("toAdd = " + toAdd);
-		for (int i = 0; i < temp.Length; i++) {
-			//Debug.Log ("temp[i] = " + temp[i]);
-		}
 		for (int i = 0; i < toAdd; i++) {
 			addPlayer ();
 		}
@@ -224,5 +223,9 @@ public class WorldScript : MonoBehaviour {
 				}
 			}
 		}
+    }
+    void setGravity(float strength)
+    {
+        Physics.gravity = new Vector3(0, strength, 0);
     }
 }
