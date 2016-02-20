@@ -73,7 +73,7 @@ public class CarController2 : MonoBehaviour
     private float maxBoost = 1500;
     private float inAirBoostGain = 2;
     private float BoostStrength = 70000;
-    private float TorquePerTire = 3000;
+    private float TorquePerTire = 1500000;
     private bool FourWheelDrive = true; //I'm not certain this doesa anything
 
     //for reset
@@ -253,10 +253,8 @@ public class CarController2 : MonoBehaviour
            // cam.BroadcastMessage("setThumbsticks", rightThumb);
         }
     }
-    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle, float resetButton, float fireButton, Vector2 rightThumb, float cameraToggle)
+    void callMove(float acc)
     {
-        cameraControl(cameraToggle, rightThumb);
-        checkReset(resetButton);
         FR.move(acc);
         FL.move(acc);
         if (FourWheelDrive)
@@ -264,7 +262,18 @@ public class CarController2 : MonoBehaviour
             BR.move(acc);
             BL.move(acc);
         }
-
+    }
+    void callSteer(float hAxis)
+    {
+        FR.steer(hAxis);
+        FL.steer(hAxis);
+    }
+    void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle, float resetButton, float fireButton, Vector2 rightThumb, float cameraToggle)
+    {
+        cameraControl(cameraToggle, rightThumb);
+        checkReset(resetButton);
+        callSteer(hAxis);
+        callMove(acc);
         //Turn the steering wheel
 
         //Apply the hand brake

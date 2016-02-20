@@ -10,6 +10,10 @@ public class WheelCollider2 : MonoBehaviour
     private Rigidbody carRB;
     private float acc = 10000;
     private float velocity = 0;
+    private float maxSteerAngle = 25;
+    private float currentForce = 0;
+    private float maxCurrentForce = 35000;
+    float rollingDecayRate = .99f;
 
 
     void calculateIsGrounded()
@@ -29,16 +33,29 @@ public class WheelCollider2 : MonoBehaviour
 
         }
     }
+    public void steer(float hAxis)
+    {
+        this.transform.localEulerAngles = new Vector3(0, hAxis * maxSteerAngle, 0);
+    }
     public void move(float inputVal)
     {
         if (float.IsNaN(inputVal))
         {
             inputVal = 0;
         }
-        var force = this.transform.forward * acc * inputVal;
-        Debug.Log("force = " + force);
-        carRB.AddForceAtPosition(force, this.transform.position);
-        
+        if (isGrounded)
+        {
+            currentForce += (inputVal * acc);
+            currentForce = Math.Min(maxCurrentForce, Math.Abs(currentForce)) * ((currentForce < 0) ? -1 : 1);
+            var force = this.transform.forward * currentForce;
+            //Debug.Log("force = " + force);
+            carRB.AddForceAtPosition(force, this.transform.position);
+            Debug.Log("transofrm pos = " + this.transform.position);
+        }
+        else
+        {
+        }
+        currentForce *= rollingDecayRate;
     }
     public void assignCarRigidBody(Rigidbody rb)
     {
