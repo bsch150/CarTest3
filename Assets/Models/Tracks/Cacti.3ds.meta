@@ -1,0 +1,181 @@
+fileFormatVersion: 2
+guid: 3ded3870125611643a7ec8fc18ead6a8
+timeCreated: 1456509826
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bridge
+    100002: //RootNode
+    100004: Cactus0.001
+    100006: Cactus1.001
+    100008: Cactus2.001
+    100010: Cactus3.001
+    100012: Cactus4.001
+    100014: DesertPart0
+    100016: DesertPart1
+    100018: DesertPart2
+    100020: Gas Pump.000
+    100022: Gas Pump.001
+    100024: Torus.000
+    100026: TrackToTunne
+    100028: Tunnel
+    100030: DesertPart1._MeshPart0
+    100032: DesertPart1._MeshPart1
+    100034: Tunnel.001_MeshPart0
+    100036: Tunnel.001_MeshPart1
+    400000: Bridge
+    400002: //RootNode
+    400004: Cactus0.001
+    400006: Cactus1.001
+    400008: Cactus2.001
+    400010: Cactus3.001
+    400012: Cactus4.001
+    400014: DesertPart0
+    400016: DesertPart1
+    400018: DesertPart2
+    400020: Gas Pump.000
+    400022: Gas Pump.001
+    400024: Torus.000
+    400026: TrackToTunne
+    400028: Tunnel
+    400030: DesertPart1._MeshPart0
+    400032: DesertPart1._MeshPart1
+    400034: Tunnel.001_MeshPart0
+    400036: Tunnel.001_MeshPart1
+    2300000: Bridge
+    2300002: Cactus0.001
+    2300004: Cactus1.001
+    2300006: Cactus2.001
+    2300008: Cactus3.001
+    2300010: Cactus4.001
+    2300012: DesertPart0
+    2300014: DesertPart1
+    2300016: DesertPart2
+    2300018: Gas Pump.000
+    2300020: Gas Pump.001
+    2300022: Torus.000
+    2300024: TrackToTunne
+    2300026: Tunnel
+    2300028: DesertPart1._MeshPart0
+    2300030: DesertPart1._MeshPart1
+    2300032: Tunnel.001_MeshPart0
+    2300034: Tunnel.001_MeshPart1
+    3300000: Bridge
+    3300002: Cactus0.001
+    3300004: Cactus1.001
+    3300006: Cactus2.001
+    3300008: Cactus3.001
+    3300010: Cactus4.001
+    3300012: DesertPart0
+    3300014: DesertPart1
+    3300016: DesertPart2
+    3300018: Gas Pump.000
+    3300020: Gas Pump.001
+    3300022: Torus.000
+    3300024: TrackToTunne
+    3300026: Tunnel
+    3300028: DesertPart1._MeshPart0
+    3300030: DesertPart1._MeshPart1
+    3300032: Tunnel.001_MeshPart0
+    3300034: Tunnel.001_MeshPart1
+    4300000: Gas Pump.001
+    4300002: Torus.000
+    4300004: Tunnel
+    4300006: DesertPart2
+    4300008: TrackToTunne
+    4300010: Bridge
+    4300012: DesertPart0
+    4300014: DesertPart1
+    4300016: Cactus0.001
+    4300018: Cactus1.001
+    4300020: Cactus2.001
+    4300022: Cactus3.001
+    4300024: Cactus4.001
+    4300026: Gas Pump.000
+    4300028: DesertPart1._MeshPart0
+    4300030: DesertPart1._MeshPart1
+    4300032: Tunnel.001_MeshPart0
+    4300034: Tunnel.001_MeshPart1
+    6400000: Bridge
+    6400002: Cactus0.001
+    6400004: Cactus1.001
+    6400006: Cactus2.001
+    6400008: Cactus3.001
+    6400010: Cactus4.001
+    6400012: DesertPart0
+    6400014: DesertPart1
+    6400016: DesertPart2
+    6400018: Gas Pump.000
+    6400020: Gas Pump.001
+    6400022: Torus.000
+    6400024: TrackToTunne
+    6400026: Tunnel
+    6400028: DesertPart1._MeshPart0
+    6400030: DesertPart1._MeshPart1
+    6400032: Tunnel.001_MeshPart0
+    6400034: Tunnel.001_MeshPart1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

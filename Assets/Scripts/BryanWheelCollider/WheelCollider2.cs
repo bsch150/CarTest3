@@ -12,7 +12,7 @@ public class WheelCollider2 : MonoBehaviour
     private float velocity = 0;
     private float maxSteerAngle = 25;
     private float currentForce = 0;
-    private float maxCurrentForce = 35000;
+    private float maxCurrentForce = 70000;
     float rollingDecayRate = .99f;
 
 

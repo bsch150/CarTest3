@@ -48,7 +48,7 @@ public class WheelColliderSource : MonoBehaviour
     private Vector3 initEuler;
     private float maxWheelVelocity = 10000;
     private float forwardFrictionMultiplier = 6;
-    private float sidewaysFrictionMultiplier = 4;
+    private float sidewaysFrictionMultiplier = 3;
     private bool debugMode = false;
 
     //Debugging color data

@@ -100,6 +100,8 @@ public class CarController : MonoBehaviour
     private float maxRT = -100;
     private float minRT = 100;
     private bool debugMode = false;
+    private float topSpeed = 75;
+    private float speedDecayRate = .8f;
 
     void print(string str)
     {
@@ -309,6 +311,19 @@ public class CarController : MonoBehaviour
             var pb = Instantiate(PowerBall);
             pb.transform.position = this.transform.position + new Vector3(0, 3, 0);
             pb.GetComponent<Rigidbody>().velocity = transform.forward * (20) + rb.velocity;
+        }
+        if (boost == 0)
+        {
+            applySpeedLimit();
+        }
+    }
+    void applySpeedLimit()
+    {
+        if(rb.velocity.magnitude > topSpeed)
+        {
+            Vector3 norm = rb.velocity.normalized;
+            norm *= (rb.velocity.magnitude * speedDecayRate);
+            rb.velocity = norm;
         }
     }
     void finishTrack()
