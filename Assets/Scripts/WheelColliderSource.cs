@@ -46,7 +46,7 @@ public class WheelColliderSource : MonoBehaviour
     private float m_suspensionCompressionPrev;
     private JointSpringSource m_suspensionSpring; //The parameters of wheel's suspension. The suspension attempts to reach a target position
     private Vector3 initEuler;
-    private float maxWheelVelocity = 10000;
+    private float maxWheelVelocity = 5000;
     private float forwardFrictionMultiplier = 6;
     private float sidewaysFrictionMultiplier = 3;
     private bool debugMode = false;

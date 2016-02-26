@@ -80,7 +80,7 @@ public class CarController : MonoBehaviour
     private float maxBoost = 1500;
     private float inAirBoostGain = 2;
     private float BoostStrength = 70000;
-    private float TorquePerTire = 3000;
+    private float TorquePerTire = 1000;
     private bool FourWheelDrive = true; //I'm not certain this doesa anything
 
     //for reset

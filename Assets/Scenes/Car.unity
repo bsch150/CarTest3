@@ -1997,7 +1997,6 @@ MonoBehaviour:
   - {fileID: 119152, guid: a52d985a8887a754bb06d6ae04b4dd8b, type: 2}
   - {fileID: 175860, guid: 4e0dd3af05c737b42882f2dbb11f9613, type: 2}
   - {fileID: 117910, guid: 28e6349542a005444bbb353f8b7b56bd, type: 2}
-  - {fileID: 178508, guid: c93d42364b2b23848ab3f2ee4c57d872, type: 2}
   spawnPoint: {fileID: 1686062773}
   UIs:
   - {fileID: 111206, guid: 5523232d75279fb4395eacfd1415a3f0, type: 2}

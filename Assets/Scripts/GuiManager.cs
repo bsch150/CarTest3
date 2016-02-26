@@ -64,6 +64,7 @@ public class GuiManager : MonoBehaviour {
 	}//Update
     public void goToGame()
     {
+        PlayerPrefs.SetInt("whichCar1", 0);
         PlayerPrefs.SetInt("actualActive", 1);
         Application.LoadLevel("Car");
     }
