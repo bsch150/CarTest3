@@ -32,7 +32,7 @@ public class WheelColliderSource : MonoBehaviour
     private Vector3 m_prevPosition;
     private bool m_isGrounded; //Indicates whether the wheel currently collides with something (Read Only).
 
-    private float m_wheelMotorTorque = 0; //Motor torque on the wheel axle. Positive or negative depending on direction.
+    private float m_wheelMotorTorque; //Motor torque on the wheel axle. Positive or negative depending on direction.
     private float m_wheelBrakeTorque; //Brake torque. Must be positive.
     private float m_wheelSteerAngle; //Steering angle in degrees, always around the local y-axis.
     private float m_wheelAngularVelocity; //Current wheel axle rotation speed, in rotations per minute (Read Only).
@@ -47,18 +47,11 @@ public class WheelColliderSource : MonoBehaviour
     private JointSpringSource m_suspensionSpring; //The parameters of wheel's suspension. The suspension attempts to reach a target position
     private Vector3 initEuler;
     private float maxWheelVelocity = 5000;
-    private float forwardFrictionMultiplier = 6;
-    private float sidewaysFrictionMultiplier = 3;
-    private bool debugMode = false;
 
     //Debugging color data
     private Color GizmoColor;
 
     //Standard accessor and mutator properties
-    void print(string str)
-    {
-        if (debugMode) Debug.Log(str);
-    }
     public Vector3 Center
     {
         set
@@ -77,8 +70,8 @@ public class WheelColliderSource : MonoBehaviour
         set
         {
             m_wheelRadius = value;
-            //print("Value = " + value);
-           // print("m_collider = " + m_collider);
+            //Debug.Log("Value = " + value);
+            // Debug.Log("m_collider = " + m_collider);
             //m_collider.center = new Vector3(0, m_wheelRadius, 0);
         }
         get
@@ -145,14 +138,7 @@ public class WheelColliderSource : MonoBehaviour
     {
         set
         {
-            if (float.IsNaN(value)) {
-                m_wheelMotorTorque = 0;
-            }
-            else
-            {
-                m_wheelMotorTorque = value;
-            }
-            print("setting motorTorque to " + m_wheelMotorTorque);
+            m_wheelMotorTorque = value;
         }
         get
         {
@@ -199,10 +185,10 @@ public class WheelColliderSource : MonoBehaviour
     // Use this for initialization
     public void Awake()
     {
-        //print("Awake Called");
+        //Debug.Log("Awake Called");
         m_dummyWheel = new GameObject("DummyWheel").transform;
         m_dummyWheel.transform.parent = this.transform.parent;
-        Center =  Vector3.zero;
+        Center = Vector3.zero;
         m_suspensionCompression = 0f;
         Mass = 1.0f;
         m_wheelAngularVelocity = 0;
@@ -224,9 +210,9 @@ public class WheelColliderSource : MonoBehaviour
 
         //Find the rigidbody associated with the wheel
         Transform parent = transform.parent;
-        while(parent != null)
+        while (parent != null)
         {
-            if(parent.gameObject.GetComponent<Rigidbody>() != null)
+            if (parent.gameObject.GetComponent<Rigidbody>() != null)
             {
                 m_rigidbody = parent.gameObject.GetComponent<Rigidbody>();
                 break;
@@ -234,17 +220,10 @@ public class WheelColliderSource : MonoBehaviour
             parent = parent.parent;
         }
 
-        if(m_rigidbody == null)
+        if (m_rigidbody == null)
         {
             Debug.LogError("WheelColliderSource: Unable to find associated Rigidbody.");
         }
-
-        //Add a SphereCollider as a work around to the Collider implementation issue.
-        //See wiki for more details.
-        //http://www.unifycommunity.com/wiki/index.php?title=WheelColliderSource
-       // m_collider.center = new Vector3(0, m_wheelRadius, 0);
-       // m_collider.radius = 1.0f;
-       // Debug.Log("m_collider init = " + m_collider);
     }
 
     // Called once per physics update
@@ -268,7 +247,7 @@ public class WheelColliderSource : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(
-            transform.position, 
+            transform.position,
             transform.position + (m_dummyWheel.up * (m_suspensionDistance - m_suspensionCompression))
         );
 
@@ -319,7 +298,7 @@ public class WheelColliderSource : MonoBehaviour
     private void UpdateSuspension()
     {
         //Raycast down along the suspension to find out how far the ground is to the wheel
-        bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius*10);
+        bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius * 10);
 
         //Debug.Log(m_raycastHit.point);
         if (result && (m_raycastHit.point - transform.position).magnitude <= m_wheelRadius) //The wheel is in contact with the ground
@@ -329,51 +308,11 @@ public class WheelColliderSource : MonoBehaviour
         }
         else //The wheel is in the air
         {
-            //print("In air");
+            //Debug.Log("In air");
             GizmoColor = Color.blue;
             m_isGrounded = false;
         }
     }
-    /*ORIGINAL CODE
-     private void UpdateSuspension()
-    {
-        //Raycast down along the suspension to find out how far the ground is to the wheel
-        bool result = Physics.Raycast(new Ray(m_dummyWheel.position, -m_dummyWheel.up), out m_raycastHit, m_wheelRadius + m_suspensionDistance);
-
-
-        if (result) //The wheel is in contact with the ground
-        {
-            if(!m_isGrounded) //If not previously grounded, set the prevPosition value to the wheel's current position.
-            {
-                m_prevPosition = m_dummyWheel.position;
-            }
-            GizmoColor = Color.green;
-            m_isGrounded = true;
-
-            //Store the previous suspension compression for the damping calculation
-            m_suspensionCompressionPrev = m_suspensionCompression;
-
-            //Update the suspension compression
-            m_suspensionCompression = m_suspensionDistance + m_wheelRadius - (m_raycastHit.point - m_dummyWheel.position).magnitude;
-            if(m_suspensionCompression < 0)
-            {
-                print("Suspension Compression Negative");
-            }
-            //print("SusComp = " + m_suspensionCompression);
-
-            if (m_suspensionCompression > m_suspensionDistance)
-            {
-                GizmoColor = Color.red;
-            }
-        }
-        else //The wheel is in the air
-        {
-    
-            m_suspensionCompression = 0;
-            GizmoColor = Color.blue;
-            m_isGrounded = false;
-        }
-    }*/
     private void UpdateWheel()
     {
         //Set steering angle of the wheel dummy
@@ -385,10 +324,11 @@ public class WheelColliderSource : MonoBehaviour
         //Set the rotation and steer angle of the wheel model
         float tempVeloc = float.IsNaN(m_wheelAngularVelocity) ? 0 : m_wheelRotationAngle;
         Vector3 temp = new Vector3(tempVeloc, m_wheelSteerAngle, 0) + initEuler;
-		if (float.IsNaN( temp [0])) {
-			//print ("temp = " + temp);
-			//print ("m_wheelRotationAngle = " +m_wheelRotationAngle);
-		}
+        if (float.IsNaN(temp[0]))
+        {
+            //Debug.Log ("temp = " + temp);
+            //Debug.Log ("m_wheelRotationAngle = " +m_wheelRotationAngle);
+        }
         this.transform.localEulerAngles = temp;
 
         //Set the wheel's position given the current suspension compression
@@ -399,19 +339,18 @@ public class WheelColliderSource : MonoBehaviour
         if (m_isGrounded && m_wheelMotorTorque == 0)
         {
             //Apply angular force to wheel from slip
-            m_wheelAngularVelocity -= (Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) / (Mathf.PI  * 2.0f * m_wheelRadius) / m_wheelMass * Time.deltaTime);
+            m_wheelAngularVelocity -= Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) / (Mathf.PI * 2.0f * m_wheelRadius) / m_wheelMass * Time.deltaTime;
+            //Debug.Log("m_wheelAngularVelocity1 = " + m_wheelAngularVelocity);
         }
 
         //Apply motor torque
-        float temp2 = m_wheelMotorTorque / m_wheelRadius / m_wheelMass * Time.deltaTime;
-        print("temp2 =  " + temp2);
-        m_wheelAngularVelocity += temp2;
-        m_wheelAngularVelocity = Math.Min(Math.Abs(m_wheelAngularVelocity), maxWheelVelocity) * (m_wheelAngularVelocity < 0 ? -1 : 1);
-       // print("m_wheel vel "+m_wheelAngularVelocity);
+        m_wheelAngularVelocity += m_wheelMotorTorque / m_wheelRadius / m_wheelMass * Time.deltaTime;
+        m_wheelAngularVelocity = Math.Min(m_wheelAngularVelocity, maxWheelVelocity);
+        // Debug.Log("m_wheel vel "+m_wheelAngularVelocity);
 
         //Apply brake torque
         m_wheelAngularVelocity -= Mathf.Sign(m_wheelAngularVelocity) * Mathf.Min(Mathf.Abs(m_wheelAngularVelocity), m_wheelBrakeTorque * m_wheelRadius / m_wheelMass * Time.deltaTime);
-       // print("m_wheelAngularVelocity3 = " + m_wheelAngularVelocity);
+        // Debug.Log("m_wheelAngularVelocity3 = " + m_wheelAngularVelocity);
     }
 
     private void CalculateSlips()
@@ -431,7 +370,6 @@ public class WheelColliderSource : MonoBehaviour
         //Calculate the slip velocities. 
         //Note that these values are different from the standard slip calculation.
         m_forwardSlip = -Mathf.Sign(Vector3.Dot(forward, forwardVelocity)) * forwardVelocity.magnitude + (m_wheelAngularVelocity * Mathf.PI / 180.0f * m_wheelRadius);
-        //print("angle vel = " + m_wheelAngularVelocity);
         m_sidewaysSlip = -Mathf.Sign(Vector3.Dot(sideways, sidewaysVelocity)) * sidewaysVelocity.magnitude;
 
     }
@@ -439,16 +377,16 @@ public class WheelColliderSource : MonoBehaviour
     private void CalculateForcesFromSlips()
     {
         //Forward slip force
-        m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) * forwardFrictionMultiplier;
+        m_totalForce = m_dummyWheel.forward * Mathf.Sign(m_forwardSlip) * m_forwardFriction.Evaluate(m_forwardSlip) * 3;
 
         //Lateral slip force
-        m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip) * sidewaysFrictionMultiplier;
+        m_totalForce -= m_dummyWheel.right * Mathf.Sign(m_sidewaysSlip) * m_forwardFriction.Evaluate(m_sidewaysSlip) * 4;
 
 
         //Spring force
-        //print("Things in 3:\n" + m_dummyWheel.up + "\n" + m_suspensionCompression + "\n" + m_suspensionDistance + "\n" + m_suspensionSpring.TargetPosition + "\n" + m_suspensionSpring.Spring);
+        //Debug.Log("Things in 3:\n" + m_dummyWheel.up + "\n" + m_suspensionCompression + "\n" + m_suspensionDistance + "\n" + m_suspensionSpring.TargetPosition + "\n" + m_suspensionSpring.Spring);
         float temp1 = (m_suspensionCompression - m_suspensionDistance * (m_suspensionSpring.TargetPosition));
-        //print("temp1 = " + temp1);
+        //Debug.Log("temp1 = " + temp1);
         m_totalForce += m_dummyWheel.up * temp1 * m_suspensionSpring.Spring;
 
         //Spring damping force

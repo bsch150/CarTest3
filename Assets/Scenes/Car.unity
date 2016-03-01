@@ -2519,6 +2519,56 @@ MonoBehaviour:
   - {fileID: 1046232700}
   - {fileID: 1485617628}
   - {fileID: 644503026}
+--- !u!1001 &2038355589
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 194.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 287.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -1425.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.18453963
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9828251
+      objectReference: {fileID: 0}
+    - target: {fileID: 459180, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 151478, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_Name
+      value: GarageHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 6509340, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: bde5a04dc709c264d9f06da04165ef18, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &2055371876
 Prefab:
   m_ObjectHideFlags: 0
