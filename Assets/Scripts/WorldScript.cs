@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using InputPlusControl;
+using System.Collections.Generic;
 
 public class WorldScript : MonoBehaviour {
 
@@ -24,9 +25,13 @@ public class WorldScript : MonoBehaviour {
     private int playerNumCounter = 0;
     private GameObject currentUI;
     private float gravityStrength = -25f;
+    private List<PlayerController> players;
 
-
-    void initCar(int carNum)
+    public GameObject getCar(int wc)
+    {
+        return cars[wc];
+    }
+    /*void initCar(int carNum)
     {
 		int whichCar = PlayerPrefs.GetInt ("whichCar" + (carNum+1).ToString (), 0);
 		Debug.Log ("carNum = " + carNum);
@@ -50,7 +55,7 @@ public class WorldScript : MonoBehaviour {
             activeCars[carNum].BroadcastMessage("unfreeze");
         }
 
-    }
+    }*/
 
     void initTracks()
     {
@@ -118,6 +123,7 @@ public class WorldScript : MonoBehaviour {
     }
     void Start ()
     {
+        players = new List<PlayerController>();
         setGravity(gravityStrength);
         fillControllerPlayerArray();
         checkControllers();
@@ -128,10 +134,6 @@ public class WorldScript : MonoBehaviour {
 		}
         currentUI = Instantiate(UIs[toAdd - 1]);
         initTracks();
-    }
-	void setUI()
-    {
-    //    f
     }
 	// Update is called once per frame
 	void addPlayer(){
@@ -147,7 +149,8 @@ public class WorldScript : MonoBehaviour {
 				tempCamCopy [j] = cams [j];
 			}
 			cams = tempCamCopy;
-			initCar (actualActive);
+            players.Add(new PlayerController(playerNumToControllerNum[actualActive],wc,cars,actualActive+1,spawnPoint,cameraFab));
+			//initCar (actualActive);
 			initTracks ();
 			actualActive++;
             PlayerPrefs.SetInt("actualActive", actualActive);
@@ -161,18 +164,6 @@ public class WorldScript : MonoBehaviour {
         {
             Application.LoadLevel("Menu");
         }
-        for (int i = 0; i < activeCars.Length; i++) {
-            if (playerNumToControllerNum[i] != -1)
-            {
-                if (InputPlus.GetData(playerNumToControllerNum[i] + 1, ControllerVarEnum.ShoulderTop_left) > 0)
-                {
-                    Debug.Log("Should be toggling cam #" + i);
-                    cams[i].BroadcastMessage("toggle");
-                }
-            }
-        
-			cams [i].BroadcastMessage ("setTarget", (activeCars [i].transform));
-		}
 		for (int i = 0; i < numControllers; i++)
         {
             if (controllerNumToPlayerNum[i] == -1) //controller not registered to car yet
@@ -188,8 +179,8 @@ public class WorldScript : MonoBehaviour {
                             PlayerPrefs.SetInt("p" + playerNumCounter, i);
                             playerNumCounter++;
                             //TODO assigncontroller to car and handle that in the car's calls.
-                            activeCars[playerNumCounter - 1].BroadcastMessage("assignControllerNumber", i);
-                            activeCars[playerNumCounter - 1].BroadcastMessage("unfreeze");
+                            //activeCars[playerNumCounter - 1].BroadcastMessage("assignControllerNumber", i);
+                            players[playerNumCounter - 1].setControllerNum(i);
 
                         }
                     }

@@ -277,7 +277,7 @@ public class CarController : MonoBehaviour
     }
     void ApplyControls(float acc, float hAxis, float vAxis, float boost, float EBrake, float jump, float AxisToggle, float resetButton, float fireButton, Vector2 rightThumb)
     {
-        cameraControl(rightThumb);
+        //cameraControl(rightThumb);
         checkReset(resetButton);
 
         FrontRightWheel.MotorTorque = acc * TorquePerTire;
