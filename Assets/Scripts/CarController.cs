@@ -86,6 +86,7 @@ public class CarController : MonoBehaviour
     private float TorquePerTire = 3000;
     private bool inGarage = false;
     private int garageCounter = 0;
+    private PlayerController playerCont;
 
 
     private Rigidbody rb;
@@ -355,7 +356,7 @@ public class CarController : MonoBehaviour
             {
                 //Apply the accelerator pedal
                 float acc = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_right) - InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ShoulderBottom_left));//Input.GetAxis (getAxisString ("Accelerate")));
-                Debug.Log("acc = " + acc);
+                //Debug.Log("acc = " + acc);
                 float hAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_x));//Input.GetAxis (getAxisString ("Horizontal"));
                 float vAxis = (InputPlus.GetData(ctrNum + 1, ControllerVarEnum.ThumbLeft_y));//Input.GetAxis (getAxisString ("Vertical"));
                 if (invertY)
@@ -446,10 +447,14 @@ public class CarController : MonoBehaviour
     }
     void enterGarage()
     {
-        inGarage = true;
+        playerCont.setInGarage(true);
     }
     void exitGarage()
     {
-        inGarage = false;
+        playerCont.setInGarage(false);
+    }
+    void setPlayerController(PlayerController pc)
+    {
+        playerCont = pc;
     }
 }

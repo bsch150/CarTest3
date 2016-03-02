@@ -160,6 +160,10 @@ public class WorldScript : MonoBehaviour {
 		}
 	}
 	void FixedUpdate () {
+        foreach(PlayerController p in players)
+        {
+            p.updateThis();
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.LoadLevel("Menu");

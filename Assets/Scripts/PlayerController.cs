@@ -7,10 +7,12 @@ public class PlayerController : MonoBehaviour {
     private int playerNum;
     private int whichCar;
     private Transform spawnPoint;
+    private bool inGarage = false;
     GameObject car;
     GameObject cameraFab;
     GameObject carCam;
     GameObject[] cars;
+    private int dpadCounter = 0;
 	// Use this for initialization
     public PlayerController(int ctrNum, int carNum, GameObject[] cs, int pNum, Transform spawnP, GameObject cam)
     {
@@ -27,14 +29,44 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	public void updateThis() {
         checkCamToggle();
+        checkGarage();
+        //Debug.Log("update");
+        dpadCounter++;
+    }
+    void checkGarage()
+    {
+        if (inGarage && dpadCounter > 15)
+        {
+            float dpadX = InputPlus.GetData(controllerNum+1, ControllerVarEnum.dpad_right) - InputPlus.GetData(controllerNum+1, ControllerVarEnum.dpad_left);
+            if (dpadX < 0)
+            {
+                Debug.Log("left pushed");
+                whichCar -= 1;
+                if (whichCar < 0) whichCar = cars.Length - 1;
+                initCar();
+                dpadCounter = 0;
+            }
+            else if (dpadX > 0)
+            {
+                whichCar += 1;
+                if (whichCar >= cars.Length) whichCar = 0;
+                initCar();
+                dpadCounter = 0;
+            }
+            Debug.Log("dpadx = " + dpadX);
+        }
+        else
+        {
+            Debug.Log("inGarage false");
+        }
     }
     void checkCamToggle()
     {
         if (controllerNum != -1)
         {
-            if (InputPlus.GetData(controllerNum + 1, ControllerVarEnum.ShoulderTop_left) > 0)
+            if (InputPlus.GetData(controllerNum+1, ControllerVarEnum.ShoulderTop_left) > 0)
             {
                 carCam.BroadcastMessage("toggle");
             }
@@ -43,16 +75,22 @@ public class PlayerController : MonoBehaviour {
     }
     void initCar()
     {
+        if (car != null)
+        {
+            spawnPoint.position = car.transform.position + Vector3.up;
+            Destroy(car);
+        }
         car = instantiateCarAndPos(cars[whichCar], playerNum);
 
         car.BroadcastMessage ("assignPlayerNumber", playerNum);
         car.BroadcastMessage("enableDrive");
 		car.BroadcastMessage("setLastCheckpoint", spawnPoint.gameObject);
+        car.BroadcastMessage("setPlayerController", this);
         //car.BroadcastMessage("setTrack", this.gameObject);
-		carCam = Instantiate (cameraFab);
+        if(carCam == null)carCam = Instantiate (cameraFab);
         car.BroadcastMessage("assignCam", carCam);
         carCam.BroadcastMessage("setTarget", (car.transform));
-        carCam.transform.SetParent(car.transform);
+        //carCam.transform.SetParent(car.transform);
 		//cams[carNum].BroadcastMessage ("assignPlayerNum", carNum+1);
         if (controllerNum != -1)
         {
@@ -75,5 +113,10 @@ public class PlayerController : MonoBehaviour {
         controllerNum = i;
         car.BroadcastMessage("assignControllerNumber", controllerNum);
         car.BroadcastMessage("unfreeze");
+    }
+    public void setInGarage(bool set)
+    {
+        inGarage = set;
+        Debug.Log("inGarage = " + inGarage);
     }
 }
