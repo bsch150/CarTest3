@@ -31,37 +31,12 @@ public class WorldScript : MonoBehaviour {
     {
         return cars[wc];
     }
-    /*void initCar(int carNum)
-    {
-		int whichCar = PlayerPrefs.GetInt ("whichCar" + (carNum+1).ToString (), 0);
-		Debug.Log ("carNum = " + carNum);
-		activeCars[carNum] = instantiateCarAndPos (cars [whichCar],carNum);
-		
-		activeCars[carNum].BroadcastMessage ("assignPlayerNumber", carNum + 1);
-		activeCars[carNum].BroadcastMessage("enableDrive");
-		activeCars[carNum].BroadcastMessage("setLastCheckpoint", spawnPoint.gameObject);
-		activeCars[carNum].BroadcastMessage("setTrack", this.gameObject);
-		cams [carNum] = Instantiate (cameraFab);
-        activeCars[carNum].BroadcastMessage("assignCam", cams[carNum]);
-		cams [carNum].BroadcastMessage("setTarget", (activeCars [carNum].transform));
-        cams[carNum].transform.SetParent(activeCars[carNum].transform);
-		//cams[carNum].BroadcastMessage ("assignPlayerNum", carNum+1);
-        if (playerNumToControllerNum[carNum] != -1)
-        {
-
-            //PlayerPrefs.SetInt("p" + carNum, playerNumToControllerNum[carNum]);
-            //TODO assigncontroller to car and handle that in the car's calls.
-            activeCars[carNum].BroadcastMessage("assignControllerNumber", playerNumToControllerNum[carNum]);
-            activeCars[carNum].BroadcastMessage("unfreeze");
-        }
-
-    }*/
 
     void initTracks()
     {
         for(int i = 0; i < tracks.Length; i++)
         {
-			tracks[i].BroadcastMessage("assignActiveCars", activeCars);
+			//tracks[i].BroadcastMessage("assignActiveCars", activeCars);
         }
     }
 	

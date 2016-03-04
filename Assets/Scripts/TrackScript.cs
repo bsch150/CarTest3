@@ -11,20 +11,8 @@ public class TrackScript : MonoBehaviour
 
     private double trackTime;
     private double startTime = -1;
-    private GameObject[] activeCars;
 	Vector2[] carProgress;
     
-
-    void assignActiveCars(GameObject[] t)
-    {
-		activeCars = t;
-		carProgress = new Vector2[activeCars.Length];
-    }
-	void respondWithNumLaps(int playerNum){
-		activeCars [playerNum - 1].BroadcastMessage ("assignNumLapsAndChks", new Vector2(numLaps,NumberOfCheckPoints));
-	}
-    //This sends a message to the car that passed through a checkpoint. 
-    //The vector is just so I can get three parameters into a braodcastMessage. [0] is the car's playernumber, [1] is the cars lap and [2] is which checkPoint
     void checkCheckpoint(Vector3 num)
     {
 		carProgress [(int)(num [0] - 1)] = new Vector2 (num [1],num [2]);

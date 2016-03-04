@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
             float dpadX = InputPlus.GetData(controllerNum+1, ControllerVarEnum.dpad_right) - InputPlus.GetData(controllerNum+1, ControllerVarEnum.dpad_left);
             if (dpadX < 0)
             {
-                Debug.Log("left pushed");
+                //Debug.Log("left pushed");
                 whichCar -= 1;
                 if (whichCar < 0) whichCar = cars.Length - 1;
                 initCar();
@@ -55,11 +55,11 @@ public class PlayerController : MonoBehaviour {
                 initCar();
                 dpadCounter = 0;
             }
-            Debug.Log("dpadx = " + dpadX);
+            //Debug.Log("dpadx = " + dpadX);
         }
         else
         {
-            Debug.Log("inGarage false");
+           // Debug.Log("inGarage false");
         }
     }
     void checkCamToggle()
@@ -117,6 +117,6 @@ public class PlayerController : MonoBehaviour {
     public void setInGarage(bool set)
     {
         inGarage = set;
-        Debug.Log("inGarage = " + inGarage);
+        //Debug.Log("inGarage = " + inGarage);
     }
 }
