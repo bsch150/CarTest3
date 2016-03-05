@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CheckpointScript : MonoBehaviour {
     private int number;
-    private GameObject track;
+    private TrackScript track;
 	// Use this for initialization
     void assignNumber(int num)
     {
@@ -12,22 +12,18 @@ public class CheckpointScript : MonoBehaviour {
 	void Start () {
 	
 	}
-    void assignTrack(GameObject t)
+    void assignTrack(TrackScript t)
     {
         track = t;
     }
 	void OnTriggerEnter(Collider other)
     {
-
-		if (other.gameObject.tag == "car") {
-
-			Debug.Log ("chekc collided");
-			if(number == 0){
-				other.GetComponentInParent<Rigidbody>().gameObject.BroadcastMessage ("checkNewLap", track);
-			}else{
-				other.GetComponentInParent<Rigidbody>().gameObject.BroadcastMessage("checkCheckpoint",number);
-			}
-		}
+        string playerTag = other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag;
+        if (playerTag.Contains("player"))
+        {
+            Debug.Log("player collided with check trigger");
+            track.checkCheckpoint(number, playerTag);
+        }
     }
 	// Update is called once per frame
 	void Update () {

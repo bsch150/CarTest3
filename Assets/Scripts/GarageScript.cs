@@ -12,14 +12,23 @@ public class GarageScript : MonoBehaviour {
 	void Update () {
 
     }
+    bool isPlayer(Collider other)
+    {
+        CarController temp = other.gameObject.GetComponentInParent<CarController>();
+        if(temp != null)
+        {
+            if (temp.tag.Contains("player")) return true;
+        }
+        return false;
+    }
     void OnTriggerEnter(Collider other)
     {
-        other.gameObject.GetComponentInParent<CarController>().BroadcastMessage("enterGarage");
+        if(isPlayer(other)) other.gameObject.GetComponentInParent<CarController>().BroadcastMessage("enterGarage");
     }
 
     void OnTriggerExit(Collider other)
     {
-        other.gameObject.GetComponentInParent<CarController>().BroadcastMessage("exitGarage");
+        if (isPlayer(other)) other.gameObject.GetComponentInParent<CarController>().BroadcastMessage("exitGarage");
     }
     GameObject instantiateCarAndPos(GameObject c, int num)
     {

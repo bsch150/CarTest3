@@ -4,24 +4,28 @@ using InputPlusControl;
 
 public class PlayerController : MonoBehaviour {
     private int controllerNum;
-    private int playerNum;
+    public int playerNum;
+    public int finisherTimer = 0;
     private int whichCar;
     private Transform spawnPoint;
     private bool inGarage = false;
     GameObject car;
     GameObject cameraFab;
     GameObject carCam;
-    GameObject[] cars;
+    WorldScript world;
     private int dpadCounter = 0;
-	// Use this for initialization
-    public PlayerController(int ctrNum, int carNum, GameObject[] cs, int pNum, Transform spawnP, GameObject cam)
+    public string currentTrack = "NONE";
+    private UIScript ui;
+    
+    public PlayerController(int ctrNum, int carNum, int pNum, Transform spawnP, GameObject cam, WorldScript _world)
     {
+        world = _world;
         playerNum = pNum;
         controllerNum = ctrNum;
         whichCar = carNum;
-        cars = cs;
         spawnPoint = spawnP;
         cameraFab = cam;
+        ui = new UIScript(world.UIs[playerNum - 1]);
         initCar();
     }
 	void Start () {
@@ -34,6 +38,7 @@ public class PlayerController : MonoBehaviour {
         checkGarage();
         //Debug.Log("update");
         dpadCounter++;
+        finisherTimer++;
     }
     void checkGarage()
     {
@@ -44,14 +49,14 @@ public class PlayerController : MonoBehaviour {
             {
                 //Debug.Log("left pushed");
                 whichCar -= 1;
-                if (whichCar < 0) whichCar = cars.Length - 1;
+                if (whichCar < 0) whichCar = world.cars.Length - 1;
                 initCar();
                 dpadCounter = 0;
             }
             else if (dpadX > 0)
             {
                 whichCar += 1;
-                if (whichCar >= cars.Length) whichCar = 0;
+                if (whichCar >= world.cars.Length) whichCar = 0;
                 initCar();
                 dpadCounter = 0;
             }
@@ -80,7 +85,7 @@ public class PlayerController : MonoBehaviour {
             spawnPoint.position = car.transform.position + Vector3.up;
             Destroy(car);
         }
-        car = instantiateCarAndPos(cars[whichCar], playerNum);
+        car = instantiateCarAndPos(world.cars[whichCar], playerNum);
 
         car.BroadcastMessage ("assignPlayerNumber", playerNum);
         car.BroadcastMessage("enableDrive");
@@ -118,5 +123,9 @@ public class PlayerController : MonoBehaviour {
     {
         inGarage = set;
         //Debug.Log("inGarage = " + inGarage);
+    }
+    public void setUI(Vector2 info)
+    {
+        ui.setInfo(info);
     }
 }

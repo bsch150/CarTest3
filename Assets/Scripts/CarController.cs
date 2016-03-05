@@ -53,14 +53,6 @@ public class CarController : MonoBehaviour
     private WheelColliderSource FrontLeftWheel;
     private WheelColliderSource BackRightWheel;
     private WheelColliderSource BackLeftWheel;
-    private int numChks;
-    private GameObject track;
-    private int currentCheckpoint = -1;
-    private int currentLap = -1;
-    private Text positionText;
-    private Text timeText;
-    private Text boostText;
-    private Text timesText;
     private float boostAmount;
     private float boostUseRate = 10f;
     private float boostGainPerWheel = 1.2f;
@@ -71,10 +63,8 @@ public class CarController : MonoBehaviour
     private float inAirBoostGain = 2;
     private int numLaps;
     private float[] lapTimes;
-    private int timeKillCounter = -1; //This is the time I use to grow your race time 
     private int playerNumber;
     private int ctrNum;
-    private float startTime;
     private bool invertY = false;
     private bool frozen = true;
     private Vector3 freezePos;
@@ -158,54 +148,12 @@ public class CarController : MonoBehaviour
 
     void assignPlayerNumber(int num)
     {
+        this.gameObject.tag = "player" + num;
         playerNumber = num;
     }
     string getAxisString(string str)
     {
         return str + playerNumber.ToString();
-    }
-    void assignNumLapsAndChks(Vector2 num)
-    {
-        numLaps = (int)num[0];
-        lapTimes = new float[numLaps];
-        numChks = (int)num[1];
-    }
-    void assignNumChks(int num)
-    {
-        numChks = num;
-    }
-    void setTrack(GameObject t)
-    {
-        track = t;
-    }
-    //void setUI(GameObject t)
-    //{
-    //   UI = t;
-    // }
-    void checkNewLap(GameObject t)
-    {
-        if (currentLap == -1)
-        {
-            currentLap = 0;
-            currentCheckpoint = 0;
-            track = t;
-            startTime = Time.time;
-            track.BroadcastMessage("respondWithNumLaps", playerNumber);
-            track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
-        }
-        else {
-            track.BroadcastMessage("checkNewLap", new Vector3(playerNumber, currentLap, currentCheckpoint));
-        }
-    }
-    void confirmNewLap()
-    {
-        //lapTimes[currentLap] = carTime;
-        Debug.Log("confirmed new Lap");
-        lapTimes[currentLap] = Time.time - startTime;
-        currentLap++;
-        currentCheckpoint = 0;
-        track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
-
     }
     void setLastCheckpoint(GameObject chk)
     {
@@ -222,39 +170,6 @@ public class CarController : MonoBehaviour
             // Debug.Log("teset");
             this.transform.rotation = toReset.transform.rotation;
             rb.velocity = new Vector3(0, 0, 0);
-        }
-    }
-    void checkCheckpoint(int num)
-    {
-        if (num == currentCheckpoint + 1)
-        {
-            currentCheckpoint++;
-            Debug.Log("currentCheck =  " + currentCheckpoint);
-            // [0] is the car's playernumber, [1] is the cars lap and [2] is which checkPoint
-            track.BroadcastMessage("checkCheckpoint", new Vector3(playerNumber, currentLap, currentCheckpoint));
-
-        }
-        else {
-            Debug.Log("num == " + num);
-        }
-        // }
-    }
-    void setTimeText(double time)
-    {
-        if (timeKillCounter > 0)
-        {
-            timeKillCounter--;
-            float temp = 0;
-            for (int i = 0; i < numLaps; i++)
-            {
-                temp += lapTimes[i];
-            }
-            //Debug.Log("setting carTime to " + temp);
-            carTime = temp;
-        }
-        else if (currentLap >= 0)
-        {
-            carTime = (((float)(Math.Truncate(time * 100))) / 100);
         }
     }
     void checkReset(float resetButton)
@@ -335,18 +250,6 @@ public class CarController : MonoBehaviour
             pb.transform.position = this.transform.position + new Vector3(0, 3, 0);
             pb.GetComponent<Rigidbody>().velocity = transform.forward * (20) + rb.velocity;
         }
-    }
-    void finishTrack()
-    {
-        currentLap = -1;
-        currentCheckpoint = -1;
-        timeKillCounter = 1000;
-        float sum = 0f;
-        for (int i = 0; i < lapTimes.Length; i++)
-        {
-            sum += lapTimes[i];
-        }
-        Debug.Log("Player " + playerNumber + " finished, time = " + sum + ", lapTime len = " + lapTimes.Length);
     }
     public void FixedUpdate()
     {

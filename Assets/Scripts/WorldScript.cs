@@ -23,10 +23,16 @@ public class WorldScript : MonoBehaviour {
     private int[] controllerNumToPlayerNum;
     private int[] playerNumToControllerNum;
     private int playerNumCounter = 0;
-    private GameObject currentUI;
+    //private GameObject currentUI;
     private float gravityStrength = -25f;
-    private List<PlayerController> players;
+    public List<PlayerController> players;
+    private bool debugging = true;
 
+
+    public void log(string str)
+    {
+        if (debugging) Debug.Log(str);
+    }
     public GameObject getCar(int wc)
     {
         return cars[wc];
@@ -36,7 +42,7 @@ public class WorldScript : MonoBehaviour {
     {
         for(int i = 0; i < tracks.Length; i++)
         {
-			//tracks[i].BroadcastMessage("assignActiveCars", activeCars);
+			tracks[i].BroadcastMessage("assignWorld", this);
         }
     }
 	
@@ -107,7 +113,7 @@ public class WorldScript : MonoBehaviour {
 		for (int i = 0; i < toAdd; i++) {
 			addPlayer ();
 		}
-        currentUI = Instantiate(UIs[toAdd - 1]);
+        //currentUI = Instantiate(UIs[toAdd - 1]);
         initTracks();
     }
 	// Update is called once per frame
@@ -124,7 +130,7 @@ public class WorldScript : MonoBehaviour {
 				tempCamCopy [j] = cams [j];
 			}
 			cams = tempCamCopy;
-            players.Add(new PlayerController(playerNumToControllerNum[actualActive],wc,cars,actualActive+1,spawnPoint,cameraFab));
+            players.Add(new PlayerController(playerNumToControllerNum[actualActive],wc,actualActive+1,spawnPoint,cameraFab,this));
 			//initCar (actualActive);
 			initTracks ();
 			actualActive++;
