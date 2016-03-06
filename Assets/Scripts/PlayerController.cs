@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour {
         inGarage = set;
         //Debug.Log("inGarage = " + inGarage);
     }
-    public void setUI(Vector2 info)
+    public void setUI(Vector3 info)
     {
         ui.setInfo(info);
     }

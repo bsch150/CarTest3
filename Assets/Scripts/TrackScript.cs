@@ -13,7 +13,8 @@ public class TrackScript : MonoBehaviour
 
     private double trackTime;
     private double startTime = -1;
-	Vector2[] carProgress;
+	Vector3[] carProgress;
+    float[] startTimes;
     WorldScript world;
 
     int getPNumFromTag(string tag)
@@ -44,13 +45,13 @@ public class TrackScript : MonoBehaviour
             if(checkNum == 0 && p.finisherTimer > 50)//starting a track
             {
                 p.currentTrack = trackName;
-                carProgress[p.playerNum - 1] = new Vector2(0, 0);
+                carProgress[p.playerNum - 1] = new Vector3(0, 0,carProgress[p.playerNum - 1][2]);
                 update();
             }
         }
         else if(p.currentTrack == trackName) //player is in a track and it's this one
         {
-            Vector2 thisProg = carProgress[p.playerNum - 1];
+            Vector3 thisProg = carProgress[p.playerNum - 1];
             if(thisProg != null)
             {
                 int currLap = System.Convert.ToInt32(thisProg[0]);
@@ -61,14 +62,14 @@ public class TrackScript : MonoBehaviour
                     {
                         if (currLap == numLaps - 1)//Finsh race
                         {
-                            carProgress[p.playerNum - 1] = new Vector2(-1,-1);
+                            carProgress[p.playerNum - 1] = new Vector3(-1,-1, carProgress[p.playerNum - 1][2]);
                             update();
                             p.currentTrack = "NONE";
                             p.finisherTimer = 0;
                         }
                         else//starting new lap
                         {
-                            carProgress[p.playerNum - 1] = new Vector2(currLap + 1, 0);
+                            carProgress[p.playerNum - 1] = new Vector3(currLap + 1, 0, carProgress[p.playerNum - 1][2] - startTimes[p.playerNum - 1]);
                             update();
                         }
                     }
@@ -110,12 +111,12 @@ public class TrackScript : MonoBehaviour
     }
 	void checkNewLap(Vector3 info){
 	}
-    Vector2[] getInitCarProg()
+    Vector3[] getInitCarProg()
     {
-        Vector2[] ret = new Vector2[8];
+        Vector3[] ret = new Vector3[8];
         for (int i = 0; i < ret.Length; i++)
         {
-            ret[i] = new Vector2(-1, -1);
+            ret[i] = new Vector3(-1, -1,-1);
         }
         return ret;
     }
@@ -123,6 +124,7 @@ public class TrackScript : MonoBehaviour
         initCheckpoints();
         trackTime = 0;
         carProgress = getInitCarProg();
+        startTimes = new float[8];
     }
 	void updateTime()
     {
