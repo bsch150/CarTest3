@@ -281,7 +281,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119152}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.75, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 492368}
@@ -459,7 +459,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: c371453afc9ea6f438d63b7100bebb23, type: 2}
   - {fileID: 2100000, guid: 4e74d3e8b12005740b4cd4d66ee840e0, type: 2}
   - {fileID: 2100000, guid: 9a3c109fb1ca8f541a3b0c0d82d44f93, type: 2}
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b157e7738a65dad47a589e9c590298d8, type: 2}
   - {fileID: 2100000, guid: 7626851f791e25d4b86ceb5d9a709d9c, type: 2}
   - {fileID: 2100000, guid: d902d35f3a46632419af28f032870ae1, type: 2}
   - {fileID: 2100000, guid: f1c9dc8f23b46264fb65e072d6ec3f17, type: 2}
@@ -681,6 +681,7 @@ MonoBehaviour:
   FrontWheelRadius: 0.8
   BackWheelRadius: 0.8
   SuspensionDistance: 0
+  FourWheelDrive: 0
   JumpStrength: 60000
   m_XRotationSpeed: 70000
   m_YRotationSpeed: 70000
@@ -690,8 +691,6 @@ MonoBehaviour:
   boostLevel: {fileID: 19863386}
   cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
   PowerBall: {fileID: 183548, guid: 14c0190aa8e518a45b8237afc710ca5f, type: 2}
-  primaryMaterial: {fileID: 2100000, guid: c371453afc9ea6f438d63b7100bebb23, type: 2}
-  secondaryMaterial: {fileID: 2100000, guid: 4e74d3e8b12005740b4cd4d66ee840e0, type: 2}
 --- !u!114 &11458268
 MonoBehaviour:
   m_ObjectHideFlags: 1

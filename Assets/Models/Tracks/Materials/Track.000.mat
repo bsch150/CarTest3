@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Track.000
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _COLOR_ON _DETAIL_MULX2 _NORMALMAP _TEX_ON _VCOLOR_ON
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -19,14 +19,14 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
+          m_Texture: {fileID: 2800000, guid: 7a632f967e8ad42f5bd275898151ab6a, type: 3}
+          m_Scale: {x: 0.1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: e80c3c84ea861404d8a427db8b7abf04, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -34,6 +34,20 @@ Material:
           name: _DetailNormalMap
         second:
           m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Ramp
+        second:
+          m_Texture: {fileID: 2800000, guid: 06a3a01da4ddf5c4eaef7b99cf9a4d80, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _ToonShade
+        second:
+          m_Texture: {fileID: 2800000, guid: 7adafb5f56ea38b4b8a40c9889a508c6, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -48,7 +62,7 @@ Material:
           name: _EmissionMap
         second:
           m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
+          m_Scale: {x: 0.1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
@@ -61,7 +75,7 @@ Material:
         first:
           name: _DetailAlbedoMap
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 17da6d53ec93a0444bd0f751b1d02477, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -74,6 +88,13 @@ Material:
       data:
         first:
           name: _MetallicGlossMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _SpecGlossMap
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -93,8 +114,28 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Outline
+        second: 5.57
+      data:
+        first:
           name: _Parallax
         second: 0.02
+      data:
+        first:
+          name: _DetailTex
+        second: 1
+      data:
+        first:
+          name: _TintColor
+        second: 1
+      data:
+        first:
+          name: _VertexColor
+        second: 1
+      data:
+        first:
+          name: _Brightness
+        second: 0.83
       data:
         first:
           name: _ZWrite
@@ -102,7 +143,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0.5
+        second: 0.523
       data:
         first:
           name: _BumpScale
@@ -135,4 +176,12 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.05490196, g: 0.05490196, b: 0.05490196, a: 1}
+        second: {r: 0.11505192, g: 0.12385691, b: 0.1397059, a: 1}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+      data:
+        first:
+          name: _OutlineColor
+        second: {r: 0, g: 0, b: 0, a: 1}
