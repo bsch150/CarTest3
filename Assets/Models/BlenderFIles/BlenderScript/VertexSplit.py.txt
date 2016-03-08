@@ -1,0 +1,9 @@
+#!BPY
+
+import Blender
+import bpy
+
+def Runner(filename):
+	
+
+Blender.Window.FileSelector(Runner,"Export")
