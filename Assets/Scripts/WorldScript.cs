@@ -42,7 +42,10 @@ public class WorldScript : MonoBehaviour {
     {
         for(int i = 0; i < tracks.Length; i++)
         {
-			tracks[i].BroadcastMessage("assignWorld", this);
+            if (tracks[i].gameObject.activeInHierarchy)
+            {
+                tracks[i].BroadcastMessage("assignWorld", this.gameObject.GetComponent<WorldScript>());
+            }
         }
     }
 	
