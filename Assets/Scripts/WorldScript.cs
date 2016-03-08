@@ -29,6 +29,7 @@ public class WorldScript : MonoBehaviour {
     public List<PlayerController> players;
     private bool debugging = true;
     private ChunkHandler chunkHandler;
+    public tintKey colors = new tintKey();
 
 
     public void log(string str)

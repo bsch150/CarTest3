@@ -6,8 +6,12 @@ public class UIScript : MonoBehaviour {
     GameObject ui;
     private Text posText;
     private Text timeText;
+    private float alpha = .1f;
+    private Color currColor;
+    public Color destColor;
     // Use this for initialization
     public UIScript (GameObject uiFab) {
+        currColor = new Color(0, 0, 0, alpha);
         ui = Instantiate(uiFab);
         Transform[] temp = ui.GetComponentsInChildren<Transform>();
         foreach(Transform t in temp)
@@ -35,8 +39,13 @@ public class UIScript : MonoBehaviour {
             timeText.text = info[2].ToString(); ;
         }
     }
+    public void setTint(Color c)
+    {
+        destColor = new Color(c.r,c.g,c.b,alpha);
+    }
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	public void update () {
+        currColor = Color.Lerp(currColor, destColor, .01f);
+        ui.GetComponent<Image>().color = currColor;
+    }
 }

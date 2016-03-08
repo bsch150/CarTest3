@@ -60,12 +60,6 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CarTest3.CSharp.Plugins.csproj">
@@ -88,6 +82,7 @@
     <Compile Include="Assets\Scripts\InputPlus.cs" />
     <Compile Include="Assets\Scripts\JointSpringSource.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\TintHelper\tintKey.cs" />
     <Compile Include="Assets\Scripts\TrackScript.cs" />
     <Compile Include="Assets\Scripts\TriggerScript.cs" />
     <Compile Include="Assets\Scripts\UIScript.cs" />

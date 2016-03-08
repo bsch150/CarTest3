@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject currentlyOn;
     private UIScript ui;
     int[] currentChunk;
+    public Color tintColor;
     
     public PlayerController(int ctrNum, int carNum, int pNum, Transform spawnP, GameObject cam, WorldScript _world)
     {
@@ -44,6 +45,8 @@ public class PlayerController : MonoBehaviour {
         //Debug.Log("update");
         dpadCounter++;
         finisherTimer++;
+        ui.update();
+        setTintColor(world.colors.getColor(world.getCoordsFromString(currentlyOn)));
     }
     void handleChunkingDiff()
     {
@@ -137,6 +140,10 @@ public class PlayerController : MonoBehaviour {
     {
         inGarage = set;
         //Debug.Log("inGarage = " + inGarage);
+    }
+    public void setTintColor(Color c)
+    {
+        ui.setTint(c);
     }
     public void setUI(Vector3 info)
     {
