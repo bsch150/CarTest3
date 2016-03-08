@@ -77,6 +77,7 @@ public class CarController : MonoBehaviour
     private bool inGarage = false;
     private int garageCounter = 0;
     private PlayerController playerCont;
+    public GameObject currentlyOn;
 
 
     private Rigidbody rb;
@@ -306,6 +307,7 @@ public class CarController : MonoBehaviour
             this.transform.rotation = freezeRot;
         }
         fireCount++;
+        currentlyOn = FrontRightWheel.currentlyOn;
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
     {

@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\BryanWheelCollider\WheelCollider2.cs" />
     <Compile Include="Assets\Scripts\CarController.cs" />
     <Compile Include="Assets\Scripts\CheckpointScript.cs" />
+    <Compile Include="Assets\Scripts\Chunker\ChunkHandler.cs" />
     <Compile Include="Assets\Scripts\Explosive.cs" />
     <Compile Include="Assets\Scripts\GarageScript.cs" />
     <Compile Include="Assets\Scripts\GarageScripts\MainGarage.cs" />

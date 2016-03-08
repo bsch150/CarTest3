@@ -11,7 +11,8 @@ public class WorldScript : MonoBehaviour {
     public Transform spawnPoint;
     public GameObject[] UIs;
 	public GameObject cameraFab;
-    public GameObject[] tracks; 
+    public GameObject[] tracks;
+    public GameObject chunkedObjectsParent;
 
 
     private GameObject tui;
@@ -27,6 +28,7 @@ public class WorldScript : MonoBehaviour {
     private float gravityStrength = -25f;
     public List<PlayerController> players;
     private bool debugging = true;
+    private ChunkHandler chunkHandler;
 
 
     public void log(string str)
@@ -118,6 +120,9 @@ public class WorldScript : MonoBehaviour {
 		}
         //currentUI = Instantiate(UIs[toAdd - 1]);
         initTracks();
+        chunkHandler = new ChunkHandler(chunkedObjectsParent);
+        chunkHandler.unloadAll();
+        chunkHandler.load(new int[2] { 0, 2 });
     }
 	// Update is called once per frame
 	void addPlayer(){
@@ -143,6 +148,27 @@ public class WorldScript : MonoBehaviour {
 			}
 		}
 	}
+    public int[] getCoordsFromString(GameObject str)
+    {if (str != null)
+        {
+
+
+            return chunkHandler.coordParse(str.name);
+        }
+        else
+        {
+            return new int[2] { -1, -1 };
+        }
+    }
+    public void doChunks(GameObject prev,GameObject next)
+    {
+        int[] one = getCoordsFromString(prev);
+        int[] two = getCoordsFromString(next);
+        if (one[0] != -1 && one[1] != -1 && two[0] != -1 && two[1] != -1)
+        {
+            chunkHandler.handleStep(one, two);
+        }
+    }
 	void FixedUpdate () {
         foreach(PlayerController p in players)
         {
@@ -151,6 +177,9 @@ public class WorldScript : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.LoadLevel("Menu");
+        }else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            chunkHandler.handleStep(new int[2] { 0, 2 }, new int[2] { 0, 3 });
         }
 		for (int i = 0; i < numControllers; i++)
         {

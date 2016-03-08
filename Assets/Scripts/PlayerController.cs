@@ -10,12 +10,15 @@ public class PlayerController : MonoBehaviour {
     private Transform spawnPoint;
     private bool inGarage = false;
     GameObject car;
+    CarController carScript;
     GameObject cameraFab;
     GameObject carCam;
     WorldScript world;
     private int dpadCounter = 0;
     public string currentTrack = "NONE";
+    public GameObject currentlyOn;
     private UIScript ui;
+    int[] currentChunk;
     
     public PlayerController(int ctrNum, int carNum, int pNum, Transform spawnP, GameObject cam, WorldScript _world)
     {
@@ -26,6 +29,7 @@ public class PlayerController : MonoBehaviour {
         spawnPoint = spawnP;
         cameraFab = cam;
         ui = new UIScript(world.UIs[playerNum - 1]);
+        //currentChunk = startChunk;
         initCar();
     }
 	void Start () {
@@ -36,9 +40,18 @@ public class PlayerController : MonoBehaviour {
 	public void updateThis() {
         checkCamToggle();
         checkGarage();
+        handleChunkingDiff();
         //Debug.Log("update");
         dpadCounter++;
         finisherTimer++;
+    }
+    void handleChunkingDiff()
+    {
+        if (carScript.currentlyOn != currentlyOn)
+        {
+            world.doChunks(currentlyOn,carScript.currentlyOn);
+            currentlyOn = carScript.currentlyOn;
+        }
     }
     void checkGarage()
     {
@@ -94,6 +107,7 @@ public class PlayerController : MonoBehaviour {
         //car.BroadcastMessage("setTrack", this.gameObject);
         if(carCam == null)carCam = Instantiate (cameraFab);
         car.BroadcastMessage("assignCam", carCam);
+        carScript = car.GetComponent<CarController>();
         carCam.BroadcastMessage("setTarget", (car.transform));
         //carCam.transform.SetParent(car.transform);
 		//cams[carNum].BroadcastMessage ("assignPlayerNum", carNum+1);
