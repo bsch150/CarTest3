@@ -18,6 +18,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 using InputPlusControl;
+using System.Text.RegularExpressions;
 
 public class CarController : MonoBehaviour
 {
@@ -188,6 +189,10 @@ public class CarController : MonoBehaviour
             resetCounter = 0;
         }
     }
+    public void setHighScoreText(string str)
+    {
+        playerCont.setHighScoreText(str);
+    }
     void cameraControl(Vector2 rightThumb)
     {
         cam.BroadcastMessage("setRotateOn", rightThumb);
@@ -307,7 +312,20 @@ public class CarController : MonoBehaviour
             this.transform.rotation = freezeRot;
         }
         fireCount++;
-        currentlyOn = FrontRightWheel.currentlyOn;
+        RaycastHit[] result = Physics.RaycastAll(new Ray(transform.position, -Vector3.up));
+
+        foreach(RaycastHit r in result)
+        {
+            string objName = r.transform.gameObject.name;
+            string pat = @".*_\d\d?_\d\d?_.*";
+            Regex reg = new Regex(pat);
+            Match m = reg.Match(objName);
+            if (m.Success)
+            {
+                currentlyOn = r.transform.gameObject;
+            }
+        }
+        //currentlyOn = FrontRightWheel.currentlyOn;
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
     {

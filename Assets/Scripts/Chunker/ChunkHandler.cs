@@ -79,9 +79,12 @@ public class ChunkHandler : MonoBehaviour {
     }
     public void load(int[] co)
     {
-        foreach (int[] c in chunks[co[0], co[1]].neighbors)
+        if (co[0] != -1 && co[1] != -1)
         {
-            chunks[c[0], c[1]].enable();
+            foreach (int[] c in chunks[co[0], co[1]].neighbors)
+            {
+                chunks[c[0], c[1]].enable();
+            }
         }
     }
     public void unloadAll()

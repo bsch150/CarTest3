@@ -13,6 +13,7 @@ TagManager:
   - player6
   - player7
   - player8
+  - TrackMagic
   layers:
   - Default
   - TransparentFX

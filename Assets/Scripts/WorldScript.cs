@@ -110,6 +110,7 @@ public class WorldScript : MonoBehaviour {
     }
     void Start ()
     {
+        chunkHandler = new ChunkHandler(chunkedObjectsParent);
         players = new List<PlayerController>();
         setGravity(gravityStrength);
         fillControllerPlayerArray();
@@ -121,9 +122,14 @@ public class WorldScript : MonoBehaviour {
 		}
         //currentUI = Instantiate(UIs[toAdd - 1]);
         initTracks();
-        chunkHandler = new ChunkHandler(chunkedObjectsParent);
-        chunkHandler.unloadAll();
-        chunkHandler.load(new int[2] { 0, 2 });
+        List<int[]> toLoad = new List<int[]>();
+        foreach(PlayerController p in players)
+        {
+            toLoad.Add(getCoordsFromString(p.currentlyOn));
+        }
+        //chunkHandler.unloadAll();
+        foreach (int[] i in toLoad) chunkHandler.load(i);
+        //chunkHandler.load(new int[2] { 0, 2 });
     }
 	// Update is called once per frame
 	void addPlayer(){

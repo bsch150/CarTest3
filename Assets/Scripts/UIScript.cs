@@ -6,6 +6,7 @@ public class UIScript : MonoBehaviour {
     GameObject ui;
     private Text posText;
     private Text timeText;
+    private Text hsText;
     private float alpha = .1f;
     private Color currColor;
     public Color destColor;
@@ -24,6 +25,10 @@ public class UIScript : MonoBehaviour {
             {
                 timeText = t.gameObject.GetComponent<Text>();
             }
+            else if (t.gameObject.name == "HighScore")
+            {
+                hsText = t.gameObject.GetComponent<Text>();
+            }
         }
 	}
 	public void setInfo(Vector3 info)
@@ -36,7 +41,7 @@ public class UIScript : MonoBehaviour {
         else
         {
             posText.text = info[0] + ", " + info[1];
-            timeText.text = info[2].ToString(); ;
+            timeText.text = info[2].ToString(); 
         }
     }
     public void setTint(Color c)
@@ -47,5 +52,9 @@ public class UIScript : MonoBehaviour {
 	public void update () {
         currColor = Color.Lerp(currColor, destColor, .01f);
         ui.GetComponent<Image>().color = currColor;
+    }
+    public void setHighScoreText(string str)
+    {
+        hsText.text = str;
     }
 }

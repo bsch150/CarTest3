@@ -16,6 +16,21 @@ public class TrackScript : MonoBehaviour
 	Vector3[] carProgress;
     float[] startTimes;
     WorldScript world;
+    List<Transform> trackMagicObjs;
+    List<PlayerController> currentDrivers;
+
+    List<Transform> getTrackMagic()
+    {
+        List<Transform> ret = new List<Transform>();
+        foreach(Transform g in GetComponentsInChildren<Transform>())
+        {
+            if(g.tag == "TrackMagic")
+            {
+                ret.Add(g);
+            }
+        }
+        return ret;
+    }
 
     int getPNumFromTag(string tag)
     {
@@ -46,6 +61,7 @@ public class TrackScript : MonoBehaviour
             {
                 p.currentTrack = trackName;
                 carProgress[p.playerNum - 1] = new Vector3(0, 0,carProgress[p.playerNum - 1][2]);
+                currentDrivers.Add(p);
                 update();
             }
         }
@@ -63,9 +79,11 @@ public class TrackScript : MonoBehaviour
                         if (currLap == numLaps - 1)//Finsh race
                         {
                             carProgress[p.playerNum - 1] = new Vector3(-1,-1, carProgress[p.playerNum - 1][2]);
-                            update();
                             p.currentTrack = "NONE";
+                            update();
+                            currentDrivers.Remove(p);
                             p.finisherTimer = 0;
+                            update();
                         }
                         else//starting new lap
                         {
@@ -100,7 +118,36 @@ public class TrackScript : MonoBehaviour
             //prompt p with "off track?"
         }
     }
-
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag.Contains("player"))
+        {
+            string str = "This is a test";
+            other.gameObject.GetComponentInParent<CarController>().setHighScoreText(str);
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag.Contains("player"))
+        {
+            string str = "";
+            other.gameObject.GetComponentInParent<CarController>().setHighScoreText(str);
+        }
+    }
+    void showTrackMagic()
+    {
+        foreach(Transform t in trackMagicObjs)
+        {
+            t.gameObject.SetActive(true);
+        }
+    }
+    void hideTrackMagic()
+    {
+        foreach (Transform t in trackMagicObjs)
+        {
+            t.gameObject.SetActive(false);
+        }
+    }
     void initCheckpoints()
     {
         for(int i = 0; i < chks.Length; i++)
@@ -125,6 +172,9 @@ public class TrackScript : MonoBehaviour
         trackTime = 0;
         carProgress = getInitCarProg();
         startTimes = new float[8];
+        trackMagicObjs = getTrackMagic();
+        currentDrivers = new List<PlayerController>();
+        hideTrackMagic();
     }
 	void updateTime()
     {
@@ -136,9 +186,16 @@ public class TrackScript : MonoBehaviour
         startTime = -1;
     }
 	void update () {
-        foreach(PlayerController p in world.players)
+        if (currentDrivers.Count > 0)
         {
-            p.setUI(carProgress[p.playerNum - 1]);
+            showTrackMagic();
+            foreach (PlayerController p in currentDrivers)
+            {
+                p.setUI(carProgress[p.playerNum - 1]);
+            }
+        }
+        else {
+            hideTrackMagic();
         }
     }
 }

@@ -16,10 +16,12 @@ public class PlayerController : MonoBehaviour {
     WorldScript world;
     private int dpadCounter = 0;
     public string currentTrack = "NONE";
+    bool flag = false;
     public GameObject currentlyOn;
     private UIScript ui;
     int[] currentChunk;
     public Color tintColor;
+    private float startTime;
     
     public PlayerController(int ctrNum, int carNum, int pNum, Transform spawnP, GameObject cam, WorldScript _world)
     {
@@ -46,7 +48,7 @@ public class PlayerController : MonoBehaviour {
         dpadCounter++;
         finisherTimer++;
         ui.update();
-        setTintColor(world.colors.getColor(world.getCoordsFromString(currentlyOn)));
+        //if(currentlyOn !=  )setTintColor(world.colors.getColor(world.getCoordsFromString(currentlyOn)));
     }
     void handleChunkingDiff()
     {
@@ -147,6 +149,30 @@ public class PlayerController : MonoBehaviour {
     }
     public void setUI(Vector3 info)
     {
+        if(currentTrack != "NONE" && !flag)
+        {
+            flag = true;
+            startTime = Time.time;
+        }else if(currentTrack == "NONE" && flag)
+        {
+            flag = false;
+        }
+        else if(currentTrack != "NONE")
+        {
+            info[2] = Time.time - startTime;
+            setHighScoreText("");
+        }
         ui.setInfo(info);
+    }
+    public void setHighScoreText(string str)
+    {
+        if (currentTrack == "NONE")
+        {
+            ui.setHighScoreText(str);
+        }
+        else
+        {
+            ui.setHighScoreText("");
+        }
     }
 }
