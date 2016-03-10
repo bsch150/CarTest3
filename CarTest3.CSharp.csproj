@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\CarController.cs" />
     <Compile Include="Assets\Scripts\CheckpointScript.cs" />
     <Compile Include="Assets\Scripts\Chunker\ChunkHandler.cs" />
-    <Compile Include="Assets\Scripts\Explosive.cs" />
     <Compile Include="Assets\Scripts\GarageScript.cs" />
     <Compile Include="Assets\Scripts\GarageScripts\MainGarage.cs" />
     <Compile Include="Assets\Scripts\GarageScripts\NewBehaviourScript.cs" />
@@ -88,6 +87,10 @@
     <Compile Include="Assets\Scripts\InputPlus.cs" />
     <Compile Include="Assets\Scripts\JointSpringSource.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\PowerBallScripts\Explosive.cs" />
+    <Compile Include="Assets\Scripts\PowerBallScripts\PowerBallSpawner.cs" />
+    <Compile Include="Assets\Scripts\PowerBallScripts\Powerball.cs" />
+    <Compile Include="Assets\Scripts\PowerBallScripts\PowerballBallBehavior.cs" />
     <Compile Include="Assets\Scripts\StartScript.cs" />
     <Compile Include="Assets\Scripts\TintHelper\tintKey.cs" />
     <Compile Include="Assets\Scripts\TrackScript.cs" />

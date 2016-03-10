@@ -13,9 +13,9 @@ GameObject:
   - 23: {fileID: 2367324}
   - 54: {fileID: 5402774}
   - 135: {fileID: 13537904}
-  - 114: {fileID: 11428046}
+  - 114: {fileID: 11410534}
   m_Layer: 0
-  m_Name: Explosive
+  m_Name: Powerball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,8 +57,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 456492}
   m_Father: {fileID: 0}
@@ -111,7 +111,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &11428046
+--- !u!114 &11410534
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -119,10 +119,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 183548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea8406df0e341cc48875941e90cf122e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e35184ca9438b449b514cb72436d1ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exp: {fileID: 183548}
+  active: 0
 --- !u!135 &13512586
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -133,7 +133,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 14.8
+  m_Radius: 2.14
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &13537904
 SphereCollider:
@@ -141,7 +141,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183548}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9f93f63d068b08c459038c40fce897d8, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1616,7 +1616,7 @@ ParticleSystemRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 52b04c0184e9aab48b24b574c7e81fc0, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0

@@ -103,7 +103,7 @@ public class ChunkHandler : MonoBehaviour {
     }
     public void handleStep(int[] prevChunk, int[] nextChunk)
     {
-        Debug.Log("handleStep called");
+        //Debug.Log("handleStep called");
         HashSet<int[]> fromPrev = chunks[prevChunk[0], prevChunk[1]].neighbors;
         HashSet<int[]> fromNext = chunks[nextChunk[0], nextChunk[1]].neighbors;
         HashSet<int[]> toOff = fromPrev;
@@ -146,7 +146,7 @@ class chunk
     }
     public void disable()
     {
-        Debug.Log("disabling " + coord[0] + ", " + coord[1]);
+        //Debug.Log("disabling " + coord[0] + ", " + coord[1]);
         foreach (Transform t in ts)
         {
             t.gameObject.SetActive(false);
