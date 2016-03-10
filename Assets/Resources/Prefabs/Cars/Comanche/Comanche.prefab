@@ -684,6 +684,7 @@ MonoBehaviour:
   boostLevel: {fileID: 19811600}
   cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
   PowerBall: {fileID: 183548, guid: 14c0190aa8e518a45b8237afc710ca5f, type: 2}
+  currentlyOn: {fileID: 0}
 --- !u!114 &11459794
 MonoBehaviour:
   m_ObjectHideFlags: 1

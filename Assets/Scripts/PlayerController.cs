@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
     GameObject carCam;
     WorldScript world;
     private int dpadCounter = 0;
-    public string currentTrack = "NONE";
+    public TrackScript currentTrack = null;
     bool flag = false;
     public GameObject currentlyOn;
     private UIScript ui;
@@ -31,9 +31,14 @@ public class PlayerController : MonoBehaviour {
         whichCar = carNum;
         spawnPoint = spawnP;
         cameraFab = cam;
-        ui = new UIScript(world.UIs[playerNum - 1]);
+        ui = new UIScript(world.UIs[playerNum - 1],ctrNum,this);
         //currentChunk = startChunk;
         initCar();
+    }
+    public void leaveTrack()
+    {
+        currentTrack.finishRace(this);
+        setUI(new Vector3(-1, -1, Time.time));
     }
 	void Start () {
 	
@@ -48,6 +53,7 @@ public class PlayerController : MonoBehaviour {
         dpadCounter++;
         finisherTimer++;
         ui.update();
+        checkStart();
         //if(currentlyOn !=  )setTintColor(world.colors.getColor(world.getCoordsFromString(currentlyOn)));
     }
     void handleChunkingDiff()
@@ -96,6 +102,13 @@ public class PlayerController : MonoBehaviour {
         }
         //carCam.BroadcastMessage("setTarget", (car.transform));
     }
+    void checkStart()
+    {
+        if (InputPlus.GetData(controllerNum + 1, ControllerVarEnum.Interface_right) > 0)
+        {
+            ui.toggleStart();
+        }
+    }
     void initCar()
     {
         if (car != null)
@@ -109,6 +122,7 @@ public class PlayerController : MonoBehaviour {
         car.BroadcastMessage("enableDrive");
 		car.BroadcastMessage("setLastCheckpoint", spawnPoint.gameObject);
         car.BroadcastMessage("setPlayerController", this);
+
         //car.BroadcastMessage("setTrack", this.gameObject);
         if(carCam == null)carCam = Instantiate (cameraFab);
         car.BroadcastMessage("assignCam", carCam);
@@ -119,6 +133,7 @@ public class PlayerController : MonoBehaviour {
         if (controllerNum != -1)
         {
             car.BroadcastMessage("assignControllerNumber", controllerNum);
+            ui.controllerNum = controllerNum;
             car.BroadcastMessage("unfreeze");
         }
 
@@ -132,10 +147,12 @@ public class PlayerController : MonoBehaviour {
         return temp;
 
     }
+
     public void setControllerNum(int i)
     {
         controllerNum = i;
         car.BroadcastMessage("assignControllerNumber", controllerNum);
+        ui.controllerNum = controllerNum;
         car.BroadcastMessage("unfreeze");
     }
     public void setInGarage(bool set)
@@ -149,15 +166,15 @@ public class PlayerController : MonoBehaviour {
     }
     public void setUI(Vector3 info)
     {
-        if(currentTrack != "NONE" && !flag)
+        if(currentTrack != null && !flag)
         {
             flag = true;
             startTime = Time.time;
-        }else if(currentTrack == "NONE" && flag)
+        }else if(currentTrack == null && flag)
         {
             flag = false;
         }
-        else if(currentTrack != "NONE")
+        else if(currentTrack != null)
         {
             info[2] = Time.time - startTime;
             setHighScoreText("");
@@ -166,7 +183,7 @@ public class PlayerController : MonoBehaviour {
     }
     public void setHighScoreText(string str)
     {
-        if (currentTrack == "NONE")
+        if (currentTrack == null)
         {
             ui.setHighScoreText(str);
         }

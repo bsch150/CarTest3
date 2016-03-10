@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\InputPlus.cs" />
     <Compile Include="Assets\Scripts\JointSpringSource.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\StartScript.cs" />
     <Compile Include="Assets\Scripts\TintHelper\tintKey.cs" />
     <Compile Include="Assets\Scripts\TrackScript.cs" />
     <Compile Include="Assets\Scripts\TriggerScript.cs" />

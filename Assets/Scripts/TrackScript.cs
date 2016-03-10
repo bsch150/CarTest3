@@ -55,17 +55,17 @@ public class TrackScript : MonoBehaviour
     {
         int num = getPNumFromTag(objectTag);
         PlayerController p = world.players[num - 1];
-        if (p.currentTrack == "NONE") //player is not in a track
+        if (p.currentTrack == null) //player is not in a track
         {
             if(checkNum == 0 && p.finisherTimer > 50)//starting a track
             {
-                p.currentTrack = trackName;
+                p.currentTrack = this;
                 carProgress[p.playerNum - 1] = new Vector3(0, 0,carProgress[p.playerNum - 1][2]);
                 currentDrivers.Add(p);
                 update();
             }
         }
-        else if(p.currentTrack == trackName) //player is in a track and it's this one
+        else if(p.currentTrack == this) //player is in a track and it's this one
         {
             Vector3 thisProg = carProgress[p.playerNum - 1];
             if(thisProg != null)
@@ -78,12 +78,7 @@ public class TrackScript : MonoBehaviour
                     {
                         if (currLap == numLaps - 1)//Finsh race
                         {
-                            carProgress[p.playerNum - 1] = new Vector3(-1,-1, carProgress[p.playerNum - 1][2]);
-                            p.currentTrack = "NONE";
-                            update();
-                            currentDrivers.Remove(p);
-                            p.finisherTimer = 0;
-                            update();
+                            finishRace(p);
                         }
                         else//starting new lap
                         {
@@ -117,6 +112,15 @@ public class TrackScript : MonoBehaviour
         {
             //prompt p with "off track?"
         }
+    }
+    public void finishRace(PlayerController p)
+    {
+        carProgress[p.playerNum - 1] = new Vector3(-1, -1, carProgress[p.playerNum - 1][2]);
+        update();
+        p.currentTrack = null;
+        currentDrivers.Remove(p);
+        p.finisherTimer = 0;
+        update();
     }
     void OnTriggerEnter(Collider other)
     {
@@ -191,7 +195,13 @@ public class TrackScript : MonoBehaviour
             showTrackMagic();
             foreach (PlayerController p in currentDrivers)
             {
-                p.setUI(carProgress[p.playerNum - 1]);
+                if (p.currentTrack == null)
+                {
+                    currentDrivers.Remove(p);
+                }
+                else {
+                    p.setUI(carProgress[p.playerNum - 1]);
+                }
             }
         }
         else {

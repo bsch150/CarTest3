@@ -896,6 +896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11433392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -907,6 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11438572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -918,6 +920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11440630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -941,6 +944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11443500
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -952,6 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11444934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -963,6 +968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11444990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -987,6 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!114 &11463790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1028,6 +1035,7 @@ MonoBehaviour:
   boostLevel: {fileID: 19815196}
   cameraPrefab: {fileID: 115666, guid: e3e777fb69617ac4dac003527ec225e4, type: 2}
   PowerBall: {fileID: 183548, guid: 14c0190aa8e518a45b8237afc710ca5f, type: 2}
+  currentlyOn: {fileID: 0}
 --- !u!114 &11470810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1039,6 +1047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1998f4d5d6ee44b5f9d37d825a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyOn: {fileID: 0}
 --- !u!136 &13628608
 CapsuleCollider:
   m_ObjectHideFlags: 1
