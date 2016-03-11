@@ -171,6 +171,7 @@ ModelImporter:
     100326: WinterTree0_proxy_017
     100328: WinterTree0_proxy_018
     100330: WinterTree0pro
+    100332: Cube_001
     400000: //RootNode
     400002: GroundPart01
     400004: GroundPart01_MeshPart0
@@ -337,6 +338,7 @@ ModelImporter:
     400326: WinterTree0_proxy_017
     400328: WinterTree0_proxy_018
     400330: WinterTree0pro
+    400332: Cube_001
     2300000: GroundPart01_MeshPart0
     2300002: GroundPart01_MeshPart1
     2300004: GroundPart01_MeshPart2
@@ -502,6 +504,7 @@ ModelImporter:
     2300324: WinterTree0_proxy_017
     2300326: WinterTree0_proxy_018
     2300328: WinterTree0pro
+    2300330: Cube_001
     3300000: GroundPart01_MeshPart0
     3300002: GroundPart01_MeshPart1
     3300004: GroundPart01_MeshPart2
@@ -667,6 +670,7 @@ ModelImporter:
     3300324: WinterTree0_proxy_017
     3300326: WinterTree0_proxy_018
     3300328: WinterTree0pro
+    3300330: Cube_001
     4300000: GroundPart01_MeshPart0
     4300002: GroundPart01_MeshPart1
     4300004: GroundPart01_MeshPart2
@@ -832,6 +836,7 @@ ModelImporter:
     4300324: WinterTree0_proxy_017
     4300326: WinterTree0_proxy_018
     4300328: WinterTree0pro
+    4300330: Cube_001
     6400000: GroundPart01_MeshPart0
     6400002: GroundPart01_MeshPart1
     6400004: GroundPart01_MeshPart2
@@ -997,6 +1002,7 @@ ModelImporter:
     6400324: WinterTree0_proxy_017
     6400326: WinterTree0_proxy_018
     6400328: WinterTree0pro
+    6400330: Cube_001
     7400000: Default Take
     9500000: //RootNode
   materials:

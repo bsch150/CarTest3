@@ -51,6 +51,7 @@ ModelImporter:
     100086: TreeLayer_MeshPart1
     100088: WinterTree0_proxy_001
     100090: GroundPart_MeshPart3
+    100092: Cube_001
     400000: //RootNode
     400002: Garage01
     400004: GroundPart
@@ -97,6 +98,7 @@ ModelImporter:
     400086: TreeLayer_MeshPart1
     400088: WinterTree0_proxy_001
     400090: GroundPart_MeshPart3
+    400092: Cube_001
     2300000: Garage01
     2300002: GroundPart01
     2300004: GroundPart02
@@ -139,6 +141,7 @@ ModelImporter:
     2300078: TreeLayer_MeshPart1
     2300080: WinterTree0_proxy_001
     2300082: GroundPart_MeshPart3
+    2300084: Cube_001
     3300000: Garage01
     3300002: GroundPart01
     3300004: GroundPart02
@@ -181,6 +184,7 @@ ModelImporter:
     3300078: TreeLayer_MeshPart1
     3300080: WinterTree0_proxy_001
     3300082: GroundPart_MeshPart3
+    3300084: Cube_001
     4300000: GroundPart05
     4300002: GroundPart04
     4300004: GroundPart03
@@ -223,6 +227,7 @@ ModelImporter:
     4300078: _1_2_
     4300080: WinterTree0_proxy_001
     4300082: GroundPart_MeshPart3
+    4300084: Cube_001
     7400000: Default Take
     9500000: //RootNode
   materials:
