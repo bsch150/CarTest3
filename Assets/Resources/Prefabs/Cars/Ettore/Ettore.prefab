@@ -1026,10 +1026,10 @@ MonoBehaviour:
   BackWheelRadius: 0.8
   SuspensionDistance: 0
   FourWheelDrive: 0
-  JumpStrength: 120000
-  m_XRotationSpeed: 70000
-  m_YRotationSpeed: 70000
-  m_ZRotationSpeed: 70000
+  JumpStrength: 150000
+  m_XRotationSpeed: 90000
+  m_YRotationSpeed: 90000
+  m_ZRotationSpeed: 90000
   canDrive: 0
   Boost: {fileID: 19829304}
   boostLevel: {fileID: 19815196}

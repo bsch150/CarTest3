@@ -60,12 +60,6 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CarTest3.CSharp.Plugins.csproj">
@@ -79,6 +73,7 @@
     <Compile Include="Assets\Scripts\CarController.cs" />
     <Compile Include="Assets\Scripts\CheckpointScript.cs" />
     <Compile Include="Assets\Scripts\Chunker\ChunkHandler.cs" />
+    <Compile Include="Assets\Scripts\EnvironmentScripts\Fan.cs" />
     <Compile Include="Assets\Scripts\GarageScript.cs" />
     <Compile Include="Assets\Scripts\GarageScripts\MainGarage.cs" />
     <Compile Include="Assets\Scripts\GarageScripts\NewBehaviourScript.cs" />

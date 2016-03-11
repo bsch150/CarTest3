@@ -51,7 +51,7 @@ public class UIScript : MonoBehaviour {
 	}
     void splitByNumPlayers()
     {
-        int numRows = (numPlayers == 2) ? 2 : Mathf.RoundToInt(numPlayers / 2);
+        int numRows = (numPlayers == 2) ? 2 : (numPlayers == 1) ? 1 : Mathf.RoundToInt(numPlayers / 2);
         float y = (Screen.height / 2) - ((playerNum * ((Screen.height / numRows))));
         posText.transform.localPosition = new Vector3(posText.transform.localPosition[0], y+75, posText.transform.localPosition[2]);
         timeText.transform.localPosition = new Vector3(timeText.transform.localPosition[0], y+400, timeText.transform.localPosition[2]);
