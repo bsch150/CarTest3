@@ -37,7 +37,7 @@ public class StartScript : MonoBehaviour {
     }
     void quit()
     {
-
+        Application.Quit();
     }
     string getSelected()
     {

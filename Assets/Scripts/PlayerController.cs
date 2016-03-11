@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
     private Transform spawnPoint;
     private bool inGarage = false;
     GameObject car;
-    CarController carScript;
+    public CarController carScript;
     GameObject cameraFab;
     GameObject carCam;
     WorldScript world;
@@ -22,7 +22,10 @@ public class PlayerController : MonoBehaviour {
     int[] currentChunk;
     public Color tintColor;
     private float startTime;
-    
+    PowerballManager powerballManager;
+    SphereCollider chunkCollider;
+
+
     public PlayerController(int ctrNum, int carNum, int pNum, Transform spawnP, GameObject cam, WorldScript _world)
     {
         world = _world;
@@ -34,6 +37,14 @@ public class PlayerController : MonoBehaviour {
         ui = new UIScript(world.UIs[playerNum - 1],ctrNum,this);
         //currentChunk = startChunk;
         initCar();
+        powerballManager = new PowerballManager(carScript.PowerBall, this);
+    }
+    void initChunkCollider()
+    {
+        chunkCollider = car.AddComponent<SphereCollider>();
+        chunkCollider.radius = 1500;
+        chunkCollider.isTrigger = true;
+
     }
     public void leaveTrack()
     {
@@ -41,11 +52,27 @@ public class PlayerController : MonoBehaviour {
         setUI(new Vector3(-1, -1, Time.time));
     }
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	public void updateThis() {
+
+    }
+    public void collideWithSomethingMacro(Collider other)
+    {
+        int[] coords = world.getCoordsFromString(other.gameObject);
+        if (coords[0] != -1 && coords[1] != -1)
+        {
+            world.chunkHandler.add(other.transform);
+        }
+    }
+    public void removeSomethingMacro(Collider other)
+    {
+        int[] coords = world.getCoordsFromString(other.gameObject);
+        if (coords[0] != -1 && coords[1] != -1)
+        {
+            world.chunkHandler.remove(other.transform);
+        }
+    }
+
+    // Update is called once per frame
+    public void updateThis() {
         checkCamToggle();
         checkGarage();
         handleChunkingDiff();
@@ -54,6 +81,7 @@ public class PlayerController : MonoBehaviour {
         finisherTimer++;
         ui.update();
         checkStart();
+        powerballManager.act();
         //if(currentlyOn !=  )setTintColor(world.colors.getColor(world.getCoordsFromString(currentlyOn)));
     }
     void handleChunkingDiff()
@@ -136,6 +164,7 @@ public class PlayerController : MonoBehaviour {
             ui.controllerNum = controllerNum;
             car.BroadcastMessage("unfreeze");
         }
+        initChunkCollider();
 
     }
     GameObject instantiateCarAndPos(GameObject c, int num)
@@ -147,7 +176,26 @@ public class PlayerController : MonoBehaviour {
         return temp;
 
     }
-
+    public void splitCam(int numPlayers)
+    {
+        if(numPlayers == 2)
+        {
+            if(playerNum == 1)
+            {
+                Camera c = carCam.GetComponentInChildren<Camera>();
+                c.rect = new Rect(0f, .5f, 1f, .5f);
+            }
+            else if (playerNum == 2)
+            {
+                Camera c = carCam.GetComponentInChildren<Camera>();
+                c.rect = new Rect(0f, 0f, 1f, .5f);
+            }
+        }
+    }
+    public void collideWithPowerball(Powerball behave)
+    {
+        powerballManager.checkAdd(this, behave);
+    }
     public void setControllerNum(int i)
     {
         controllerNum = i;
@@ -191,5 +239,9 @@ public class PlayerController : MonoBehaviour {
         {
             ui.setHighScoreText("");
         }
+    }
+    public void fire()
+    {
+        powerballManager.fire(car.GetComponent<Rigidbody>().velocity);
     }
 }

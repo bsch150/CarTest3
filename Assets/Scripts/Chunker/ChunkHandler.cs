@@ -8,10 +8,15 @@ public class ChunkHandler : MonoBehaviour {
     public int maxX = -1;
     public int maxY = -1;
     public int renderDistance = 1;
+    private HashSet<Transform> inside;
+    private HashSet<Transform> outside;
+    private bool flag;
     public ChunkHandler(GameObject _map)
     {
         map = _map;
         loadChunks();
+        inside = new HashSet<Transform>();
+        outside = new HashSet<Transform>();
     }
     public int[] coordParse(string str)//turns string in format of "_0_2_" to a coordinate (0,2)
     {
@@ -34,13 +39,51 @@ public class ChunkHandler : MonoBehaviour {
                 Debug.Log("Your map was not named correctly for chunking");
                 ret = new int[2] { 0, 0 };
             }
-            Debug.Log(firstNum + ", " + secondNum);
+            //Debug.Log(firstNum + ", " + secondNum);
         }
         else
         {
             ret = new int[2] { -1, -1 };
         }
         return ret;
+    }
+    public void add(Transform t)
+    {
+        int count = inside.Count;
+        inside.Add(t);
+        //outside.Remove(t);
+        flag = count == inside.Count;
+        act();
+    }
+    public void remove(Transform t)
+    {
+        int count = outside.Count;
+        outside.Add(t);
+        //inside.Remove(t);
+        flag = count == outside.Count;
+        act();
+    }
+    public void act()
+    {
+        if (!flag)
+        {
+            HashSet<Transform> toAdd = inside;
+            HashSet<Transform> toSubtract = outside;
+            toAdd.ExceptWith(toSubtract);
+            toSubtract.ExceptWith(toAdd);
+            foreach (Transform t in toAdd)
+            {
+                int[] vec = coordParse(t.gameObject.name);
+                load(vec);
+            }
+            foreach (Transform t in toSubtract)
+            {
+                int[] vec = coordParse(t.gameObject.name);
+                unload(vec);
+            }
+            outside = new HashSet<Transform>();
+            inside = new HashSet<Transform>();
+        }
     }
     void loadChunks()
     {
@@ -96,12 +139,10 @@ public class ChunkHandler : MonoBehaviour {
     }
     public void unload(int[] co)
     {
-        foreach (int[] c in chunks[co[0], co[1]].neighbors)
-        {
-            chunks[c[0], c[1]].disable();
-        }
+            chunks[co[0], co[1]].disable();
+        
     }
-    public void handleStep(int[] prevChunk, int[] nextChunk)
+    /* void handleStep(int[] prevChunk, int[] nextChunk)
     {
         //Debug.Log("handleStep called");
         HashSet<int[]> fromPrev = chunks[prevChunk[0], prevChunk[1]].neighbors;
@@ -118,7 +159,7 @@ public class ChunkHandler : MonoBehaviour {
         {
             chunks[c[0], c[1]].enable();
         }
-    }
+    }*/
 }
 class chunk
 {

@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\PowerBallScripts\PowerBallSpawner.cs" />
     <Compile Include="Assets\Scripts\PowerBallScripts\Powerball.cs" />
     <Compile Include="Assets\Scripts\PowerBallScripts\PowerballBallBehavior.cs" />
+    <Compile Include="Assets\Scripts\PowerBallScripts\PowerballManager.cs" />
     <Compile Include="Assets\Scripts\StartScript.cs" />
     <Compile Include="Assets\Scripts\TintHelper\tintKey.cs" />
     <Compile Include="Assets\Scripts\TrackScript.cs" />

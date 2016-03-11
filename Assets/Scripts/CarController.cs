@@ -82,7 +82,18 @@ public class CarController : MonoBehaviour
 
 
     private Rigidbody rb;
-
+    public void collideWithPowerball(Powerball behave)
+    {
+        playerCont.collideWithPowerball(behave);
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        playerCont.collideWithSomethingMacro(other);
+    }
+    void OnTriggerExit(Collider other)
+    {
+        playerCont.removeSomethingMacro(other);
+    }
     public void Start()
     {
         freezePos = this.transform.position;
@@ -250,11 +261,12 @@ public class CarController : MonoBehaviour
 
 
         Jump(jump, hAxis, vAxis, AxisToggle);
-        if (fireButton > 0 && canFire())
+        if (fireButton > 0)
         {
-            var pb = Instantiate(PowerBall);
-            pb.transform.position = this.transform.position + new Vector3(0, 3, 0);
-            pb.GetComponent<Rigidbody>().velocity = transform.forward * (20) + rb.velocity;
+            playerCont.fire();
+            //var pb = Instantiate(PowerBall);
+            //pb.transform.position = this.transform.position + new Vector3(0, 3, 0);
+            //pb.GetComponent<Rigidbody>().velocity = transform.forward * (20) + rb.velocity;
         }
     }
     public void FixedUpdate()

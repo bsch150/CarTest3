@@ -28,7 +28,7 @@ public class WorldScript : MonoBehaviour {
     private float gravityStrength = -25f;
     public List<PlayerController> players;
     private bool debugging = true;
-    private ChunkHandler chunkHandler;
+    public ChunkHandler chunkHandler;
     public tintKey colors = new tintKey();
 
 
@@ -116,9 +116,9 @@ public class WorldScript : MonoBehaviour {
         fillControllerPlayerArray();
         checkControllers();
         var toAdd = 1;//PlayerPrefs.GetInt ("actualActive", 1);
-		cams = new GameObject[toAdd];
+		//cams = new GameObject[toAdd];
 		for (int i = 0; i < toAdd; i++) {
-			addPlayer ();
+			addPlayer (-1);
 		}
         //currentUI = Instantiate(UIs[toAdd - 1]);
         initTracks();
@@ -127,12 +127,12 @@ public class WorldScript : MonoBehaviour {
         {
             toLoad.Add(getCoordsFromString(p.currentlyOn));
         }
-        //chunkHandler.unloadAll();
-        foreach (int[] i in toLoad) chunkHandler.load(i);
+        chunkHandler.unloadAll();
+        chunkHandler.load(new int[2] { 0, 1 });
         //chunkHandler.load(new int[2] { 0, 2 });
     }
 	// Update is called once per frame
-	void addPlayer(){
+	void addPlayer(int i){
 		if (actualActive < numControllers) {
 			int wc = PlayerPrefs.GetInt ("whichCar" + (actualActive + 1).ToString (), 0);
 			GameObject[] tempForCopy = new GameObject[actualActive + 1];
@@ -140,19 +140,26 @@ public class WorldScript : MonoBehaviour {
 				tempForCopy [j] = activeCars [j];
 			}
 			activeCars = tempForCopy;
-			GameObject[] tempCamCopy = new GameObject[actualActive + 1];
+			//GameObject[] tempCamCopy = new GameObject[actualActive + 1];
 			for (int j = 0; j < actualActive; j++) {
-				tempCamCopy [j] = cams [j];
+				//tempCamCopy [j] = cams [j];
 			}
-			cams = tempCamCopy;
-            players.Add(new PlayerController(playerNumToControllerNum[actualActive],wc,actualActive+1,spawnPoint,cameraFab,this));
+            //cams = tempCamCopy;
+            PlayerController temp = new PlayerController(i, wc, actualActive + 1, spawnPoint, cameraFab, this);
+            temp.setControllerNum(actualActive);
+            players.Add(temp);
 			//initCar (actualActive);
 			initTracks ();
 			actualActive++;
             PlayerPrefs.SetInt("actualActive", actualActive);
-			if(actualActive > 1){
-			splitCams();
-			}
+            if (actualActive > 1)
+            {
+                foreach (PlayerController p in players)
+                {
+                    p.splitCam(actualActive);
+                }
+            }
+
 		}
 	}
     public int[] getCoordsFromString(GameObject str)
@@ -169,14 +176,15 @@ public class WorldScript : MonoBehaviour {
     }
     public void doChunks(GameObject prev,GameObject next)
     {
-        int[] one = getCoordsFromString(prev);
-        int[] two = getCoordsFromString(next);
-        if (one[0] != -1 && one[1] != -1 && two[0] != -1 && two[1] != -1)
-        {
-            chunkHandler.handleStep(one, two);
-        }
+        //int[] one = getCoordsFromString(prev);
+        //int[] two = getCoordsFromString(next);
+        //if (one[0] != -1 && one[1] != -1 && two[0] != -1 && two[1] != -1)
+       // {
+        //    chunkHandler.handleStep(one, two);
+       // }
     }
 	void FixedUpdate () {
+        //chunkHandler.act();
         foreach(PlayerController p in players)
         {
             p.updateThis();
@@ -186,7 +194,7 @@ public class WorldScript : MonoBehaviour {
             Application.LoadLevel("Menu");
         }else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            chunkHandler.handleStep(new int[2] { 0, 2 }, new int[2] { 0, 3 });
+            //chunkHandler.handleStep(new int[2] { 0, 2 }, new int[2] { 0, 3 });
         }
 		for (int i = 0; i < numControllers; i++)
         {
@@ -212,7 +220,7 @@ public class WorldScript : MonoBehaviour {
                     {
                         Debug.Log("ctr " + i + " is trying to add player");
 
-                        addPlayer();
+                        addPlayer(i+1);
 
                     }
             }else if (controllerNumToPlayerNum[i] != -1 &&  controllerNumToPlayerNum[i] < actualActive)

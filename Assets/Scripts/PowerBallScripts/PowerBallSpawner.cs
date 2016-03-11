@@ -4,12 +4,12 @@ using System;
 
 public class PowerBallSpawner : MonoBehaviour {
     public int[] WhatThisSpawns;
-    private bool hasBall;
+    public bool hasBall;
     public GameObject pBallFab;
     private GameObject pBall;
     private Powerball pBallScr;
     private int noBallTimer = 0;
-    private int spawnTime = 100;
+    private int spawnTime = 1000;
 	// Use this for initialization
 	void Start () {
         Debug.Log("Testing");
@@ -21,9 +21,8 @@ public class PowerBallSpawner : MonoBehaviour {
         hasBall = true;
         pBall = Instantiate(pBallFab);
         pBall.transform.SetParent(transform);
-        pBall.transform.position = transform.position + Vector3.up;
         pBallScr = pBall.GetComponent<Powerball>();
-        pBallScr.assignBehavior(getRandToSpawn());
+        pBallScr.assignBehavior(getRandToSpawn(),Vector3.up * 2,this);
         pBallScr.active = false;
     }
 	PowerballBallBehavior getRandToSpawn()
@@ -46,6 +45,7 @@ public class PowerBallSpawner : MonoBehaviour {
             if (noBallTimer > spawnTime)
             {
                 spawn();
+                noBallTimer = 0;
             }
         }
         else

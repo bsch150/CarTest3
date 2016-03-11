@@ -1,12 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Powerball : MonoBehaviour{
     private PowerballBallBehavior behave;
     public bool active = false;
-    public void assignBehavior(PowerballBallBehavior _behave)
+    private Rigidbody rb;
+    public Vector3 startPos;
+    private PowerBallSpawner spawner;
+    public void assignBehavior(PowerballBallBehavior _behave, Vector3 initPos, PowerBallSpawner sp)
     {
+        spawner = sp;
         behave = _behave;
+        rb = GetComponent<Rigidbody>();
+        startPos = initPos;
     }
     public void act()
     {
@@ -14,19 +21,37 @@ public class Powerball : MonoBehaviour{
         {
             if (active)
             {
-                GetComponent<Rigidbody>().useGravity = false;
+                rb.useGravity = true;
                 behave.activeAct();
             }
             else
             {
-                GetComponent<Rigidbody>().useGravity = false;
-                GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+                rb.useGravity = false;
+                rb.velocity = new Vector3(0, 0, 0);
+                transform.localPosition = startPos;
                 behave.inactiveAct();
             }
         }
     }
-    public void OnTriggerEnter()
+    public void disownSpawn()
     {
-        Debug.Log("Trigggggerrr");
+        spawner.hasBall = false;
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (!active && !other.isTrigger)
+        {
+            try {
+                if (other.GetComponentInParent<Rigidbody>().gameObject.tag.Contains("player")) {
+                    Debug.Log("Player collided");
+                    other.GetComponentInParent<CarController>().collideWithPowerball(this);
+                }
+            }
+            catch(NullReferenceException e)
+            {
+                Debug.Log(e);
+            }
+            
+        }
     }
 }
