@@ -18,11 +18,14 @@ public class CheckpointScript : MonoBehaviour {
     }
 	void OnTriggerEnter(Collider other)
     {
-        string playerTag = other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag;
-        if (playerTag.Contains("player"))
+        if (!other.isTrigger)
         {
-            Debug.Log("player collided with check trigger");
-            track.checkCheckpoint(number, playerTag);
+            string playerTag = other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag;
+            if (playerTag.Contains("player"))
+            {
+                Debug.Log("player collided with check trigger");
+                track.checkCheckpoint(number, playerTag);
+            }
         }
     }
 	// Update is called once per frame

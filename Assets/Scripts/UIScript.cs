@@ -15,8 +15,12 @@ public class UIScript : MonoBehaviour {
     public float toggleTimer = Time.time;
     StartScript startScript;
     public int controllerNum;
+    private int playerNum;
+    private int numPlayers;
     // Use this for initialization
-    public UIScript (GameObject uiFab, int _controllerNum, PlayerController p) {
+    public UIScript (GameObject uiFab, int _controllerNum, PlayerController p,int _numPlayers) {
+        playerNum = p.playerNum;
+        numPlayers = _numPlayers;
         controllerNum = _controllerNum;
         startScript = new StartScript(this, p);
         currColor = new Color(0, 0, 0, alpha);
@@ -45,17 +49,45 @@ public class UIScript : MonoBehaviour {
             }
         }
 	}
-	public void setInfo(Vector3 info)
+    void splitByNumPlayers()
     {
-        if(info[0] == -1 || info[1] == -1)
+        int numRows = (numPlayers == 2) ? 2 : Mathf.RoundToInt(numPlayers / 2);
+        float y = (Screen.height / 2) - ((playerNum * ((Screen.height / numRows))));
+        posText.transform.localPosition = new Vector3(posText.transform.localPosition[0], y+75, posText.transform.localPosition[2]);
+        timeText.transform.localPosition = new Vector3(timeText.transform.localPosition[0], y+400, timeText.transform.localPosition[2]);
+        hsText.transform.localPosition = new Vector3(hsText.transform.localPosition[0], y+300, hsText.transform.localPosition[2]);
+        centerText.transform.localPosition = new Vector3(centerText.transform.localPosition[0], y+300, centerText.transform.localPosition[2]);
+        centerTextSelected.transform.localPosition = new Vector3(centerTextSelected.transform.localPosition[0], y+300, centerTextSelected.transform.localPosition[2]);
+        /*if (numPlayers == 2)
         {
-            posText.text = "";
-            
+            if (playerNum == 1)
+            {
+                Debug.Log("0");
+                posText.transform.localPosition = new Vector3(posText.transform.localPosition[0], y, posText.transform.localPosition[2]);
+            } else if (playerNum == 2)
+            { 
+                Debug.Log("1");
+            }
+        }*/
+    }
+	public void setInfo(Vector3 info, int _numP)
+    {
+        if (numPlayers != _numP)
+        {
+            numPlayers = _numP;
+            splitByNumPlayers();
         }
-        else
-        {
-            posText.text = info[0] + ", " + info[1];
-            timeText.text = info[2].ToString(); 
+        else { 
+            if (info[0] == -1 || info[1] == -1)
+            {
+                posText.text = "";
+
+            }
+            else
+            {
+                posText.text = info[0] + ", " + info[1];
+                timeText.text = info[2].ToString();
+            }
         }
     }
     public void setTint(Color c)
@@ -74,6 +106,10 @@ public class UIScript : MonoBehaviour {
     public void setHighScoreText(string str)
     {
         hsText.text = str;
+    }
+    public void splitTo()
+    {
+        
     }
     public void toggleStart()
     {

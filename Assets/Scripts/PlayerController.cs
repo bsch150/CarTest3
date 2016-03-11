@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
         whichCar = carNum;
         spawnPoint = spawnP;
         cameraFab = cam;
-        ui = new UIScript(world.UIs[playerNum - 1],ctrNum,this);
+        ui = new UIScript(world.UIs[0],ctrNum,this,world.players.Count);
         //currentChunk = startChunk;
         initCar();
         powerballManager = new PowerballManager(carScript.PowerBall, this);
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour {
         int[] coords = world.getCoordsFromString(other.gameObject);
         if (coords[0] != -1 && coords[1] != -1)
         {
-            world.chunkHandler.add(other.transform);
+            world.chunkHandler.add(other.transform,playerNum);
         }
     }
     public void removeSomethingMacro(Collider other)
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
         int[] coords = world.getCoordsFromString(other.gameObject);
         if (coords[0] != -1 && coords[1] != -1)
         {
-            world.chunkHandler.remove(other.transform);
+            world.chunkHandler.remove(other.transform,playerNum);
         }
     }
 
@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour {
             info[2] = Time.time - startTime;
             setHighScoreText("");
         }
-        ui.setInfo(info);
+        ui.setInfo(info,world.players.Count);
     }
     public void setHighScoreText(string str)
     {

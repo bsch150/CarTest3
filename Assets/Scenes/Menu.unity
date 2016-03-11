@@ -238,6 +238,10 @@ Prefab:
       propertyPath: m_FontData.m_MinSize
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 22453478, guid: 5523232d75279fb4395eacfd1415a3f0, type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 67
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5523232d75279fb4395eacfd1415a3f0, type: 2}
   m_IsPrefabParent: 0

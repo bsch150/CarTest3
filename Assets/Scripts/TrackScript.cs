@@ -124,10 +124,13 @@ public class TrackScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag.Contains("player"))
+        if (!other.isTrigger)
         {
-            string str = "This is a test";
-            other.gameObject.GetComponentInParent<CarController>().setHighScoreText(str);
+            if (other.gameObject.GetComponentInParent<Rigidbody>().gameObject.tag.Contains("player"))
+            {
+                string str = "This is a test";
+                other.gameObject.GetComponentInParent<CarController>().setHighScoreText(str);
+            }
         }
     }
     void OnTriggerExit(Collider other)

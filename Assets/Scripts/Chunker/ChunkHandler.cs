@@ -8,15 +8,21 @@ public class ChunkHandler : MonoBehaviour {
     public int maxX = -1;
     public int maxY = -1;
     public int renderDistance = 1;
-    private HashSet<Transform> inside;
-    private HashSet<Transform> outside;
+    private HashSet<Transform>[] inside;
+    private HashSet<Transform>[] outside;
     private bool flag;
     public ChunkHandler(GameObject _map)
     {
         map = _map;
         loadChunks();
-        inside = new HashSet<Transform>();
-        outside = new HashSet<Transform>();
+        inside = new HashSet<Transform>[8];
+        outside = new HashSet<Transform>[8];
+        for (int i = 0; i < 8; i++)
+        {
+            inside[i] = new HashSet<Transform>();
+            outside[i] = new HashSet<Transform>();
+        }
+        flag = true;
     }
     public int[] coordParse(string str)//turns string in format of "_0_2_" to a coordinate (0,2)
     {
@@ -47,42 +53,49 @@ public class ChunkHandler : MonoBehaviour {
         }
         return ret;
     }
-    public void add(Transform t)
+    public void add(Transform t,int pNum)
     {
-        int count = inside.Count;
-        inside.Add(t);
-        //outside.Remove(t);
-        flag = count == inside.Count;
+        int count = inside[pNum].Count;
+        inside[pNum].Add(t);
+        outside[pNum].Remove(t);
+        flag = count == inside[pNum].Count && flag;
         act();
     }
-    public void remove(Transform t)
+    public void remove(Transform t,int pNum)
     {
-        int count = outside.Count;
-        outside.Add(t);
-        //inside.Remove(t);
-        flag = count == outside.Count;
+        int count = outside[pNum].Count;
+        outside[pNum].Add(t);
+        inside[pNum].Remove(t);
+        flag = count == outside[pNum].Count && flag;
         act();
     }
     public void act()
     {
         if (!flag)
         {
-            HashSet<Transform> toAdd = inside;
-            HashSet<Transform> toSubtract = outside;
-            toAdd.ExceptWith(toSubtract);
-            toSubtract.ExceptWith(toAdd);
-            foreach (Transform t in toAdd)
+            flag = true;
+            HashSet<Transform> toAdd = new HashSet<Transform>();
+            HashSet<Transform> toSubtract = new HashSet<Transform>();
+            foreach (HashSet<Transform> iins in inside)
             {
-                int[] vec = coordParse(t.gameObject.name);
-                load(vec);
+                toAdd.UnionWith(iins);
             }
+            foreach (HashSet<Transform> iins in outside)
+            {
+                toSubtract.UnionWith(iins);
+            }
+            //outside.ExceptWith(toAdd);
+            toSubtract.ExceptWith(toAdd);
             foreach (Transform t in toSubtract)
             {
                 int[] vec = coordParse(t.gameObject.name);
                 unload(vec);
             }
-            outside = new HashSet<Transform>();
-            inside = new HashSet<Transform>();
+            foreach (Transform t in toAdd)
+            {
+                int[] vec = coordParse(t.gameObject.name);
+                load(vec);
+            }
         }
     }
     void loadChunks()

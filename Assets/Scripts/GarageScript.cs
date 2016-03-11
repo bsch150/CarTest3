@@ -14,6 +14,10 @@ public class GarageScript : MonoBehaviour {
     }
     bool isPlayer(Collider other)
     {
+        if(other.isTrigger)
+        {
+            return false;
+        }
         CarController temp = other.gameObject.GetComponentInParent<CarController>();
         if(temp != null)
         {
