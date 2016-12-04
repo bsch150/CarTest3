@@ -3886,12 +3886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cars:
-  - {fileID: 162760, guid: 5fb55c70a7bc35446bf8100b47b3448a, type: 2}
-  - {fileID: 127572, guid: 8216b6a64fd767c4bb27a301dc576072, type: 2}
-  - {fileID: 119152, guid: a52d985a8887a754bb06d6ae04b4dd8b, type: 2}
-  - {fileID: 175860, guid: 4e0dd3af05c737b42882f2dbb11f9613, type: 2}
-  - {fileID: 117910, guid: 28e6349542a005444bbb353f8b7b56bd, type: 2}
-  - {fileID: 199580, guid: 1c7fca792555d3848a2dae5fa813ef75, type: 2}
+  - {fileID: 157942, guid: c284ce2fc0b8b114a93da2d7aa4045c7, type: 2}
   spawnPoint: {fileID: 713441428}
   UIs:
   - {fileID: 111206, guid: 5523232d75279fb4395eacfd1415a3f0, type: 2}
