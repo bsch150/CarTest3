@@ -175,6 +175,8 @@ ModelImporter:
     100334: Cube
     100336: Ramp02
     100338: Cube_002
+    100340: Cube_003
+    100342: PitTrack
     400000: //RootNode
     400002: GroundPart01
     400004: GroundPart01_MeshPart0
@@ -345,6 +347,8 @@ ModelImporter:
     400334: Cube
     400336: Ramp02
     400338: Cube_002
+    400340: Cube_003
+    400342: PitTrack
     2300000: GroundPart01_MeshPart0
     2300002: GroundPart01_MeshPart1
     2300004: GroundPart01_MeshPart2
@@ -514,6 +518,8 @@ ModelImporter:
     2300332: Cube
     2300334: Ramp02
     2300336: Cube_002
+    2300338: Cube_003
+    2300340: PitTrack
     3300000: GroundPart01_MeshPart0
     3300002: GroundPart01_MeshPart1
     3300004: GroundPart01_MeshPart2
@@ -683,6 +689,8 @@ ModelImporter:
     3300332: Cube
     3300334: Ramp02
     3300336: Cube_002
+    3300338: Cube_003
+    3300340: PitTrack
     4300000: GroundPart01_MeshPart0
     4300002: GroundPart01_MeshPart1
     4300004: GroundPart01_MeshPart2
@@ -852,6 +860,8 @@ ModelImporter:
     4300332: Cube
     4300334: Ramp02
     4300336: Cube_002
+    4300338: PitTrack
+    4300340: Cube_003
     6400000: GroundPart01_MeshPart0
     6400002: GroundPart01_MeshPart1
     6400004: GroundPart01_MeshPart2
@@ -1021,6 +1031,8 @@ ModelImporter:
     6400332: Cube
     6400334: Ramp02
     6400336: Cube_002
+    6400338: Cube_003
+    6400340: PitTrack
     7400000: Default Take
     9500000: //RootNode
   materials:

@@ -55,6 +55,8 @@ ModelImporter:
     100094: Cube
     100096: Ramp02
     100098: Cube_002
+    100100: Cube_003
+    100102: PitTrack
     400000: //RootNode
     400002: Garage01
     400004: GroundPart
@@ -105,6 +107,8 @@ ModelImporter:
     400094: Cube
     400096: Ramp02
     400098: Cube_002
+    400100: Cube_003
+    400102: PitTrack
     2300000: Garage01
     2300002: GroundPart01
     2300004: GroundPart02
@@ -151,6 +155,8 @@ ModelImporter:
     2300086: Cube
     2300088: Ramp02
     2300090: Cube_002
+    2300092: Cube_003
+    2300094: PitTrack
     3300000: Garage01
     3300002: GroundPart01
     3300004: GroundPart02
@@ -197,6 +203,8 @@ ModelImporter:
     3300086: Cube
     3300088: Ramp02
     3300090: Cube_002
+    3300092: Cube_003
+    3300094: PitTrack
     4300000: GroundPart05
     4300002: GroundPart04
     4300004: GroundPart03
@@ -243,6 +251,8 @@ ModelImporter:
     4300086: Ramp02
     4300088: Cube
     4300090: Cube_002
+    4300092: Cube_003
+    4300094: PitTrack
     7400000: Default Take
     9500000: //RootNode
   materials:
